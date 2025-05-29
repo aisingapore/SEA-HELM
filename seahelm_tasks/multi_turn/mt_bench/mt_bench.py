@@ -21,22 +21,37 @@ logger = get_logger(__name__)
 def evaluate_mt_bench_task(
     inference_df, task_config, task_name, lang, inference_time_taken, is_cached, Metric
 ):
-    logger.info(
-        "--------- Evaluation | Lang: %s | Task: %s ----------",
-        lang.upper(),
-        task_name.upper(),
-    )
-    logger.info("Evaluating %s using %s", task_name.upper(), Metric.__name__)
-    evaluation_metric = Metric(
-        inference_df=inference_df,
-        task_config=task_config,
-        task=task_name,
-        lang=lang,
-    )
-    metric_json, inference_df = evaluation_metric.evaluate_responses()
-    metric_json[task_name]["errors"] = get_error_count(inference_df["errors"])
-    metric_json[task_name]["inference_time_taken"] = inference_time_taken
-    metric_json[task_name]["is_cached"] = is_cached
+    try:
+        logger.info(
+            "--------- Evaluation | Lang: %s | Task: %s ----------",
+            lang.upper(),
+            task_name.upper(),
+        )
+        logger.info("Evaluating %s using %s", task_name.upper(), Metric.__name__)
+        evaluation_metric = Metric(
+            inference_df=inference_df,
+            task_config=task_config,
+            task=task_name,
+            lang=lang,
+        )
+        metric_json, inference_df = evaluation_metric.evaluate_responses()
+        metric_json[task_name]["errors"] = get_error_count(inference_df["errors"])
+        metric_json[task_name]["inference_time_taken"] = inference_time_taken
+        metric_json[task_name]["is_cached"] = is_cached
+    except Exception as e:
+        logger.error(
+            "Failed to run evaluation for task %s and lang %s", task_name, lang
+        )
+        logger.exception(e)
+        logger.warning(
+            "Setting metric %s to 0 for task %s", task_config["metric"], task_name
+        )
+        metric_json = {
+            task_name: {
+                task_config["metric"]: 0,
+                "error": "Failed to run evaluation for task",
+            },
+        }
     return metric_json, inference_df, task_config["competency"], task_name, lang
 
 

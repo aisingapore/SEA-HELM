@@ -562,15 +562,14 @@ Filepath: %s""",
             self.write_out_inference_results(inference_df, task_name, lang)
 
             logger.info("Inference for task '%s' completed!\n", task_name.upper())
+            return inference_df, inference_times, is_cached
 
         except Exception as e:
             logger.error(
                 "Failed to run inference for task %s and lang %s", task_name, lang
             )
             logger.exception(e)
-            raise (e)
-
-        return inference_df, inference_times, is_cached
+            return None, None, is_cached
 
     def get_inference_filepath(
         self, task_name: str, lang: str, file_type: str = "jsonl"
@@ -676,19 +675,12 @@ Filepath: %s""",
             )
 
             metric_json, inference_df = evaluation_metric.evaluate_responses()
+            # save scores in inference_df
+            self.write_out_inference_results(inference_df, task_name, lang)
+
             metric_json[task_name]["errors"] = get_error_count(inference_df["errors"])
             metric_json[task_name]["inference_time_taken"] = inference_time_taken
             metric_json[task_name]["is_cached"] = is_cached
-
-            competency = task_config["competency"]
-            if lang not in metrics:
-                metrics.update({lang: {competency: {}}})
-            elif competency not in metrics[lang]:
-                metrics[lang].update({competency: {}})
-            metrics[lang][competency].update(metric_json)
-
-            # save scores in inference_df
-            self.write_out_inference_results(inference_df, task_name, lang)
 
             logger.info("Evaluation for task '%s' completed!\n", task_name.upper())
         except Exception as e:
@@ -696,6 +688,22 @@ Filepath: %s""",
                 "Failed to run evaluation for task %s and lang %s", task_name, lang
             )
             logger.exception(e)
+            logger.warning(
+                "Setting metric %s to 0 for task %s", task_config["metric"], task_name
+            )
+            metric_json = {
+                task_name: {
+                    task_config["metric"]: 0,
+                    "error": "Failed to run evaluation for task",
+                },
+            }
+
+        competency = task_config["competency"]
+        if lang not in metrics:
+            metrics.update({lang: {competency: {}}})
+        elif competency not in metrics[lang]:
+            metrics[lang].update({competency: {}})
+        metrics[lang][competency].update(metric_json)
 
         return metrics
 
