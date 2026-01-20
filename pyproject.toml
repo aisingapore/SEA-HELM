@@ -1,0 +1,97 @@
+[project]
+name = "seahelm"
+version = "1.0.0"
+description = "SouthEast Asian Holistic Evaluation of Language Models"
+authors = [
+    {name = "AI Singapore", email = "sealion@aisingapore.org"}
+]
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11,<3.12"
+keywords = ["llm", "evaluation", "benchmark", "southeast-asia", "nlp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "anthropic==0.71.0",
+    "datasets==4.4.2",
+    "fast-langdetect==0.3.2",
+    "fsspec==2025.10.0",
+    "gcsfs==2025.10.0",
+    "google-cloud-storage==3.7.0",
+    "google-genai==1.56.0",
+    "immutabledict==4.2.2",
+    "langdetect==1.0.9",
+    "litellm==1.80.8",
+    "math-verify[antlr4_9_3]==0.8.0",
+    "microtokenizer==0.21.3",
+    "nltk==3.9.1",
+    "omegaconf==2.4.0.dev3",
+    "open-clip-torch==3.2.0",
+    "openai==2.14.0",
+    "opencc==1.1.9",
+    "pre-commit==4.5.1",
+    "pyonmttok==1.37.1",
+    "pythainlp==5.2.0",
+    "ruff==0.14.10",
+    "sacrebleu==2.5.1",
+    "scikit-learn==1.8.0",
+    "sympy==1.14.0",
+    "tenacity==9.1.2",
+    "tiktoken==0.12.0",
+    "tree-sitter-java==0.21.0",
+    "tree-sitter-javascript==0.21.4",
+    "tree_sitter==0.21.3",
+    "vllm==0.13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/aisingapore/seahelm-core"
+Repository = "https://github.com/aisingapore/seahelm-core"
+"Bug Tracker" = "https://github.com/aisingapore/seahelm-core/issues"
+Leaderboard = "https://leaderboard.sea-lion.ai/"
+Paper = "https://arxiv.org/abs/2502.14301"
+
+[project.scripts]
+seahelm-evaluate = "src.seahelm_evaluation:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src", "seahelm_tasks"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = ["src/rouge_score"]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "seahelm_tasks"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

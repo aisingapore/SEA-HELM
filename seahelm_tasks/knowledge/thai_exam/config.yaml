@@ -1,0 +1,258 @@
+thai_exam_a_level:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
+  name: thai_exam_a_level
+  competency: knowledge
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  aggregation_group: thai_exam
+  languages:
+    th:
+      filepath: seahelm_tasks/knowledge/thai_exam/data/a_level/a_level_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/thai_exam/data/a_level/a_level_train.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          ตอบคำถามโดยเลือกหนึ่งในตัวเลือกที่ให้ไป
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม:
+          ```
+          {question}
+          ```
+          A: {a}
+          B: {b}
+          C: {c}
+          D: {d}
+          E: {e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+thai_exam_a_level-logprobs:
+  metadata: ${thai_exam_a_level.metadata}
+  name: thai_exam_a_level-logprobs
+  competency: ${thai_exam_a_level.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${thai_exam_a_level.fewshot_num_examples}
+  aggregation_group: thai_exam-logprobs
+  languages: ${thai_exam_a_level.languages}
+
+thai_exam_ic:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
+  name: thai_exam_ic
+  competency: knowledge
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  aggregation_group: thai_exam
+  languages:
+    th:
+      filepath: seahelm_tasks/knowledge/thai_exam/data/ic/ic_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/thai_exam/data/ic/ic_train.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          ตอบคำถามโดยเลือกหนึ่งในตัวเลือกที่ให้ไป
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C หรือ D เท่านั้น
+        task_template: |-
+          คำถาม:
+          ```
+          {question}
+          ```
+          A: {a}
+          B: {b}
+          C: {c}
+          D: {d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+thai_exam_ic-logprobs:
+  metadata: ${thai_exam_ic.metadata}
+  name: thai_exam_ic-logprobs
+  competency: ${thai_exam_ic.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${thai_exam_ic.fewshot_num_examples}
+  aggregation_group: thai_exam-logprobs
+  languages: ${thai_exam_ic.languages}
+
+thai_exam_onet:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
+  name: thai_exam_onet
+  competency: knowledge
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  aggregation_group: thai_exam
+  languages:
+    th:
+      filepath: seahelm_tasks/knowledge/thai_exam/data/onet/onet_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/thai_exam/data/onet/onet_train.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          ตอบคำถามโดยเลือกหนึ่งในตัวเลือกที่ให้ไป
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม:
+          ```
+          {question}
+          ```
+          A: {a}
+          B: {b}
+          C: {c}
+          D: {d}
+          E: {e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+thai_exam_onet-logprobs:
+  metadata: ${thai_exam_onet.metadata}
+  name: thai_exam_onet-logprobs
+  competency: ${thai_exam_onet.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${thai_exam_onet.fewshot_num_examples}
+  aggregation_group: thai_exam-logprobs
+  languages: ${thai_exam_onet.languages}
+
+thai_exam_tgat:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
+  name: thai_exam_tgat
+  competency: knowledge
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  aggregation_group: thai_exam
+  languages:
+    th:
+      filepath: seahelm_tasks/knowledge/thai_exam/data/tgat/tgat_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/thai_exam/data/tgat/tgat_train.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          ตอบคำถามโดยเลือกหนึ่งในตัวเลือกที่ให้ไป
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม:
+          ```
+          {question}
+          ```
+          A: {a}
+          B: {b}
+          C: {c}
+          D: {d}
+          E: {e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+thai_exam_tgat-logprobs:
+  metadata: ${thai_exam_tgat.metadata}
+  name: thai_exam_tgat-logprobs
+  competency: ${thai_exam_tgat.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${thai_exam_tgat.fewshot_num_examples}
+  aggregation_group: thai_exam-logprobs
+  languages: ${thai_exam_tgat.languages}
+
+thai_exam_tpat1:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
+  name: thai_exam_tpat1
+  competency: knowledge
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  aggregation_group: thai_exam
+  languages:
+    th:
+      filepath: seahelm_tasks/knowledge/thai_exam/data/tpat1/tpat1_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/thai_exam/data/tpat1/tpat1_train.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          ตอบคำถามโดยเลือกหนึ่งในตัวเลือกที่ให้ไป
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม:
+          ```
+          {question}
+          ```
+          A: {a}
+          B: {b}
+          C: {c}
+          D: {d}
+          E: {e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+thai_exam_tpat1-logprobs:
+  metadata: ${thai_exam_tpat1.metadata}
+  name: thai_exam_tpat1-logprobs
+  competency: ${thai_exam_tpat1.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${thai_exam_tpat1.fewshot_num_examples}
+  aggregation_group: thai_exam-logprobs
+  languages: ${thai_exam_tpat1.languages}

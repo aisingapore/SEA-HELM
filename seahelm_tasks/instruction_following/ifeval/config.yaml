@@ -1,45 +1,112 @@
 if-eval:
   metadata:
-    version: 1
-  name: "if-eval"
-  competency: "instruction-following"
-  metric_file: "seahelm_tasks/instruction_following/ifeval/if_eval.py"
-  metric_class: "IFEvalMetric"
-  metric: "overall_lang_normalized_acc"
-  temperature: 0
+    version: 1.1
+    changes:
+      v1.1: Increased max_token limit to 4096.
+  name: if-eval
+  competency: instruction-following
+  dataloader_file: src/dataloaders/huggingface_dataloader.py
+  dataloader_class: HuggingFaceDataloader
+  metric_file: seahelm_tasks/instruction_following/ifeval/if_eval.py
+  metric_class: IFEvalMetric
+  metric: overall_lang_normalized_acc
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
   languages:
     en:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/en_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     id:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/id_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     vi:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/vi_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     th:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/th_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     tl:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/tl_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     jv:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/jv_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
     su:
-      filepath: "seahelm_tasks/instruction_following/ifeval/data/su_sea_ifeval.jsonl"
-      max_tokens: 1024
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
       prompt_template:
-        template: "{text}"
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ta:
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ms:
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    my:
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    lo:
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    km:
+      filepath: aisingapore/Instruction-Following-IFEval
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""

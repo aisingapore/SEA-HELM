@@ -1,0 +1,24 @@
+# SeaHelm Constants Configuration
+
+# Few-shot stop tokens for model generation
+few_shot_stop_tokens:
+  - "\n\n"
+
+# Tasks that should be skipped for base models
+base_models_skip_tasks:
+  - "mt-bench"
+  - "mt-bench-101"
+  - "kalahi-mc"
+  - "kalahi-mc-logprobs"
+  - "if-eval"
+  - "ifeval"
+
+# Tasks that should be skipped for instruct models
+instruct_models_skip_tasks: []
+
+# Number of in-context examples for different model types
+instruct_num_in_context_examples: 0
+base_num_in_context_examples: 5
+
+# Minimum score threshold for pragmatics evaluation
+pragmatics_min_score: 0.5

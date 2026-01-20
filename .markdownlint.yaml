@@ -1,0 +1,13 @@
+# Default state for all rules
+default: true
+
+# Path to configuration file to extend
+extends: null
+
+MD013: false
+
+MD028: false
+
+MD033:
+  # Allowed elements
+  allowed_elements: ["details", "summary", "strong"]

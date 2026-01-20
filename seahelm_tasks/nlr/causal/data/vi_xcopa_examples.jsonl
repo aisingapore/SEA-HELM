@@ -1,5 +1,0 @@
-{"label":"A","prompts":[{"premise":"Hãng hàng không làm hư hại hành lý của tôi.","question_translated":"kết quả","choice1":"Họ đề nghị bồi thường.","choice2":"Họ đã hủy chuyến bay của tôi."}],"metadata":{"language":"vi"}}
-{"label":"B","prompts":[{"premise":"Đăng ký của tôi vào tạp chí đã hết hạn.","question_translated":"kết quả","choice1":"Tôi đã vứt ấn phẩm mới.","choice2":"Tôi đã ngừng nhận được các ấn phẩm mới."}],"metadata":{"language":"vi"}}
-{"label":"A","prompts":[{"premise":"Cặp đôi đã đính hôn.","question_translated":"kết quả","choice1":"Họ lên kế hoạch cho một đám cưới.","choice2":"Họ mất một thời gian."}],"metadata":{"language":"vi"}}
-{"label":"B","prompts":[{"premise":"Người đàn ông ngất đi.","question_translated":"nguyên nhân","choice1":"Anh ta chợp mắt.","choice2":"Anh ta chạy marathon."}],"metadata":{"language":"vi"}}
-{"label":"A","prompts":[{"premise":"Tôi quyết định ở nhà tối nay.","question_translated":"nguyên nhân","choice1":"Dự báo thời tiết có bão.","choice2":"Bạn bè tôi rủ tôi ra ngoài chơi."}],"metadata":{"language":"vi"}}

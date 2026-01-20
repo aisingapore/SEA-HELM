@@ -1,0 +1,112 @@
+xm3600:
+  metadata:
+    version: 1
+  name: xm3600
+  competency: vision
+  task_modality: vision
+  metric_file: seahelm_tasks/vision/xm3600/refclipscore_metric.py
+  metric_class: RefClipScoreMetric
+  dataloader_file: seahelm_tasks/vision/xm3600/xm3600_dataloader.py
+  dataloader_class: XM3600Dataloader
+  metric: normalized_refclipscore
+  use_judges: true
+  judge_file: seahelm_tasks/vision/xm3600/refclipscore_judge.py
+  judge_class: RefClipScoreJudge
+  judge:
+    judge_model_name: laion/CLIP-ViT-H-14-frozen-xlm-roberta-large-laion5B-s13B-b90k
+    judge_model_type: openclip
+    batch_api_calls: false
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Provide a one sentence image caption for the given image.
+
+          Please respond using the following format:
+          "{answer_tag} CAPTION"
+          Replace CAPTION with your image caption.
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Caption:"
+    id:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Berikan keterangan gambar dalam satu kalimat pada gambar yang ditampilkan.
+
+          Mohon jawab dengan menggunakan format berikut ini:
+          "{answer_tag} CAPTION"
+          Ganti CAPTION dengan keterangan gambar anda.
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Keterangan:"
+    th:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          จงเขียนแคปชั่นของรูปมาหนึ่งประโยคจากรูปที่ยกตัวอย่างให้
+
+          กรุณาตอบกลับโดยใช้รูปแบบดังต่อไปนี้:
+          "{answer_tag} CAPTION"
+          จงแทนที่ CAPTION ด้วยแคปชั่นของคุณ
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "แคปชั่น:"
+    vi:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Hãy cung cấp một câu chú thích để mô tả về bức ảnh cho sẵn.
+
+          Hãy phản hồi sử dụng định dạng sau:
+          "{answer_tag} CAPTION"
+          Thay thế CAPTION bằng câu chú thích ảnh của bạn.
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Câu chú thích:"
+    tl:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Gumawa ng image caption na isang pangungusap lamang para sa ibinigay na lawaran. 
+
+          Pakisagot gamit ang sumusunod na format:
+          "{answer_tag} CAPTION"
+          Palitan ang CAPTION gamit ang image caption na ginawa mo.
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Caption:"
+    zh:
+      filepath: floschne/xm3600
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          请为给定图片提供一句说明。
+
+          请使用以下格式回复：
+          "{answer_tag}CAPTION"
+          将 CAPTION 替换为您的图片说明。
+        task_template: ""
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "说明："

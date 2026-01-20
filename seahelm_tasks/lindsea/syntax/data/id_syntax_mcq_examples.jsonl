@@ -1,5 +1,0 @@
-{"label":"A","prompts":[{"sentence_pair":"A: Tono akan membawa tas ransel ke sekolah\nB: Akan Tono membawa tas ransel ke sekolah"}],"metadata":{"language":"id"}}
-{"label":"B","prompts":[{"sentence_pair":"A: Tono, Tini ditampar oleh\nB: Oleh Tono, Tini ditampar"}],"metadata":{"language":"id"}}
-{"label":"B","prompts":[{"sentence_pair":"A: Dibaca buku itu dengan lantang\nB: Dibacanya buku itu dengan lantang"}],"metadata":{"language":"id"}}
-{"label":"A","prompts":[{"sentence_pair":"A: Tono mengambilkan Tini sebuah handuk\nB: Tono mengambilkan sebuah handuk Tini"}],"metadata":{"language":"id"}}
-{"label":"B","prompts":[{"sentence_pair":"A: Tini yang Tono buang surat\nB: Tini yang Tono buang suratnya"}],"metadata":{"language":"id"}}

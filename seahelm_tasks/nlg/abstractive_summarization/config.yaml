@@ -1,137 +1,133 @@
 abssum:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $SUMMARY to SUMMARY in the prompt template.
   name: abstractive_summarization
   competency: nlg
+  dataloader_file: src/dataloaders/huggingface_dataloader.py
+  dataloader_class: HuggingFaceDataloader
   metric_file: seahelm_tasks/nlg/abstractive_summarization/summarization.py
   metric_class: SummarizationMetric
   use_chrf_metric: false
-  use_bertscore_metric: false
+  # use_bertscore_metric: false
   use_rougeL_metric: true
   metric: normalized_rougel_f1
-  temperature: 0.3
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     id:
-      filepath: seahelm_tasks/nlg/abstractive_summarization/data/id_xlsum_100sample.jsonl
-      example_filepath: seahelm_tasks/nlg/abstractive_summarization/data/id_xlsum_examples.jsonl
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
       max_tokens: 512
       prompt_template:
-        template: |-
+        preamble: |-
           Rangkumlah artikel bahasa Indonesia berikut ini ke dalam satu paragraf yang terdiri dari 1 atau 2 kalimat.
 
           Jawablah hanya dengan menggunakan format berikut ini:
-          Rangkuman: $SUMMARY
-          Ganti $SUMMARY dengan rangkumannya.{fewshot_examples}
-
+          "{answer_tag} SUMMARY"
+          Ganti SUMMARY dengan rangkumannya.
+        task_template: |-
           Artikel:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Artikel:
-          ```
-          {text}
-          ```
-          Rangkuman: {label}
-        fewshot_label: 'Rangkuman: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Rangkuman:"
     vi:
-      filepath: seahelm_tasks/nlg/abstractive_summarization/data/vi_xlsum_100sample.jsonl
-      example_filepath: seahelm_tasks/nlg/abstractive_summarization/data/vi_xlsum_examples.jsonl
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
       max_tokens: 512
       prompt_template:
-        template: |-
+        preamble: |-
           Tóm tắt bài báo Tiếng Việt dưới đây bằng một đoạn văn bao gồm 1 hay 2 câu.
 
           Chỉ trả lời bằng cách sử dụng định dạng sau:
-          Bản tóm tắt: $SUMMARY
-          Thay thế $SUMMARY bằng bản tóm tắt.{fewshot_examples}
-
+          "{answer_tag} SUMMARY"
+          Thay thế SUMMARY bằng bản tóm tắt.
+        task_template: |-
           Bài báo:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Bài báo:
-          ```
-          {text}
-          ```
-          Bản tóm tắt: {label}
-        fewshot_label: 'Bản tóm tắt: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Bản tóm tắt:"
     th:
-      filepath: seahelm_tasks/nlg/abstractive_summarization/data/th_xlsum_100sample.jsonl
-      example_filepath: seahelm_tasks/nlg/abstractive_summarization/data/th_xlsum_examples.jsonl
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
       max_tokens: 512
       prompt_template:
-        template: |-
+        preamble: |-
           จงสรุปบทความภาษาไทยต่อไปนี้ให้อยู่ในย่อหน้าด้วย 1 หรือ 2 ประโยค
 
           จงตอบตามรูปแบบดังต่อไปนี้:
-          บทสรุป: $SUMMARY
-          โดยจะต้องแทนที่ $SUMMARY ด้วยข้อความที่สรุปมาแล้ว{fewshot_examples}
-
+          "{answer_tag} SUMMARY"
+          โดยจะต้องแทนที่ SUMMARY ด้วยข้อความที่สรุปมาแล้ว
+        task_template: |-
           บทความ:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          บทความ:
-          ```
-          {text}
-          ```
-          บทสรุป: {label}
-        fewshot_label: 'บทสรุป: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "บทสรุป:"
     ta:
-      filepath: seahelm_tasks/nlg/abstractive_summarization/data/ta_xlsum_100sample.jsonl
-      example_filepath: seahelm_tasks/nlg/abstractive_summarization/data/ta_xlsum_examples.jsonl
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
       max_tokens: 512
       prompt_template:
-        template: |-
+        preamble: |-
           பின்வரும் தமிழ் கட்டுரையை 1 அல்லது 2 வாக்கியங்களில் ஒற்றைப் பத்தியாக சுருக்கி எழுதவும்.
 
           பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
-          சுருக்கம்: $SUMMARY
-          சுருக்கத்துடன் $SUMMARY ஐ மாற்றவும்.{fewshot_examples}
-
+          "{answer_tag} SUMMARY"
+          சுருக்கத்துடன் SUMMARY ஐ மாற்றவும்.
+        task_template: |-
           கட்டுரை:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          கட்டுரை:
-          ```
-          {text}
-          ```
-          சுருக்கம்: {label}
-        fewshot_label: 'சுருக்கம்: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "சுருக்கம்:"
     tl:
-      filepath: seahelm_tasks/nlg/abstractive_summarization/data/tl_xlsum.jsonl
-      example_filepath: seahelm_tasks/nlg/abstractive_summarization/data/tl_xlsum_examples.jsonl
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
       max_tokens: 512
       prompt_template:
-        template: |-
+        preamble: |-
           Ibuod ang sumusunod na artikulong Filipino sa isang talata na may isa o dalawang pangungusap.
 
           Sumagot gamit ang sumusunod na format:
-          Buod: $SUMMARY
-          Palitan ang $SUMMARY ng buod.{fewshot_examples}
-
+          "{answer_tag} SUMMARY"
+          Palitan ang SUMMARY ng buod.
+        task_template: |-
           Artikulo:
           ```
           {text}
           ```
-        fewshot_example: |2-
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Buod:"
+    my:
+      filepath: aisingapore/NLG-Abstractive-Summarization
+      example_filepath: aisingapore/NLG-Abstractive-Summarization
+      max_tokens: 512
+      prompt_template:
+        preamble: |-
+          အောက်ပါ မြန်မာဆောင်းပါးကို ဝါကျ စာကြောင်း တစ်ကြောင်း သို့မဟုတ် နှစ်ကြောင်းပါသော စာပိုဒ်တစ်ပိုဒ်အဖြစ် အကျဉ်းချုပ်ဖော်ပြပါ။
 
-          Artikulo:
+          အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ:
+          "{answer_tag} SUMMARY"
+          SUMMARY ကို အကျဉ်းချုပ်ဖြင့် အစားထိုးပါ။
+        task_template: |-
+          ဆောင်းပါး-
           ```
           {text}
           ```
-          Buod: {label}
-        fewshot_label: 'Buod: {label}'
+        answer_template: |-
+          '{answer_tag} {label}'
+        answer_tag: "အကျဉ်းချုပ်-"

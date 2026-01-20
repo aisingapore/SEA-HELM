@@ -1,413 +1,566 @@
 translation-en-xx:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $TRANSLATION to TRANSLATION in the prompt template.
   name: machine_translation_from_english
   competency: nlg
-  metric_file: seahelm_tasks/nlg/translation/translation.py
+  dataloader_file: seahelm_tasks/nlg/translation/translation_dataloader.py
+  dataloader_class: TranslationDataloader
+  metric_file: seahelm_tasks/nlg/translation/translation_metric.py
   metric_class: TranslationMetric
-  use_comet_metric: false
   use_metricx_metric: true
   use_chrf_metric: false
-  metricx_batch_size: 32
   metric: normalized_metricx_wmt24_scores
   aggregation_group: translations
-  temperature: 0
+  use_judges: true
+  judge_file: seahelm_tasks/nlg/translation/translation_judge.py
+  judge_class: TranslationJudge
+  judge:
+    judge_model_name: google/metricx-24-hybrid-xxl-v2p6-bfloat16
+    judge_model_type: metricx
+    judge_init_args:
+      batch_size: 32
+    batch_api_calls: False
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     id:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/en_to_ind_Latn.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/en_to_ind_Latn_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Terjemahkan teks berikut ini ke dalam bahasa Indonesia.
 
           Jawablah hanya dengan menggunakan format berikut ini:
-          Terjemahan: $TRANSLATION
-          Ganti $TRANSLATION dengan teks yang telah diterjemahkan.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION dengan teks yang telah diterjemahkan.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Terjemahan: {label}
-        fewshot_label: 'Terjemahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
     vi:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/en_to_vie_Latn.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/en_to_vie_Latn_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Dịch văn bản dưới đây sang Tiếng Việt.
 
           Chỉ trả lời bằng cách sử dụng định dạng sau:
-          Bản dịch: $TRANSLATION
-          Thay thế $TRANSLATION bằng văn bản đã dịch.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Thay thế TRANSLATION bằng văn bản đã dịch.
+        task_template: |-
           Văn bản:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Văn bản:
-          ```
-          {text}
-          ```
-          Bản dịch: {label}
-        fewshot_label: 'Bản dịch: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Bản dịch:"
     th:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/en_to_tha_Thai.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/en_to_tha_Thai_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           แปลข้อความต่อไปนี้เป็นภาษาไทย
 
           จงตอบตามรูปแบบดังต่อไปนี้:
-          คำแปล: $TRANSLATION
-          โดยจะต้องแทนที่ $TRANSLATION ด้วยข้อความที่แปลแล้ว{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          โดยจะต้องแทนที่ TRANSLATION ด้วยข้อความที่แปลแล้ว
+        task_template: |-
           ข้อความ:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          ข้อความ:
-          ```
-          {text}
-          ```
-          คำแปล: {label}
-        fewshot_label: 'คำแปล: {label}'
-    ta:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/en_to_tam_Taml.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/en_to_tam_Taml_examples.jsonl
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำแปล:"
+    lo:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
+          ແປຂໍ້ຄວາມຕໍ່ໄປນີ້ເປັນພາສາລາວ
+
+          ຈົ່ງຕອບຕາມຮູບແບບຕໍ່ໄປນີ້:
+          "{answer_tag} TRANSLATION"
+          ໂດຍຈະຕ້ອງແທນທີ່ TRANSLATION ດ້ວຍຂໍ້ຄວາມທີ່ແປແລ້ວ
+        task_template: |-
+          ຂໍ້ຄວາມ:
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ຄຳແປ:"
+    ta:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
           பின்வரும் உரையைத் தமிழ் மொழிக்கு மொழிபெயர்க்கவும்.
 
           பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
-          மொழிபெயர்ப்பு: $TRANSLATION
-          மொழிபெயர்த்த உரையுடன் $TRANSLATION ஐ மாற்றவும்.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          மொழிபெயர்த்த உரையுடன் TRANSLATION ஐ மாற்றவும்.
+        task_template: |-
           உரை:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          உரை:
-          ```
-          {text}
-          ```
-          மொழிபெயர்ப்பு: {label}
-        fewshot_label: 'மொழிபெயர்ப்பு: {label}'
-    tl:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/en_to_tgl_Latn.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/en_to_tgl_Latn_examples.jsonl
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "மொழிபெயர்ப்பு:"
+    zh:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
+          将以下的本文翻译成中文。
+
+          请仅使用以下格式作答：
+          "{answer_tag}TRANSLATION"
+          将 TRANSLATION 替换为已翻译的本文。
+        task_template: |-
+          本文：
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "翻译："
+    ms:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          Terjemahkan teks berikut ke dalam Bahasa Melayu.
+
+          Jawab guna format ini sahaja:
+          "{answer_tag} TRANSLATION"
+          Gantikan TRANSLATION dengan teks yang diterjemahkan.
+        task_template: |-
+          Teks:
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
+    km:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          សូមបរប្រែអប្ថបទខាងក្រោមជាភាសាខ្មែរ
+
+          សូមប្រើទម្រង់ចម្លើយដូចខាងក្រោម៖
+          "{answer_tag} TRANSLATION"
+          ជំនួស TRANSLATION ជាមួយនឹងអត្ថបទដែលបានបកប្រែ
+        task_template: |-
+          អត្ថបទ៖
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ការបរប្រែ៖"
+    my:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          အောက်ပါစာသားကို မြန်မာဘာသာဖြင့် ဘာသာပြန်ပါ။
+
+          အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ-
+          "{answer_tag} TRANSLATION"
+          TRANSLATION ကို ဘာသာပြန်ထားသော စာသားဖြင့် အစားထိုးပါ။
+        task_template: |-
+          စာသား-
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ဘာသာပြန်ချက်-"
+    tl:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
           Isalin ang sumusunod na teksto sa Filipino.
 
           Tumugon gamit ang sumusunod na format:
-          Salin: $TRANSLATION
-          Palitan ang $TRANSLATION gamit ng isinalin na teksto.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Palitan ang TRANSLATION gamit ng isinalin na teksto.
+        task_template: |-
           Teksto:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teksto:
-          ```
-          {text}
-          ```
-          Salin: {label}
-        fewshot_label: 'Salin: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Salin:"
 
 translation-xx-en:
   metadata:
     version: 1
   name: machine_translation_to_english
   competency: nlg
-  metric_file: seahelm_tasks/nlg/translation/translation.py
+  dataloader_file: seahelm_tasks/nlg/translation/translation_dataloader.py
+  dataloader_class: TranslationDataloader
+  metric_file: seahelm_tasks/nlg/translation/translation_metric.py
   metric_class: TranslationMetric
-  use_comet_metric: false
   use_metricx_metric: true
   use_chrf_metric: false
-  metricx_batch_size: 32
   metric: normalized_metricx_wmt24_scores
   aggregation_group: translations
-  temperature: 0
+  use_judges: true
+  judge_file: seahelm_tasks/nlg/translation/translation_judge.py
+  judge_class: TranslationJudge
+  judge:
+    judge_model_name: google/metricx-24-hybrid-xxl-v2p6-bfloat16
+    judge_model_type: metricx
+    judge_init_args:
+      batch_size: 32
+    batch_api_calls: False
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     id:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/ind_Latn_to_en.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/ind_Latn_to_en_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Terjemahkan teks berikut ini ke dalam bahasa Inggris.
 
           Jawablah hanya dengan menggunakan format berikut ini:
-          Terjemahan: $TRANSLATION
-          Ganti $TRANSLATION dengan teks yang telah diterjemahkan.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION dengan teks yang telah diterjemahkan.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Terjemahan: {label}
-        fewshot_label: 'Terjemahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
     vi:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/vie_Latn_to_en.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/vie_Latn_to_en_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Dịch văn bản dưới đây sang Tiếng Anh.
 
           Chỉ trả lời bằng cách sử dụng định dạng sau:
-          Bản dịch: $TRANSLATION
-          Thay thế $TRANSLATION bằng văn bản đã dịch.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Thay thế TRANSLATION bằng văn bản đã dịch.
+        task_template: |-
           Văn bản:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Văn bản:
-          ```
-          {text}
-          ```
-          Bản dịch: {label}
-        fewshot_label: 'Bản dịch: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Bản dịch:"
     th:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/tha_Thai_to_en.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/tha_Thai_to_en_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           แปลข้อความต่อไปนี้เป็นภาษาอังกฤษ
 
           จงตอบตามรูปแบบดังต่อไปนี้:
-          คำแปล: $TRANSLATION
-          โดยจะต้องแทนที่ $TRANSLATION ด้วยข้อความที่แปลแล้ว{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          โดยจะต้องแทนที่ TRANSLATION ด้วยข้อความที่แปลแล้ว
+        task_template: |-
           ข้อความ:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          ข้อความ:
-          ```
-          {text}
-          ```
-          คำแปล: {label}
-        fewshot_label: 'คำแปล: {label}'
-    ta:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/tam_Taml_to_en.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/tam_Taml_to_en_examples.jsonl
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำแปล:"
+    lo:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
+          ແປຂໍ້ຄວາມຕໍ່ໄປນີ້ເປັນພາສາອັງກິດ
+
+          ຄຳຕອບຂອງເຈົ້າຈະຕ້ອງຕອບໃຫ້ກົງກັບ:
+          "{answer_tag} TRANSLATION"
+          ໂດຍຈະຕ້ອງແທນທີ່ TRANSLATION ດ້ວຍຂໍ້ຄວາມທີ່ແປແລ້ວ
+        task_template: |-
+          ຂໍ້ຄວາມ:
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ຄຳແປ:"
+    ta:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
           பின்வரும் உரையை ஆங்கில மொழிக்கு மொழிபெயர்க்கவும்.
 
           பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
-          மொழிபெயர்ப்பு: $TRANSLATION
-          மொழிபெயர்த்த உரையுடன் $TRANSLATION ஐ மாற்றவும்.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          மொழிபெயர்த்த உரையுடன் TRANSLATION ஐ மாற்றவும்.
+        task_template: |-
           உரை:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          உரை:
-          ```
-          {text}
-          ```
-          மொழிபெயர்ப்பு: {label}
-        fewshot_label: 'மொழிபெயர்ப்பு: {label}'
-    tl:
-      filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/devtest/tgl_Latn_to_en.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/flores200_dataset/dev/tgl_Latn_to_en_examples.jsonl
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "மொழிபெயர்ப்பு:"
+    zh:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
+          将以下的本文翻译成英文。
+
+          请仅使用以下格式作答：
+          "{answer_tag}TRANSLATION"
+          将 TRANSLATION 替换为已翻译的本文。
+        task_template: |-
+          本文：
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "翻译："
+    ms:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          Terjemahkan teks berikut ke dalam Bahasa Inggeris.
+
+          Jawab guna format ini sahaja:
+          "{answer_tag} TRANSLATION"
+          Gantikan TRANSLATION dengan teks yang telah diterjemahkan.
+        task_template: |-
+          Teks:
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
+    km:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          សូមបរប្រែអប្ថបទខាងក្រោមជាភាសាអង់គ្លេស
+
+          សូមប្រើទម្រង់ចម្លើយដូចខាងក្រោម៖
+          "{answer_tag} TRANSLATION"
+          ជំនួស TRANSLATION ជាមួយនឹងអត្ថបទដែលបានបកប្រែ
+        task_template: |-
+          អត្ថបទ៖
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ការបរប្រែ៖"
+    my:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          အောက်ပါစာသားကို အင်္ဂလိပ်ဘာသာဖြင့် ဘာသာပြန်ပါ။
+
+          အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ-
+          "{answer_tag} TRANSLATION"
+          TRANSLATION ကို ဘာသာပြန်ထားသော စာသားဖြင့် အစားထိုးပါ။
+        task_template: |-
+          စာသား-
+          ```
+          {text}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ဘာသာပြန်ချက်-"
+    tl:
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
           Isalin ang sumusunod na teksto sa English.
 
           Tumugon gamit ang sumusunod na format:
-          Salin: $TRANSLATION
-          Palitan ang $TRANSLATION gamit ng isinalin na teksto.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Palitan ang TRANSLATION gamit ng isinalin na teksto.
+        task_template: |-
           Teksto:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teksto:
-          ```
-          {text}
-          ```
-          Salin: {label}
-        fewshot_label: 'Salin: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Salin:"
 
 translation-id-xx:
   metadata:
     version: 1
   name: machine_translation_from_indonesian
   competency: nlg
-  metric_file: seahelm_tasks/nlg/translation/translation.py
+  dataloader_file: seahelm_tasks/nlg/translation/translation_dataloader.py
+  dataloader_class: TranslationDataloader
+  metric_file: seahelm_tasks/nlg/translation/translation_metric.py
   metric_class: TranslationMetric
-  use_comet_metric: false
   use_metricx_metric: true
   use_chrf_metric: false
-  metricx_batch_size: 32
   metric: normalized_metricx_wmt24_scores
   aggregation_group: translations
-  temperature: 0
+  use_judges: true
+  judge_file: seahelm_tasks/nlg/translation/translation_judge.py
+  judge_class: TranslationJudge
+  judge:
+    judge_model_name: google/metricx-24-hybrid-xxl-v2p6-bfloat16
+    judge_model_type: metricx
+    judge_init_args:
+      batch_size: 32
+    batch_api_calls: False
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     jv:
-      filepath: seahelm_tasks/nlg/translation/data/nusax/devtest/id_to_jv.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/nusax/dev/id_to_jv_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Terjemahna teks ing ngisor iki menyang basa Jawa.
 
           Jawaban mung nganggo format iki:
-          Terjemahan: $TRANSLATION
-          Ganti $TRANSLATION karo teks sing wis diterjemahake.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION karo teks sing wis diterjemahake.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Terjemahan: {label}
-        fewshot_label: 'Terjemahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
     su:
-      filepath: seahelm_tasks/nlg/translation/data/nusax/devtest/id_to_su.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/nusax/dev/id_to_su_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Tarjamahkeun teks di handap kana teks basa Sunda.
 
           Jawap ngan ngagunakeun format di handap ieu:
-          Tarjamahan: $TRANSLATION
-          Ganti $TRANSLATION ku teks tarjamah.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION ku teks tarjamah.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Tarjamahan: {label}
-        fewshot_label: 'Tarjamahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Tarjamahan:"
 
 translation-xx-id:
   metadata:
     version: 1
   name: machine_translation_to_indonesian
   competency: nlg
-  metric_file: seahelm_tasks/nlg/translation/translation.py
+  dataloader_file: seahelm_tasks/nlg/translation/translation_dataloader.py
+  dataloader_class: TranslationDataloader
+  metric_file: seahelm_tasks/nlg/translation/translation_metric.py
   metric_class: TranslationMetric
-  use_comet_metric: false
   use_metricx_metric: true
   use_chrf_metric: false
   metricx_batch_size: 32
   metric: normalized_metricx_wmt24_scores
   aggregation_group: translations
-  temperature: 0
+  use_judges: true
+  judge_file: seahelm_tasks/nlg/translation/translation_judge.py
+  judge_class: TranslationJudge
+  judge:
+    judge_model_name: google/metricx-24-hybrid-xxl-v2p6-bfloat16
+    judge_model_type: metricx
+    judge_init_args:
+      batch_size: 32
+    batch_api_calls: False
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     jv:
-      filepath: seahelm_tasks/nlg/translation/data/nusax/devtest/jv_to_id.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/nusax/dev/jv_to_id_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Terjemahna teks ing ngisor iki menyang basa Indonesia.
 
           Jawaban mung nganggo format iki:
-          Terjemahan: $TRANSLATION
-          Ganti $TRANSLATION karo teks sing wis diterjemahake.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION karo teks sing wis diterjemahake.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Terjemahan: {label}
-        fewshot_label: 'Terjemahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Terjemahan:"
     su:
-      filepath: seahelm_tasks/nlg/translation/data/nusax/devtest/su_to_id.jsonl
-      example_filepath: seahelm_tasks/nlg/translation/data/nusax/dev/su_to_id_examples.jsonl
+      filepath: aisingapore/NLG-Machine-Translation
+      example_filepath: aisingapore/NLG-Machine-Translation
       max_tokens: 256
       prompt_template:
-        template: |-
+        preamble: |-
           Tarjamahkeun teks di handap kana teks basa Indonesia.
 
           Jawap ngan ngagunakeun format di handap ieu:
-          Tarjamahan: $TRANSLATION
-          Ganti $TRANSLATION ku teks tarjamah.{fewshot_examples}
-
+          "{answer_tag} TRANSLATION"
+          Ganti TRANSLATION ku teks tarjamah.
+        task_template: |-
           Teks:
           ```
           {text}
           ```
-        fewshot_example: |2-
-
-
-          Teks:
-          ```
-          {text}
-          ```
-          Tarjamahan: {label}
-        fewshot_label: 'Tarjamahan: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Tarjamahan:"

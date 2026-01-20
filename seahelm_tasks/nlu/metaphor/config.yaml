@@ -1,26 +1,31 @@
 metaphor:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: metaphor_understanding
   competency: nlu
-  metric_file: seahelm_tasks/nlu/metaphor/metaphor_understanding.py
-  metric_class: MetaphorUnderstandingMetric
+  dataloader_file: src/dataloaders/huggingface_dataloader.py
+  dataloader_class: HuggingFaceDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
   metric: normalized_accuracy
-  null_label: 2
-  temperature: 0
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     id:
-      filepath: seahelm_tasks/nlu/metaphor/data/id_multilingual_fig_qa.jsonl
-      example_filepath: seahelm_tasks/nlu/metaphor/data/id_multilingual_fig_qa_examples.jsonl
+      filepath: aisingapore/NLU-Metaphor
+      example_filepath: aisingapore/NLU-Metaphor
       max_tokens: 16
       prompt_template:
-        template: |-
+        preamble: |-
           Jawablah hanya dengan menggunakan format berikut ini:
-          Jawaban: $OPTION
-          Ganti $OPTION dengan pilihan yang telah dipilih. Gunakan huruf A atau B saja sebagai jawabannya.
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A atau B saja sebagai jawabannya.
 
-          Berdasarkan kalimat yang diberikan, manakah dari pilihan berikut ini yang memiliki arti yang sama?{fewshot_examples}
-
+          Berdasarkan kalimat yang diberikan, manakah dari pilihan berikut ini yang memiliki arti yang sama?
+        task_template: |-
           Kalimat:
           ```
           {phrase}
@@ -28,30 +33,21 @@ metaphor:
           Pilihlah jawaban terbaik dari pilihan di bawah ini:
           A: {choice1}
           B: {choice2}
-        fewshot_example: |2-
-
-
-          Kalimat:
-          ```
-          {phrase}
-          ```
-          Pilihlah jawaban terbaik dari pilihan di bawah ini:
-          A: {choice1}
-          B: {choice2}
-          Jawaban: {label}
-        fewshot_label: 'Jawaban: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
     jv:
-      filepath: seahelm_tasks/nlu/metaphor/data/jv_multilingual_fig_qa.jsonl
-      example_filepath: seahelm_tasks/nlu/metaphor/data/jv_multilingual_fig_qa_examples.jsonl
+      filepath: aisingapore/NLU-Metaphor
+      example_filepath: aisingapore/NLU-Metaphor
       max_tokens: 16
       prompt_template:
-        template: |-
+        preamble: |-
           Jawaben mung nganggo format iki:
-          Jawaban: $OPTION
-          Ganti $OPTION karo pilihan sing dipilih. Cukup nganggo huruf A utawa B kanggo jawabane.
+          "{answer_tag} ANSWER"
+          Ganti ANSWER karo pilihan sing dipilih. Cukup nganggo huruf A utawa B kanggo jawabane.
 
-          Miturut ukara sing diwenehi iki, pilihan ing ngisor iki endi sing nduweni teges padha?{fewshot_examples}
-
+          Miturut ukara sing diwenehi iki, pilihan ing ngisor iki endi sing nduweni teges padha?
+        task_template: |-
           Ukara:
           ```
           {phrase}
@@ -59,30 +55,21 @@ metaphor:
           Pilihen jawaban sing paling cocok saka pilihan iki:
           A: {choice1}
           B: {choice2}
-        fewshot_example: |2-
-
-
-          Ukara:
-          ```
-          {phrase}
-          ```
-          Pilihen jawaban sing paling cocok saka pilihan iki:
-          A: {choice1}
-          B: {choice2}
-          Jawaban: {label}
-        fewshot_label: 'Jawaban: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
     su:
-      filepath: seahelm_tasks/nlu/metaphor/data/su_multilingual_fig_qa.jsonl
-      example_filepath: seahelm_tasks/nlu/metaphor/data/su_multilingual_fig_qa_examples.jsonl
+      filepath: aisingapore/NLU-Metaphor
+      example_filepath: aisingapore/NLU-Metaphor
       max_tokens: 16
       prompt_template:
-        template: |-
+        preamble: |-
           Jawap ngan ngagunakeun format di handap ieu:
-          Jawaban: $OPTION
-          Ganti $OPTION ku jawapan nu geus dipilih. Gunakeun hurup A atawa B salaku jawapan.
+          "{answer_tag} ANSWER"
+          Ganti ANSWER ku jawapan nu geus dipilih. Gunakeun hurup A atawa B salaku jawapan.
 
-          Dumasar kana kalimah anu dipasihkeun, pilihan mana anu sarua hartina?{fewshot_examples}
-
+          Dumasar kana kalimah anu dipasihkeun, pilihan mana anu sarua hartina?
+        task_template: |-
           Kalimah:
           ```
           {phrase}
@@ -90,15 +77,45 @@ metaphor:
           Pilih jawapan anu pangsaena tina pilihan di handap ieu:
           A: {choice1}
           B: {choice2}
-        fewshot_example: |2-
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    ta:
+      filepath: aisingapore/NLU-Metaphor
+      example_filepath: aisingapore/NLU-Metaphor
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          நீங்கள் ஒரு தமிழ் மொழியியல் நிபுணர்.
 
+          பின்வரும் வடிவத்தை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
+          "{answer_tag} ANSWER"
+          ANSWER ஐ உண்மை அல்லது பொய் என்ற சொற்களுடன் மாற்றவும்.
 
-          Kalimah:
+          இந்த வாக்கியம் மற்றும் அதன் பொருள் உண்மையா அல்லது பொய்யா?
+        task_template: |-
+          வாக்கியம்: 
           ```
-          {phrase}
+          {metaphor}
           ```
-          Pilih jawapan anu pangsaena tina pilihan di handap ieu:
-          A: {choice1}
-          B: {choice2}
-          Jawaban: {label}
-        fewshot_label: 'Jawaban: {label}'
+          சாத்தியமான பொருள்:
+          ```
+          {explanation}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "பதில்:"
+
+metaphor-logprobs:
+  metadata: ${metaphor.metadata}
+  name: metaphor-logprobs
+  competency: ${metaphor.competency}
+  dataloader_file: ${metaphor.dataloader_file}
+  dataloader_class: ${metaphor.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${metaphor.fewshot_num_examples}
+  languages: ${metaphor.languages}

@@ -1,5 +1,0 @@
-{"label":"A","prompts":[{"premise":"สานการบินทำกระเป๋าฉันหาย","question_translated":"ผล","choice1":"เขาเสนอค่าชดใช้ให้","choice2":"เขายกเลิกเที่ยวบิน"}],"metadata":{"language":"th"}}
-{"label":"B","prompts":[{"premise":"สมาชิกนิตยสารได้หมดอายุแล้ว","question_translated":"ผล","choice1":"ฉ้นทิ้งนิตยสารฉบับล่าสุด","choice2":"ฉันไม่ได้รับนิตยสารฉบับใหม่แล้ว"}],"metadata":{"language":"th"}}
-{"label":"A","prompts":[{"premise":"คู่รักหมั้นกัน","question_translated":"ผล","choice1":"พวกเขาวางแผนงานแต่งงาน","choice2":"พวกเขาแยกกั่นอยู่สักพัก"}],"metadata":{"language":"th"}}
-{"label":"B","prompts":[{"premise":"ผู้ชายเป็นลม","question_translated":"สาเหตุ","choice1":"เขานอนพัก","choice2":"เขาวิ่งมาราธอน"}],"metadata":{"language":"th"}}
-{"label":"A","prompts":[{"premise":"ฉันตัดสินใจอยู่บ้านคืนนี้","question_translated":"สาเหตุ","choice1":"พยากรณ์อากาศบอกจะมีพายุ","choice2":"เพื่อนของฉันแนะนําให้ฉันออกไปเที่ยว"}],"metadata":{"language":"th"}}

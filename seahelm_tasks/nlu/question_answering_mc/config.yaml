@@ -1,26 +1,29 @@
 qa-mc:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: question_answering_multiple_choice
   competency: nlu
-  metric_file: seahelm_tasks/nlu/question_answering_mc/question_answering_mc.py
-  metric_class: QuestionAnsweringMultipleChoiceMetric
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
   metric: normalized_accuracy
-  null_label: 4
-  temperature: 0
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     jv:
       filepath: seahelm_tasks/nlu/question_answering_mc/data/jv_belebele.jsonl
       example_filepath: seahelm_tasks/nlu/question_answering_mc/data/jv_belebele_examples.jsonl
       max_tokens: 16
       prompt_template:
-        template: |-
+        preamble: |-
           Sampeyan bakal diwenehi paragraf, pitakonan, lan papat pilihan jawaban. Jawaben pitakonan iku miturut paragraf kanthi milih salah siji saka pilihan sing diwenehake.
 
           Jawaban mung nganggo format iki:
-          Jawaban: $OPTION
-          Ganti $OPTION karo pilihan sing dipilih. Gunakake mung huruf A, B, C, utawa D kanggo jawabane.{fewshot_examples}
-
+          "{answer_tag} ANSWER"
+          Ganti ANSWER karo pilihan sing dipilih. Gunakake mung huruf A, B, C, utawa D kanggo jawabane.
+        task_template: |-
           Paragraf:
           ```
           {text}
@@ -30,32 +33,21 @@ qa-mc:
           B: {choice2}
           C: {choice3}
           D: {choice4}
-        fewshot_example: |2-
-
-
-          Paragraf:
-          ```
-          {text}
-          ```
-          Pitakonan: {question}
-          A: {choice1}
-          B: {choice2}
-          C: {choice3}
-          D: {choice4}
-          Jawaban: {label}
-        fewshot_label: 'Jawaban: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
     su:
       filepath: seahelm_tasks/nlu/question_answering_mc/data/su_belebele.jsonl
       example_filepath: seahelm_tasks/nlu/question_answering_mc/data/su_belebele_examples.jsonl
       max_tokens: 16
       prompt_template:
-        template: |-
+        preamble: |-
           Anjeun bade dipasihan hiji paragrap, hiji patarosan sareng opat pilihan jawapan. Jawapana dumasar kana paragraf ku milih salah sahiji pilihan anu dipasihkeun.
 
           Jawap ngan ngagunakeun format di handap ieu:
-          Jawaban: $OPTION
-          Ganti $OPTION ku jawapan nu geus dipilih. Gunakeun hurup A, B, C, atawa D salaku jawapan.{fewshot_examples}
-
+          "{answer_tag} ANSWER"
+          Ganti ANSWER ku jawapan nu geus dipilih. Gunakeun hurup A, B, C, atawa D salaku jawapan.
+        task_template: |-
           Paragrap:
           ```
           {text}
@@ -65,18 +57,116 @@ qa-mc:
           B: {choice2}
           C: {choice3}
           D: {choice4}
-        fewshot_example: |2-
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
 
+qa-mc-logprobs:
+  metadata: ${qa-mc.metadata}
+  name: qa-mc-logprobs
+  competency: ${qa-mc.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${qa-mc.fewshot_num_examples}
+  languages: ${qa-mc.languages}
 
-          Paragrap:
+mixed-genre-qa-mc:
+  metadata:
+    version: 1
+  name: question_answering_multiple_choice
+  competency: nlu
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    zh:
+      filepath: seahelm_tasks/nlu/question_answering_mc/data/zh_c3_m.jsonl
+      example_filepath: seahelm_tasks/nlu/question_answering_mc/data/zh_c3_m_examples.jsonl
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          您将看到一个段落、一个问题和四个答案选项。请根据段落内容，从给出的选项中选择一个答案。
+
+          请仅使用以下格式作答：
+          "{answer_tag}ANSWER"
+          请将 ANSWER 替换为您选择的答案。请使用字母 A、B、C 或 D 作为答案。
+        task_template: |-
+          文本：
           ```
           {text}
           ```
-          Patarosan: {question}
-          A: {choice1}
-          B: {choice2}
-          C: {choice3}
-          D: {choice4}
-          Jawaban: {label}
-        fewshot_label: 'Jawaban: {label}'
+          问题：{question}
+          A：{choice1}
+          B：{choice2}
+          C：{choice3}
+          D：{choice4}
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "答案："
 
+mixed-genre-qa-mc-logprobs:
+  metadata: ${mixed-genre-qa-mc.metadata}
+  name: mixed-genre-qa-mc-logprobs
+  competency: ${mixed-genre-qa-mc.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${mixed-genre-qa-mc.fewshot_num_examples}
+  languages: ${mixed-genre-qa-mc.languages}
+
+dialogue-qa-mc:
+  metadata:
+    version: 1
+  name: dialogue_question_answering_multiple_choice
+  competency: nlu
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    zh:
+      filepath: seahelm_tasks/nlu/question_answering_mc/data/zh_c3_d.jsonl
+      example_filepath: seahelm_tasks/nlu/question_answering_mc/data/zh_c3_d_examples.jsonl
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          您将看到一个对话段落、一个问题和四个答案选项。请根据段落内容，从给出的选项中选择一个答案。
+
+          请仅使用以下格式作答：
+          "{answer_tag}ANSWER"
+          请将 ANSWER 替换为您选择的答案。请使用字母 A、B、C 或 D 作为答案。
+        task_template: |-
+          对话段落:
+          ```
+          {text}
+          ```
+          问题：{question}
+          A：{choice1}
+          B：{choice2}
+          C：{choice3}
+          D：{choice4}
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "答案："
+
+dialogue-qa-mc-logprobs:
+  metadata: ${dialogue-qa-mc.metadata}
+  name: dialogue-qa-mc-logprobs
+  competency: ${dialogue-qa-mc.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${dialogue-qa-mc.fewshot_num_examples}
+  languages: ${dialogue-qa-mc.languages}
