@@ -17,10 +17,17 @@
 1. SEA-HELM now uses a multple run evaluation methodology. A total of 8 runs are used for the leaderboard with each run using the default generation kwargs provided by each model provider.
 1. Added helper jupyter notebooks for evaluation integrity (`helpers/result_integrity_status.ipynb`) and score aggregation (`helpers/results_aggregation.ipynb`)
 1. Added ELO calculation script
-1. New languages: Malay, Burmese, Lao (Sentiment, Translation, SEA-IFEval, SEA MT-Bench), Khmer (SEA-IFEval and SEA MT-Bench)
-1. New task categories: Knowledge, Vision
+1. New languages:
+   - Malay
+   - Burmese
+   - Lao (Sentiment, MCQA, Translation, SEA-IFEval, SEA MT-Bench)
+   - Khmer (MCQA, SEA-IFEval and SEA MT-Bench)
+1. New task categories:
+   - Knowledge
+   - Vision
 1. Inference and evaluation backbones have been updated with various QoL features: Lazy loading of models, local and remote judge models, custom dataloaders, and cache model judgements.
-1. Core datasets have been migrated to Huggingface (The remainder will be moved in a later update).
+1. Core datasets have been migrated to Huggingface. The remainder will be moved in a later update.
+1. Added scripts to be used with job schedulers.
 
 <strong>Credits:</strong>
 

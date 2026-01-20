@@ -171,7 +171,7 @@ nli:
           ```
         answer_template: |-
           {answer_tag} {label}
-        answer_tag: "အဖြေ:"
+        answer_tag: "အဖြေ-"
     ms:
       filepath: aisingapore/NLR-NLI
       example_filepath: aisingapore/NLR-NLI

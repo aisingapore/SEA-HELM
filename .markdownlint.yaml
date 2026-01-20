@@ -11,3 +11,6 @@ MD028: false
 MD033:
   # Allowed elements
   allowed_elements: ["details", "summary", "strong"]
+
+MD024:
+  siblings_only: true

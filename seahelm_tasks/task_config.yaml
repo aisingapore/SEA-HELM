@@ -3,7 +3,6 @@
 # [sentiment, qa, qa-mc, metaphor, toxicity, translation-en-xx, translation-xx-en, translation-id-xx, translation-xx-id, abssum, causal, nli, mp-r, pragmatic-single, pragmatic-pair, if-eval, mt-bench, kalahi-mc]
 # Supported languages:
 # [id, vi, th, ta, tl, zh, ms, km, my, jv, su]
-# Instead of a list, use <language>: "all" to specify all tasks to be run.
 
 vision:
   en: ["xm3600", "world_cuisine_task1", "world_cuisine_task2"]
