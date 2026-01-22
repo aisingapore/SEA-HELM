@@ -31,6 +31,7 @@
 
 <strong>Credits:</strong>
 
+- Burmese - [@ThuraAung1601](https://github.com/ThuraAung1601)
 - Lao - [@malaythong](https://github.com/malaythong), [@jnaynay](https://github.com/jnaynay)
 - Khmer - [@yslidet](https://github.com/yslidet)
 
@@ -153,6 +154,8 @@ The command will run inference on the desired model with vLLM using a single gpu
 
 1. Leong, W. Q., Ngui, J. G., Susanto, Y., Rengarajan, H., Sarveswaran, K., & Tjhi, W. C. (2023). Bhasa: A holistic southeast asian linguistic and cultural evaluation suite for large language models. arXiv preprint [arXiv:2309.06085](https://arxiv.org/abs/2309.06085).
    - Code: [https://github.com/aisingapore/BHASA](https://github.com/aisingapore/BHASA)
+2. Montalan, J. R., Ngui, J. G., Leong, W. Q., Susanto, Y., Rengarajan, H., Aji, A. F., & Tjhi, W. C. (2024). Kalahi: A handcrafted, grassroots cultural LLM evaluation suite for Filipino. arXiv preprint [arXiv:2409.15380](https://arxiv.org/abs/2409.15380).
+3. Montalan, J. R., Layacan, J. P., Africa, D. D., Flores, R. I. S., Ii, M. T. L., Magsajo, T. D., Cayabyab, A., & Tjhi, W. C. (2025, July). BATAYAN: A Filipino NLP benchmark for evaluating Large Language Models. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (pp. 31239-31273). [10.18653/v1/2025.acl-long.1509](10.18653/v1/2025.acl-long.1509)
 
 ## License
 
