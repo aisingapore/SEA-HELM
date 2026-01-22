@@ -132,7 +132,7 @@ class CriteriaJudge(SeaHelmJudge):
                   where n is the criterion index
 
         Example:
-            For a translation with 3 criteria, this generates 3 judge requests:
+            For a response with 3 criteria, this generates 3 judge requests:
             - "example123_criteria0": Evaluate criterion 0
             - "example123_criteria1": Evaluate criterion 1
             - "example123_criteria2": Evaluate criterion 2
@@ -165,7 +165,7 @@ class CriteriaJudge(SeaHelmJudge):
                         prompt=self.task_config.config["languages"][self.lang][
                             "prompt_template"
                         ]["task_template"].format(**row["prompts"][0]),
-                        translation=responses[0],
+                        response=responses[0],
                         keyPointText=criterion["criterion"].format(**row["prompts"][0]),
                         reference_text_block=reference_text_block,
                     ),
