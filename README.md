@@ -1,13 +1,34 @@
-<!-- markdownlint-disable-file MD040 -->
+<!-- markdownlint-disable-file MD033 MD040 MD041 -->
 
-# SEA-HELM (SouthEast Asian Holistic Evaluation of Language Models)
+<div align="center">
+
+# SEA-HELM
+
+<p align="center">
+   <strong>An open and comprehensive evaluation suite for SEA languages</strong><br>
+</p>
+
+[📊 Leaderboard](https://leaderboard.sea-lion.ai/) |
+[🌐 About Us](https://sea-lion.ai/)
 
 [![arXiv](https://img.shields.io/badge/arXiv-2502.14301-b31b1b.svg)](https://arxiv.org/abs/2502.14301)
 
-> [!NOTE]  
-> BHASA has been integrated into SEA-HELM
+</div>
 
-## Latest Updates
+> [!IMPORTANT]  
+> **Join Us in Advancing LLM evaluations for the SEA Region**
+>
+> We're committed to delivering frequent updates and comprehensive evaluations that advance LLM performance across Southeast Asian languages. Here's how you can contribute:
+>
+> - **For Language Experts**: Have expertise in SEA languages? We are happy to collaborate with you to build more robust evaluations.
+> - **For Researchers & Organizations**: If SEA-HELM supports your work, please:
+>   - ⭐ Star this repository to help us demonstrate impact to stakeholders
+>   - 📄 Cite our work in your publications ([see citation](#citation))
+>   - 🤝 Contact us to explore partnership opportunities, including joint press releases
+>
+> Your engagement directly supports the sustainability and growth of this project.
+
+## 🎉 Latest Updates
 
 <details open>
 <summary><strong>20 Jan 2026</strong></summary>
@@ -39,11 +60,22 @@
 
 ## Overview
 
-SEA-HELM (SouthEast Asian Holistic Evaluation of Language Models) is an assessment of large language models (LLMs) across various tasks, emphasizing Southeast Asian languages. This suite consist of 5 core pillars - NLP Classics, LLM-specifics, SEA Linguistics, SEA Culture and Safety - which evaluates the performance of LLMs across a range of key capabilities in the SEA languages.
+SEA-HELM (SouthEast Asian Holistic Evaluation of Language Models) is an assessment of large language models (LLMs) across various tasks, emphasizing Southeast Asian languages.
+
+This suite consist of 5 core pillars to evaluate the performance of LLMs across a range of key capabilities in the SEA languages:
+
+1. NLP Classics
+1. LLM-specifics
+1. SEA Linguistics
+1. SEA Culture
+1. Safety
 
 ![SEA-HELM pillars](docs/assets/seahelm_pillars.png)
 
 Results from SEA-HELM can be found on the SEA-HELM leaderboard at [https://leaderboard.sea-lion.ai/](https://leaderboard.sea-lion.ai/).
+
+> [!NOTE]  
+> BHASA has been integrated into SEA-HELM
 
 ## Evaluating Models using SEA-HELM
 
