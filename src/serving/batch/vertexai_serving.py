@@ -132,6 +132,81 @@ class VertexAIServing(BaseBatchServing):
         """
         return {"google-genai": importlib_metadata.version("google-genai")}
 
+    def _convert_content_to_vertexai_format(self, content):
+        """
+        Convert content from OpenAI format to Vertex AI format for multimodal support.
+
+        Args:
+            content: Either a string (text-only) or list of content parts (multimodal)
+
+        Returns:
+            Properly formatted content for Vertex AI's API
+        """
+        if isinstance(content, str):
+            # Text-only content - wrap in Anthropic's text format
+            return [{"text": content}]
+        elif isinstance(content, list):
+            # Multimodal content - convert each part
+            parts = []
+            for content_part in content:
+                if content_part.get("type") == "text":
+                    parts.append({"text": content_part["text"]})
+                elif content_part.get("type") == "image_url":
+                    # Extract base64 data and mime type from data URL
+                    image_url = content_part["image_url"]["url"]
+
+                    if image_url.startswith("data:"):
+                        # Parse data URL: data:image/jpeg;base64,<data>
+                        mime_type, base64_data = image_url.split(";base64,")
+                        mime_type = mime_type.split("data:")[1]  # Remove "data:" prefix
+                        parts.append(
+                            {
+                                "inlineData": {
+                                    "data": base64_data,
+                                    "mimeType": mime_type,
+                                }
+                            }
+                        )
+                    else:
+                        parts.append(
+                            {
+                                "fileUri": {
+                                    "mimeType": "image/jpeg",
+                                    "fileUri": image_url,
+                                }
+                            }
+                        )
+                elif content_part.get("type") == "audio_url":
+                    # Extract base64 data and mime type from data URL
+                    audio_url = content_part["audio_url"]["url"]
+
+                    if audio_url.startswith("data:"):
+                        # Parse data URL: data:audio/wav;base64,<data>
+                        mime_type, base64_data = audio_url.split(";base64,")
+                        mime_type = mime_type.split("data:")[1]  # Remove "data:" prefix
+                        parts.append(
+                            {
+                                "inlineData": {
+                                    "data": base64_data,
+                                    "mimeType": mime_type,
+                                }
+                            }
+                        )
+                    else:
+                        parts.append(
+                            {
+                                "fileUri": {
+                                    "mimeType": "audio/wav",
+                                    "fileUri": audio_url,
+                                }
+                            }
+                        )
+                else:
+                    raise ValueError(
+                        f"Invalid content type: {content_part.get('type')}"
+                    )
+            return parts
+
     def prepare_llm_batches(
         self,
         llm_batch_file_path: str,
@@ -142,95 +217,57 @@ class VertexAIServing(BaseBatchServing):
         """Prepare the batch file for Vertex AI
 
         Args:
-            llm_batch_file_path (str): The path to the batch file.
-            conversations (list): The conversations to prepare.
-            custom_ids (list, optional): The custom ids to use. Defaults to None.
-            **generation_kwargs: The generation kwargs to use.
+            llm_batch_file_path (str): Path where the batch request file will be saved.
+            conversations (list): List of conversations, where each conversation is a list
+                of message dictionaries with 'role' and 'content' keys.
+            custom_ids (list, optional): List of custom identifiers for each request.
+                If None, uses sequential integer strings. Defaults to None.
+            **generation_kwargs: Additional generation parameters to include in requests.
         """
-        batches = []
-        id = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
+        requests = []
+        idx = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
 
-        for i, convo in enumerate(conversations):
-            contents = []
-            system_instructions = None
-            for turns in convo:
-                if turns["role"] == "system":
-                    system_instructions = turns["content"]
+        # Vertex AI batch API requires a specific format for the generation kwargs
+        selected_generation_kwargs = {}
+        for k, v in generation_kwargs.items():
+            if k in self.kwargs_map:
+                selected_generation_kwargs[self.kwargs_map[k]] = v
+            else:
+                logger.warning(f"Unsupported generation kwarg for Vertex AI API: {k}")
+
+        for ix, conversation in enumerate(conversations):
+            messages = []
+            system_message = None
+            for message in conversation:
+                if message["role"] == "system":
+                    system_message = message["content"]
                     continue
 
-                # Handle multimodal content (list) vs text-only content (string)
-                if isinstance(turns["content"], list):
-                    # Multimodal content - convert from OpenAI format to Vertex AI format
-                    parts = []
-                    for content_part in turns["content"]:
-                        if content_part.get("type") == "text":
-                            parts.append({"text": content_part["text"]})
-                        elif content_part.get("type") == "image_url":
-                            # Extract base64 data and mime type from data URL
-                            image_url = content_part["image_url"]["url"]
-                            if image_url.startswith("data:"):
-                                # Parse data URL: data:image/jpeg;base64,<data>
-                                mime_type, base64_data = image_url.split(";base64,")
-                                mime_type = mime_type.split("data:")[
-                                    1
-                                ]  # Remove "data:" prefix
-                                parts.append(
-                                    {
-                                        "inlineData": {
-                                            "data": base64_data,
-                                            "mimeType": mime_type,
-                                        }
-                                    }
-                                )
-                            else:
-                                raise ValueError(f"Invalid image URL: {image_url}")
-                        else:
-                            raise ValueError(
-                                f"Invalid content type: {content_part.get('type')}"
-                            )
-                    contents.append(
-                        {
-                            "role": turns["role"],
-                            "parts": parts,
-                        }
-                    )
-                else:
-                    # Text-only content - use existing format
-                    contents.append(
-                        {
-                            "role": turns["role"],
-                            "parts": [
-                                {
-                                    "text": turns["content"],
-                                }
-                            ],
-                        }
-                    )
-            # Vertex AI batch API requires a specific format for the generation kwargs
-            kwargs = {
-                self.kwargs_map[k]: v
-                for k, v in generation_kwargs.items()
-                if k in self.kwargs_map
-            }
+                messages.append(
+                    {
+                        "role": message["role"],
+                        "parts": self._convert_content_to_vertexai_format(
+                            message["content"]
+                        ),
+                    }
+                )
 
-            custom_id = f"{id}_{i}" if custom_ids is None else custom_ids[i]
+            custom_id = custom_ids[ix] if custom_ids else f"{idx}_{ix}"
             request = {
                 "request": {
-                    "contents": contents,
-                    "generationConfig": kwargs,
-                    "labels": {
-                        "custom_id": custom_id,
-                    },
+                    "contents": messages,
+                    "generationConfig": selected_generation_kwargs,
+                    "labels": {"custom_id": custom_id},
                 },
             }
 
-            if system_instructions:
+            if system_message:
                 request["request"]["system_instruction"] = {
-                    "parts": [{"text": system_instructions}]
+                    "parts": [{"text": system_message}]
                 }
 
-            batches.append(request)
-        df = pd.DataFrame(batches)
+            requests.append(request)
+        df = pd.DataFrame(requests)
         df.to_json(llm_batch_file_path, orient="records", lines=True, force_ascii=False)
 
     async def abatch_generate(
@@ -363,8 +400,7 @@ class VertexAIServing(BaseBatchServing):
 
         df = pd.read_json(blob_path, lines=True)
         df["id"] = df.apply(lambda x: self.get_ids_from_batch(x), axis=1)
-        df = df.sort_values(by="id")
-        df = df.reset_index(drop=True)
+        df = df.sort_values(by="id").reset_index(drop=True)
         df.to_json(
             batch_output_filepath, orient="records", lines=True, force_ascii=False
         )

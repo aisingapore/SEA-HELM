@@ -45,7 +45,7 @@ class AnthropicServing(BaseBatchServing):
 
     Attributes:
         client (anthropic.Anthropic): The Anthropic API client.
-        allowed_generation_kwargs (List[str]): List of allowed generation parameters.
+        kwargs_map (List[str]): List of allowed generation parameters.
         processing_states (List[str]): List of valid processing states for batch jobs.
         result_types (List[str]): List of valid result types for batch responses.
     """
@@ -86,7 +86,7 @@ class AnthropicServing(BaseBatchServing):
             f"Model {self.model_name} is not available in Anthropic API. Available models: {ANTHROPIC_MODELS}"
         )
 
-        self.allowed_generation_kwargs = ["temperature", "max_tokens", "top_p", "top_k"]
+        self.kwargs_map = ["temperature", "max_tokens", "top_p", "top_k"]
         self.processing_states = ["in_progress", "canceling", "ended"]
         self.result_types = ["succeeded", "errored", "cancelled", "expired"]
 
@@ -118,12 +118,10 @@ class AnthropicServing(BaseBatchServing):
             return [{"type": "text", "text": content}]
         elif isinstance(content, list):
             # Multimodal content - convert each part
-            anthropic_content = []
+            parts = []
             for content_part in content:
                 if content_part.get("type") == "text":
-                    anthropic_content.append(
-                        {"type": "text", "text": content_part["text"]}
-                    )
+                    parts.append({"type": "text", "text": content_part["text"]})
                 elif content_part.get("type") == "image_url":
                     # Convert from OpenAI format to Anthropic format
                     image_url = content_part["image_url"]["url"]
@@ -132,8 +130,7 @@ class AnthropicServing(BaseBatchServing):
                         # Parse data URL: data:image/jpeg;base64,<data>
                         prefix, base64_data = image_url.split(";base64,")
                         media_type = prefix.split("data:")[1]  # Remove "data:" prefix
-
-                        anthropic_content.append(
+                        parts.append(
                             {
                                 "type": "image",
                                 "source": {
@@ -145,13 +142,21 @@ class AnthropicServing(BaseBatchServing):
                         )
                     else:
                         # Handle regular URLs
-                        anthropic_content.append(
+                        parts.append(
                             {
                                 "type": "image",
                                 "source": {"type": "url", "url": image_url},
                             }
                         )
-            return anthropic_content
+                elif content_part.get("type") == "audio_url":
+                    raise ValueError(
+                        "Anthropic API does not support audio content types."
+                    )
+                else:
+                    raise ValueError(
+                        f"Invalid content type: {content_part.get('type')}"
+                    )
+            return parts
         else:
             # Fallback for unexpected content types
             raise ValueError(f"Invalid content type: {type(content)}")
@@ -174,34 +179,46 @@ class AnthropicServing(BaseBatchServing):
                 If None, uses sequential integer strings. Defaults to None.
             **generation_kwargs: Additional generation parameters to include in requests.
         """
-        selected_generation_kwargs = {
-            key: value
-            for key, value in generation_kwargs.items()
-            if key in self.allowed_generation_kwargs
-        }
         requests = []
+        idx = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
+
+        # Anthropic API only allows certain generation kwargs
+        selected_generation_kwargs = {}
+        for k, v in generation_kwargs.items():
+            if k in self.kwargs_map:
+                selected_generation_kwargs[k] = v
+            else:
+                logger.warning(f"Unsupported generation kwarg for Anthropic API: {k}")
+
         for ix, conversation in enumerate(conversations):
+            messages = []
+            system_message = None
+            for message in conversation:
+                if message["role"] == "system":
+                    system_message = message["content"]
+                    continue
+
+                messages.append(
+                    {
+                        "role": message["role"],
+                        "content": self._convert_content_to_anthropic_format(
+                            message["content"]
+                        ),
+                    }
+                )
+
+            if system_message is not None:
+                selected_generation_kwargs["system"] = system_message
+
             request = Request(
-                custom_id=custom_ids[ix] if custom_ids else str(ix),
+                custom_id=custom_ids[ix] if custom_ids else f"{idx}_{ix}",
                 params=MessageCreateParamsNonStreaming(
                     model=self.model_name,
-                    messages=[
-                        {
-                            "role": message["role"],
-                            "content": self._convert_content_to_anthropic_format(
-                                message["content"]
-                            ),
-                        }
-                        for message in conversation
-                    ],
+                    messages=messages,
                     **selected_generation_kwargs,
                 ),
             )
-            requests.append(
-                {
-                    "request": request,
-                }
-            )
+            requests.append({"request": request})
 
         df = pd.DataFrame(requests)
         df.to_json(llm_batch_file_path, orient="records", lines=True, force_ascii=False)
@@ -252,22 +269,19 @@ class AnthropicServing(BaseBatchServing):
         responses = self.client.messages.batches.results(
             message_batch.id,
         )
-        predictions = []
-        for response in responses:
-            predictions.append(
-                {"custom_id": response.custom_id, "response": response.result}
-            )
+        predictions = [
+            {"custom_id": response.custom_id, "response": response.result}
+            for response in responses
+        ]
         predictions = pd.DataFrame(predictions)
         predictions["custom_id"] = predictions["custom_id"].astype(int)
         predictions = predictions.sort_values("custom_id").reset_index(drop=True)
         predictions.to_json(
             output_file_path, orient="records", lines=True, force_ascii=False
         )
-        logger.info(
-            "Batch responses saved to %s",
-            output_file_path,
-        )
+        logger.info("Batch responses saved to %s", output_file_path)
         predictions = predictions.to_dict("records")
+
         return predictions
 
     def get_response(self, output: dict) -> str:
