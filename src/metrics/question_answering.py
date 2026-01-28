@@ -2,7 +2,6 @@ import string
 from collections import Counter
 from typing import Any, Callable, List
 
-import MicroTokenizer
 from pythainlp import word_tokenize
 
 from src.base_logger import get_logger
@@ -185,7 +184,9 @@ class QuestionAnsweringMetric(SeaHelmMetric):
         Returns:
             str: The tokenized text.
         """
-        tokenized_text = " ".join(MicroTokenizer.cut(text))
+        import jieba
+
+        tokenized_text = " ".join(jieba.cut(text))
         return tokenized_text
 
     def calculate_metrics(self) -> dict:
@@ -212,7 +213,6 @@ class QuestionAnsweringMetric(SeaHelmMetric):
             )
             logger.info(results)
         elif self.lang == "zh":
-            # Use MicroTokenizer because Chinese script does not use spaces between words
             tokenized_references = [
                 [self._tokenize_chinese_text(ref[0])] for ref in references
             ]

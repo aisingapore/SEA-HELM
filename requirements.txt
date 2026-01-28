@@ -8,11 +8,11 @@ gcsfs==2025.10.0
 google-cloud-storage==3.8.0
 google-genai==1.60.0
 immutabledict==4.2.2
+jieba==0.42.1
 langdetect==1.0.9
 litellm==1.81.1
 # mamba-ssm==2.2.5
 math-verify[antlr4_13_2]==0.9.0
-microtokenizer==0.21.3
 nltk==3.9.1
 omegaconf==2.4.0.dev3
 open-clip-torch==3.2.0
