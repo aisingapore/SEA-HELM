@@ -252,9 +252,6 @@ class AbstractDataloader:
                             **row,
                             **row["prompts"][0],
                             answer_tag=task_prompt_template["answer_tag"],
-                            answer_separator=task_prompt_template.get(
-                                "answer_tag_separator", " "
-                            ),
                         )
                     )
 
