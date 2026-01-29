@@ -195,13 +195,13 @@ class HuggingFaceImageDataloader(AbstractDataloader):
             conversations (list): List of existing conversation turns.
             role (str): Speaker role ('user' or 'assistant').
             text_content (str): Text content for the message.
-            images (list[str], optional): List of image bytes to include with the message. Defaults to [].
+            images (list[str] | None): List of image bytes to include with the message. If None, no images will be included. Defaults to None.
 
         Returns:
             list: Updated conversations list with the new turn appended.
         """
         content = [{"type": "text", "text": text_content}]
-        if role == "user":
+        if role == "user" and images is not None:
             for image_bytes in images:
                 if isinstance(image_bytes, str) or isinstance(image_bytes, bytes):
                     img_str = base64.b64encode(image_bytes).decode("utf-8")
@@ -212,6 +212,9 @@ class HuggingFaceImageDataloader(AbstractDataloader):
                         }
                     )
                 elif isinstance(image_bytes, PIL.Image.Image):
+                    if image_bytes.mode == "RGBA":
+                        image_bytes = image_bytes.convert("RGB")
+
                     buffered = BytesIO()
                     image_bytes.save(buffered, format="JPEG")
                     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
