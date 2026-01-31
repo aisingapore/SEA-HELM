@@ -1,0 +1,730 @@
+mmlu_pro_business:
+  metadata:
+    version: 1.1
+    changes:
+      v1.1: Use the original dataset from Huggingface and increase the max_tokens to 2048.
+  name: mmlu_pro_business
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_business-logprobs:
+  metadata: ${mmlu_pro_business.metadata}
+  name: mmlu_pro_business-logprobs
+  competency: ${mmlu_pro_business.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_business.fewshot_num_examples}
+  languages: ${mmlu_pro_business.languages}
+mmlu_pro_law:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_law
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_law-logprobs:
+  metadata: ${mmlu_pro_law.metadata}
+  name: mmlu_pro_law-logprobs
+  competency: ${mmlu_pro_law.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_law.fewshot_num_examples}
+  languages: ${mmlu_pro_law.languages}
+mmlu_pro_psychology:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_psychology
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_psychology-logprobs:
+  metadata: ${mmlu_pro_psychology.metadata}
+  name: mmlu_pro_psychology-logprobs
+  competency: ${mmlu_pro_psychology.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_psychology.fewshot_num_examples}
+  languages: ${mmlu_pro_psychology.languages}
+mmlu_pro_biology:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_biology
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_biology-logprobs:
+  metadata: ${mmlu_pro_biology.metadata}
+  name: mmlu_pro_biology-logprobs
+  competency: ${mmlu_pro_biology.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_biology.fewshot_num_examples}
+  languages: ${mmlu_pro_biology.languages}
+mmlu_pro_chemistry:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_chemistry
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_chemistry-logprobs:
+  metadata: ${mmlu_pro_chemistry.metadata}
+  name: mmlu_pro_chemistry-logprobs
+  competency: ${mmlu_pro_chemistry.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_chemistry.fewshot_num_examples}
+  languages: ${mmlu_pro_chemistry.languages}
+mmlu_pro_history:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_history
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_history-logprobs:
+  metadata: ${mmlu_pro_history.metadata}
+  name: mmlu_pro_history-logprobs
+  competency: ${mmlu_pro_history.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_history.fewshot_num_examples}
+  languages: ${mmlu_pro_history.languages}
+mmlu_pro_other:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_other
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_other-logprobs:
+  metadata: ${mmlu_pro_other.metadata}
+  name: mmlu_pro_other-logprobs
+  competency: ${mmlu_pro_other.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_other.fewshot_num_examples}
+  languages: ${mmlu_pro_other.languages}
+mmlu_pro_health:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_health
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_health-logprobs:
+  metadata: ${mmlu_pro_health.metadata}
+  name: mmlu_pro_health-logprobs
+  competency: ${mmlu_pro_health.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_health.fewshot_num_examples}
+  languages: ${mmlu_pro_health.languages}
+mmlu_pro_economics:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_economics
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_economics-logprobs:
+  metadata: ${mmlu_pro_economics.metadata}
+  name: mmlu_pro_economics-logprobs
+  competency: ${mmlu_pro_economics.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_economics.fewshot_num_examples}
+  languages: ${mmlu_pro_economics.languages}
+mmlu_pro_math:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_math
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_math-logprobs:
+  metadata: ${mmlu_pro_math.metadata}
+  name: mmlu_pro_math-logprobs
+  competency: ${mmlu_pro_math.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_math.fewshot_num_examples}
+  languages: ${mmlu_pro_math.languages}
+mmlu_pro_physics:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_physics
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_physics-logprobs:
+  metadata: ${mmlu_pro_physics.metadata}
+  name: mmlu_pro_physics-logprobs
+  competency: ${mmlu_pro_physics.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_physics.fewshot_num_examples}
+  languages: ${mmlu_pro_physics.languages}
+mmlu_pro_computer_science:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_computer_science
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_computer_science-logprobs:
+  metadata: ${mmlu_pro_computer_science.metadata}
+  name: mmlu_pro_computer_science-logprobs
+  competency: ${mmlu_pro_computer_science.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_computer_science.fewshot_num_examples}
+  languages: ${mmlu_pro_computer_science.languages}
+mmlu_pro_philosophy:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_philosophy
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_philosophy-logprobs:
+  metadata: ${mmlu_pro_philosophy.metadata}
+  name: mmlu_pro_philosophy-logprobs
+  competency: ${mmlu_pro_philosophy.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_philosophy.fewshot_num_examples}
+  languages: ${mmlu_pro_philosophy.languages}
+mmlu_pro_engineering:
+  metadata:
+    version: 1.0
+  name: mmlu_pro_engineering
+  competency: english_evals
+  aggregation_group: mmlu_pro
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 5
+    base: 5
+  languages:
+    en:
+      filepath: TIGER-Lab/MMLU-Pro
+      example_filepath: TIGER-Lab/MMLU-Pro
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_pro_engineering-logprobs:
+  metadata: ${mmlu_pro_engineering.metadata}
+  name: mmlu_pro_engineering-logprobs
+  competency: ${mmlu_pro_engineering.competency}
+  aggregation_group: mmlu_pro-logprobs
+  dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
+  dataloader_class: MMLUProDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: "true"
+  fewshot_num_examples: ${mmlu_pro_engineering.fewshot_num_examples}
+  languages: ${mmlu_pro_engineering.languages}

@@ -35,3 +35,9 @@ seahelm_logprobs:
 
 batayan:
   tl: ["sentiment", "belebele-qa-mc", "toxicity", "paraphrase", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli"]
+
+english_evals:
+  en: ["bbh", "gpqa", "ifeval", "math_hard", "mmlu_pro", "musr"]
+
+english_evals_logprobs:
+  en: ["bbh-logprobs", "bbh_dyck_languages", "bbh_multistep_arithmetic_two", "bbh_object_counting", "gpqa-logprobs", "ifeval", "math_hard", "mmlu_pro-logprobs", "musr-logprobs"]

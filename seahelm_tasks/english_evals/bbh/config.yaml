@@ -1,0 +1,1126 @@
+bbh_boolean_expressions:
+  metadata:
+    version: 1.1
+  name: bbh_boolean_expressions
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Evaluate the results of the following random Boolean expression.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either True or False as the answer.
+        task_template: "Question: {question}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_boolean_expressions-logprobs:
+  metadata: ${bbh_boolean_expressions.metadata}
+  name: bbh_boolean_expressions-logprobs
+  competency: ${bbh_boolean_expressions.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_boolean_expressions.fewshot_num_examples}
+  languages: ${bbh_boolean_expressions.languages}
+bbh_causal_judgement:
+  metadata:
+    version: 1.1
+  name: bbh_causal_judgement
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          How would a typical person answer each of the following questions about causation?
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either Yes or No as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_causal_judgement-logprobs:
+  metadata: ${bbh_causal_judgement.metadata}
+  name: bbh_causal_judgement-logprobs
+  competency: ${bbh_causal_judgement.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_causal_judgement.fewshot_num_examples}
+  languages: ${bbh_causal_judgement.languages}
+bbh_date_understanding:
+  metadata:
+    version: 1.1
+  name: bbh_date_understanding
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Infer the date from the context.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, E, or F as the answer.
+        task_template: |-
+          Question: {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_date_understanding-logprobs:
+  metadata: ${bbh_date_understanding.metadata}
+  name: bbh_date_understanding-logprobs
+  competency: ${bbh_date_understanding.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_date_understanding.fewshot_num_examples}
+  languages: ${bbh_date_understanding.languages}
+bbh_disambiguation_qa:
+  metadata:
+    version: 1.1
+  name: bbh_disambiguation_qa
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Clarify the meaning of sentences with ambiguous pronouns. In the following sentences, explain the antecedent of the pronoun (which thing the pronoun refers to), or state that it is ambiguous.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, or C as the answer.
+        task_template: |-
+          Sentence: {sentence}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_disambiguation_qa-logprobs:
+  metadata: ${bbh_disambiguation_qa.metadata}
+  name: bbh_disambiguation_qa-logprobs
+  competency: ${bbh_disambiguation_qa.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_disambiguation_qa.fewshot_num_examples}
+  languages: ${bbh_disambiguation_qa.languages}
+bbh_dyck_languages:
+  metadata:
+    version: 1.1
+  name: bbh_dyck_languages
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: seahelm_tasks/english_evals/bbh/bbh.py
+  metric_class: BBHExactMatch
+  metric: normalized_exact_match
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Complete the rest of the Dyck-n sequence, making sure that the parentheses are closed properly.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with only the string of additional parantheses that completes the sequence
+        task_template: "Input: {input}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_formal_fallacies:
+  metadata:
+    version: 1.1
+  name: bbh_formal_fallacies
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Is the argument, given the explicitly stated premises, deductively valid or invalid?
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either Valid or Invalid as the answer.
+        task_template: |-
+          Argument:
+          {argument}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_formal_fallacies-logprobs:
+  metadata: ${bbh_formal_fallacies.metadata}
+  name: bbh_formal_fallacies-logprobs
+  competency: ${bbh_formal_fallacies.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_formal_fallacies.fewshot_num_examples}
+  languages: ${bbh_formal_fallacies.languages}
+bbh_geometric_shapes:
+  metadata:
+    version: 1.1
+  name: bbh_geometric_shapes
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Identify the geometric shapes from their SVG paths.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, E, F, G, H, I, J, or K as the answer.
+        task_template: |-
+          Question: {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_geometric_shapes-logprobs:
+  metadata: ${bbh_geometric_shapes.metadata}
+  name: bbh_geometric_shapes-logprobs
+  competency: ${bbh_geometric_shapes.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_geometric_shapes.fewshot_num_examples}
+  languages: ${bbh_geometric_shapes.languages}
+bbh_hyperbaton:
+  metadata:
+    version: 1.1
+  name: bbh_hyperbaton
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A or B as the answer.
+        task_template: |-
+          Question: {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_hyperbaton-logprobs:
+  metadata: ${bbh_hyperbaton.metadata}
+  name: bbh_hyperbaton-logprobs
+  competency: ${bbh_hyperbaton.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_hyperbaton.fewshot_num_examples}
+  languages: ${bbh_hyperbaton.languages}
+bbh_logical_deduction_five_objects:
+  metadata:
+    version: 1.1
+  name: bbh_logical_deduction_five_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Given the following statements, pick the best option that describes the ordering of the objects.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, or E as the answer.
+        task_template: |-
+          Statements:
+          {statements}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_logical_deduction_five_objects-logprobs:
+  metadata: ${bbh_logical_deduction_five_objects.metadata}
+  name: bbh_logical_deduction_five_objects-logprobs
+  competency: ${bbh_logical_deduction_five_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_logical_deduction_five_objects.fewshot_num_examples}
+  languages: ${bbh_logical_deduction_five_objects.languages}
+bbh_logical_deduction_seven_objects:
+  metadata:
+    version: 1.1
+  name: bbh_logical_deduction_seven_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Given the following statements, pick the best option that describes the ordering of the objects.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, E, F, or G as the answer.
+        task_template: |-
+          Statements:
+          {statements}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_logical_deduction_seven_objects-logprobs:
+  metadata: ${bbh_logical_deduction_seven_objects.metadata}
+  name: bbh_logical_deduction_seven_objects-logprobs
+  competency: ${bbh_logical_deduction_seven_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_logical_deduction_seven_objects.fewshot_num_examples}
+  languages: ${bbh_logical_deduction_seven_objects.languages}
+bbh_logical_deduction_three_objects:
+  metadata:
+    version: 1.1
+  name: bbh_logical_deduction_three_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Given the following statements, pick the best option that describes the ordering of the objects.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, or C as the answer.
+        task_template: |-
+          Statements:
+          {statements}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_logical_deduction_three_objects-logprobs:
+  metadata: ${bbh_logical_deduction_three_objects.metadata}
+  name: bbh_logical_deduction_three_objects-logprobs
+  competency: ${bbh_logical_deduction_three_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_logical_deduction_three_objects.fewshot_num_examples}
+  languages: ${bbh_logical_deduction_three_objects.languages}
+bbh_multistep_arithmetic_two:
+  metadata:
+    version: 1.1
+  name: bbh_multistep_arithmetic_two
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: seahelm_tasks/english_evals/bbh/bbh.py
+  metric_class: BBHExactMatch
+  metric: normalized_exact_match
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the number that solves the math problem.
+        task_template: "Question: {question}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_navigate:
+  metadata:
+    version: 1.1
+  name: bbh_navigate
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          If you follow these instructions, do you return to the starting point?
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either Yes or No as the answer.
+        task_template: |-
+          Instructions:
+          {instructions}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_navigate-logprobs:
+  metadata: ${bbh_navigate.metadata}
+  name: bbh_navigate-logprobs
+  competency: ${bbh_navigate.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_navigate.fewshot_num_examples}
+  languages: ${bbh_navigate.languages}
+bbh_object_counting:
+  metadata:
+    version: 1.1
+  name: bbh_object_counting
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: seahelm_tasks/english_evals/bbh/bbh.py
+  metric_class: BBHExactMatch
+  metric: normalized_exact_match
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Count the number of objects in the question.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the number of objects.
+        task_template: "Question: {question}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_penguins_in_a_table:
+  metadata:
+    version: 1.1
+  name: bbh_penguins_in_a_table
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Use the tables to answer the question.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, or E as the answer.
+        task_template: |-
+          Table:
+          {table}
+
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_penguins_in_a_table-logprobs:
+  metadata: ${bbh_penguins_in_a_table.metadata}
+  name: bbh_penguins_in_a_table-logprobs
+  competency: ${bbh_penguins_in_a_table.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_penguins_in_a_table.fewshot_num_examples}
+  languages: ${bbh_penguins_in_a_table.languages}
+bbh_reasoning_about_colored_objects:
+  metadata:
+    version: 1.1
+  name: bbh_reasoning_about_colored_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, or D as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_reasoning_about_colored_objects-logprobs:
+  metadata: ${bbh_reasoning_about_colored_objects.metadata}
+  name: bbh_reasoning_about_colored_objects-logprobs
+  competency: ${bbh_reasoning_about_colored_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_reasoning_about_colored_objects.fewshot_num_examples}
+  languages: ${bbh_reasoning_about_colored_objects.languages}
+bbh_salient_translation_error_detection:
+  metadata:
+    version: 1.1
+  name: bbh_salient_translation_error_detection
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          The following translations from German to English contain a particular error.
+
+          That error will be one of the following types:
+          Named Entities: An entity (names, places, locations, etc.) is changed to a different entity.
+          Numerical Values: Numerical values (ordinals or cardinals), dates, and\/or units are changed.
+          Modifiers or Adjectives: The modifiers and adjectives pertaining to a noun are changed.
+          Negation or Antonyms: Introduce or remove a negation or change comparatives to their antonyms.
+          Facts: Trivial factual errors not pertaining to the above classes are introduced in the translations.
+          Dropped Content: A significant clause in the translation is removed.
+
+          Please identify that error.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, E, or F as the answer.
+        task_template: |-
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_salient_translation_error_detection-logprobs:
+  metadata: ${bbh_salient_translation_error_detection.metadata}
+  name: bbh_salient_translation_error_detection-logprobs
+  competency: ${bbh_salient_translation_error_detection.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_salient_translation_error_detection.fewshot_num_examples}
+  languages: ${bbh_salient_translation_error_detection.languages}
+bbh_sports_understanding:
+  metadata:
+    version: 1.1
+  name: bbh_sports_understanding
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Determine if the following statement is plausible?
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either Yes or No as the answer.
+        task_template: "Statement: {statement}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_sports_understanding-logprobs:
+  metadata: ${bbh_sports_understanding.metadata}
+  name: bbh_sports_understanding-logprobs
+  competency: ${bbh_sports_understanding.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_sports_understanding.fewshot_num_examples}
+  languages: ${bbh_sports_understanding.languages}
+bbh_temporal_sequences:
+  metadata:
+    version: 1.1
+  name: bbh_temporal_sequences
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, or D as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_temporal_sequences-logprobs:
+  metadata: ${bbh_temporal_sequences.metadata}
+  name: bbh_temporal_sequences-logprobs
+  competency: ${bbh_temporal_sequences.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_temporal_sequences.fewshot_num_examples}
+  languages: ${bbh_temporal_sequences.languages}
+bbh_tracking_shuffled_objects_five_objects:
+  metadata:
+    version: 1.1
+  name: bbh_tracking_shuffled_objects_five_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Track the location of the objects in the question and pick the best option that answers the question.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, or E as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_tracking_shuffled_objects_five_objects-logprobs:
+  metadata: ${bbh_tracking_shuffled_objects_five_objects.metadata}
+  name: bbh_tracking_shuffled_objects_five_objects-logprobs
+  competency: ${bbh_tracking_shuffled_objects_five_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_tracking_shuffled_objects_five_objects.fewshot_num_examples}
+  languages: ${bbh_tracking_shuffled_objects_five_objects.languages}
+bbh_tracking_shuffled_objects_seven_objects:
+  metadata:
+    version: 1.1
+  name: bbh_tracking_shuffled_objects_seven_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Track the location of the objects in the question and pick the best option that answers the question.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, C, D, E, F, or G as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_tracking_shuffled_objects_seven_objects-logprobs:
+  metadata: ${bbh_tracking_shuffled_objects_seven_objects.metadata}
+  name: bbh_tracking_shuffled_objects_seven_objects-logprobs
+  competency: ${bbh_tracking_shuffled_objects_seven_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_tracking_shuffled_objects_seven_objects.fewshot_num_examples}
+  languages: ${bbh_tracking_shuffled_objects_seven_objects.languages}
+bbh_tracking_shuffled_objects_three_objects:
+  metadata:
+    version: 1.1
+  name: bbh_tracking_shuffled_objects_three_objects
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Track the location of the objects in the question and pick the best option that answers the question.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the best option. Use only the letter A, B, or C as the answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_tracking_shuffled_objects_three_objects-logprobs:
+  metadata: ${bbh_tracking_shuffled_objects_three_objects.metadata}
+  name: bbh_tracking_shuffled_objects_three_objects-logprobs
+  competency: ${bbh_tracking_shuffled_objects_three_objects.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_tracking_shuffled_objects_three_objects.fewshot_num_examples}
+  languages: ${bbh_tracking_shuffled_objects_three_objects.languages}
+bbh_web_of_lies:
+  metadata:
+    version: 1.1
+  name: bbh_web_of_lies
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with either Yes or No as the answer.
+        task_template: "Question: {question}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_web_of_lies-logprobs:
+  metadata: ${bbh_web_of_lies.metadata}
+  name: bbh_web_of_lies-logprobs
+  competency: ${bbh_web_of_lies.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_web_of_lies.fewshot_num_examples}
+  languages: ${bbh_web_of_lies.languages}
+bbh_word_sorting:
+  metadata:
+    version: 1.1
+  name: bbh_word_sorting
+  competency: english_evals
+  aggregation_group: bbh
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: seahelm_tasks/english_evals/bbh/bbh.py
+  metric_class: BBHExactMatch
+  metric: normalized_exact_match
+  fewshot_num_examples:
+    instruct: 3
+    base: 3
+  languages:
+    en:
+      filepath: aisingapore/bbh
+      example_filepath: aisingapore/bbh
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Sort the following words alphabetically.
+
+          Answer only using the following format:
+          {answer_tag} {{answer}}
+          Replace {{answer}} with the sequence of sorted words each separated by a single space.
+        task_template: "Words: {words}"
+        answer_template: |-
+          {cot}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+bbh_word_sorting-logprobs:
+  metadata: ${bbh_word_sorting.metadata}
+  name: bbh_word_sorting-logprobs
+  competency: ${bbh_word_sorting.competency}
+  aggregation_group: bbh-logprobs
+  dataloader_file: seahelm_tasks/english_evals/bbh/bbh_dataloader.py
+  dataloader_class: BBHDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${bbh_word_sorting.fewshot_num_examples}
+  languages: ${bbh_word_sorting.languages}

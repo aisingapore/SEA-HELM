@@ -1,0 +1,238 @@
+math_hard_algebra:
+  metadata:
+    version: 1.0
+  name: math_hard_algebra
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_counting_and_probability:
+  metadata:
+    version: 1.0
+  name: math_hard_counting_and_probability
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_geometry:
+  metadata:
+    version: 1.0
+  name: math_hard_geometry
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_intermediate_algebra:
+  metadata:
+    version: 1.0
+  name: math_hard_intermediate_algebra
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_number_theory:
+  metadata:
+    version: 1.0
+  name: math_hard_number_theory
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_prealgebra:
+  metadata:
+    version: 1.0
+  name: math_hard_prealgebra
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution to the math problem using the latex format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
+math_hard_precalculus:
+  metadata:
+    version: 1.0
+  name: math_hard_precalculus
+  competency: english_evals
+  aggregation_group: math_hard
+  dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
+  dataloader_class: MathHardDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: lighteval/MATH-Hard
+      example_filepath: lighteval/MATH-Hard
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"
