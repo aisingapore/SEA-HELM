@@ -1,8 +1,8 @@
-global_mmlu_high_school_biology:
+global_mmlu_logical_fallacies:
   metadata:
     version: 1
     changes: Reshuffled labels from original dataset
-  name: global_mmlu_high_school_biology
+  name: global_mmlu_logical_fallacies
   competency: sea_knowledge
   dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
@@ -134,17 +134,16 @@ global_mmlu_high_school_biology:
           D: {option_d}
         answer_template: "{answer_tag} {label}"
         answer_tag: "Sagot:"
-global_mmlu_high_school_biology-logprobs:
-  metadata: ${global_mmlu_high_school_biology.metadata}
-  name: global_mmlu_high_school_biology-logprobs
-  competency: ${global_mmlu_high_school_biology.competency}
+global_mmlu_logical_fallacies-logprobs:
+  metadata: ${global_mmlu_logical_fallacies.metadata}
+  name: global_mmlu_logical_fallacies-logprobs
+  competency: ${global_mmlu_logical_fallacies.competency}
   dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
-  use_logprobs: true
-  max_n_runs: 1
-  fewshot_num_examples: ${global_mmlu_high_school_biology.fewshot_num_examples}
+  use_logprobs: "true"
+  fewshot_num_examples: ${global_mmlu_logical_fallacies.fewshot_num_examples}
   aggregation_group: global_mmlu-logprobs
-  languages: ${global_mmlu_high_school_biology.languages}
+  languages: ${global_mmlu_logical_fallacies.languages}
