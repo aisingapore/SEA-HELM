@@ -5,17 +5,19 @@ thai_exam_a_level:
       v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: thai_exam_a_level
   competency: knowledge
+  aggregation_group: thai_exam
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
   fewshot_num_examples:
     instruct: 0
     base: 5
-  aggregation_group: thai_exam
   languages:
     th:
-      filepath: seahelm_tasks/knowledge/thai_exam/data/a_level/a_level_test.jsonl
-      example_filepath: seahelm_tasks/knowledge/thai_exam/data/a_level/a_level_train.jsonl
+      filepath: typhoon-ai/thai_exam
+      example_filepath: typhoon-ai/thai_exam
       max_tokens: 32
       prompt_template:
         preamble: |-
@@ -41,13 +43,15 @@ thai_exam_a_level-logprobs:
   metadata: ${thai_exam_a_level.metadata}
   name: thai_exam_a_level-logprobs
   competency: ${thai_exam_a_level.competency}
+  aggregation_group: thai_exam-logprobs
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
   use_logprobs: true
   max_n_runs: 1
   fewshot_num_examples: ${thai_exam_a_level.fewshot_num_examples}
-  aggregation_group: thai_exam-logprobs
   languages: ${thai_exam_a_level.languages}
 
 thai_exam_ic:
@@ -57,17 +61,19 @@ thai_exam_ic:
       v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: thai_exam_ic
   competency: knowledge
+  aggregation_group: thai_exam
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
   fewshot_num_examples:
     instruct: 0
     base: 5
-  aggregation_group: thai_exam
   languages:
     th:
-      filepath: seahelm_tasks/knowledge/thai_exam/data/ic/ic_test.jsonl
-      example_filepath: seahelm_tasks/knowledge/thai_exam/data/ic/ic_train.jsonl
+      filepath: typhoon-ai/thai_exam
+      example_filepath: typhoon-ai/thai_exam
       max_tokens: 32
       prompt_template:
         preamble: |-
@@ -92,13 +98,15 @@ thai_exam_ic-logprobs:
   metadata: ${thai_exam_ic.metadata}
   name: thai_exam_ic-logprobs
   competency: ${thai_exam_ic.competency}
+  aggregation_group: thai_exam-logprobs
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
   use_logprobs: true
   max_n_runs: 1
   fewshot_num_examples: ${thai_exam_ic.fewshot_num_examples}
-  aggregation_group: thai_exam-logprobs
   languages: ${thai_exam_ic.languages}
 
 thai_exam_onet:
@@ -108,17 +116,19 @@ thai_exam_onet:
       v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: thai_exam_onet
   competency: knowledge
+  aggregation_group: thai_exam
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
   fewshot_num_examples:
     instruct: 0
     base: 5
-  aggregation_group: thai_exam
   languages:
     th:
-      filepath: seahelm_tasks/knowledge/thai_exam/data/onet/onet_test.jsonl
-      example_filepath: seahelm_tasks/knowledge/thai_exam/data/onet/onet_train.jsonl
+      filepath: typhoon-ai/thai_exam
+      example_filepath: typhoon-ai/thai_exam
       max_tokens: 32
       prompt_template:
         preamble: |-
@@ -144,13 +154,15 @@ thai_exam_onet-logprobs:
   metadata: ${thai_exam_onet.metadata}
   name: thai_exam_onet-logprobs
   competency: ${thai_exam_onet.competency}
+  aggregation_group: thai_exam-logprobs
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
   use_logprobs: true
   max_n_runs: 1
   fewshot_num_examples: ${thai_exam_onet.fewshot_num_examples}
-  aggregation_group: thai_exam-logprobs
   languages: ${thai_exam_onet.languages}
 
 thai_exam_tgat:
@@ -160,17 +172,19 @@ thai_exam_tgat:
       v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: thai_exam_tgat
   competency: knowledge
+  aggregation_group: thai_exam
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
   fewshot_num_examples:
     instruct: 0
     base: 5
-  aggregation_group: thai_exam
   languages:
     th:
-      filepath: seahelm_tasks/knowledge/thai_exam/data/tgat/tgat_test.jsonl
-      example_filepath: seahelm_tasks/knowledge/thai_exam/data/tgat/tgat_train.jsonl
+      filepath: typhoon-ai/thai_exam
+      example_filepath: typhoon-ai/thai_exam
       max_tokens: 32
       prompt_template:
         preamble: |-
@@ -196,13 +210,15 @@ thai_exam_tgat-logprobs:
   metadata: ${thai_exam_tgat.metadata}
   name: thai_exam_tgat-logprobs
   competency: ${thai_exam_tgat.competency}
+  aggregation_group: thai_exam-logprobs
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
   use_logprobs: true
   max_n_runs: 1
   fewshot_num_examples: ${thai_exam_tgat.fewshot_num_examples}
-  aggregation_group: thai_exam-logprobs
   languages: ${thai_exam_tgat.languages}
 
 thai_exam_tpat1:
@@ -212,17 +228,19 @@ thai_exam_tpat1:
       v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: thai_exam_tpat1
   competency: knowledge
+  aggregation_group: thai_exam
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
   fewshot_num_examples:
     instruct: 0
     base: 5
-  aggregation_group: thai_exam
   languages:
     th:
-      filepath: seahelm_tasks/knowledge/thai_exam/data/tpat1/tpat1_test.jsonl
-      example_filepath: seahelm_tasks/knowledge/thai_exam/data/tpat1/tpat1_train.jsonl
+      filepath: typhoon-ai/thai_exam
+      example_filepath: typhoon-ai/thai_exam
       max_tokens: 32
       prompt_template:
         preamble: |-
@@ -248,11 +266,13 @@ thai_exam_tpat1-logprobs:
   metadata: ${thai_exam_tpat1.metadata}
   name: thai_exam_tpat1-logprobs
   competency: ${thai_exam_tpat1.competency}
+  aggregation_group: thai_exam-logprobs
+  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
   use_logprobs: true
   max_n_runs: 1
   fewshot_num_examples: ${thai_exam_tpat1.fewshot_num_examples}
-  aggregation_group: thai_exam-logprobs
   languages: ${thai_exam_tpat1.languages}
