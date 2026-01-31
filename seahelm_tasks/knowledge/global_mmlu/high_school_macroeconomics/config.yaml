@@ -3,7 +3,7 @@ global_mmlu_high_school_macroeconomics:
     version: 1
     changes: Reshuffled labels from original dataset
   name: global_mmlu_high_school_macroeconomics
-  competency: sea_knowledge
+  competency: knowledge
   dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
   metric_file: src/metrics/f1_acc_metric.py
