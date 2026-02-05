@@ -1,7 +1,6 @@
 import fast_langdetect
 import pandas as pd
 
-from base_logger import get_logger
 from seahelm_tasks.instruction_following.ifeval.instruction_checkers import (
     BulletListChecker,
     ConstrainedOptionsChecker,
@@ -25,7 +24,10 @@ from seahelm_tasks.instruction_following.ifeval.instruction_checkers import (
     WordExistenceChecker,
     WordFrequencyChecker,
 )
-from seahelm_tasks.seahelm_metric import SeaHelmMetric
+from src.base_logger import get_logger
+from src.dataloaders.base_dataloader import AbstractDataloader
+from src.metrics.seahelm_metric import SeaHelmMetric
+from src.task_config import TaskConfig
 
 logger = get_logger(__name__)
 
@@ -55,45 +57,43 @@ CATEGORY_MAP = {
 
 
 class IFEvalMetric(SeaHelmMetric):
-    def __init__(
-        self, inference_df: pd.DataFrame, task_config: dict, task: str, lang: str
-    ):
-        super().__init__(
-            inference_df=inference_df, task_config=task_config, task=task, lang=lang
-        )
+    def __init__(self, dataloader: AbstractDataloader, task_config: TaskConfig):
+        super().__init__(dataloader=dataloader, task_config=task_config)
 
     def calculate_metrics(self):
-        self.inference_df = self.inference_df.apply(self.evaluate_response, axis=1)
-        self.inference_df["individual_scores"] = [
+        self.dataloader.inference_df = self.dataloader.inference_df.apply(
+            self.evaluate_response, axis=1
+        )
+        self.dataloader.inference_df["individual_scores"] = [
             {"overall_lang_normalized_acc": x}
-            for x in self.inference_df["lang_normalized_result"]
+            for x in self.dataloader.inference_df["lang_normalized_result"]
         ]
 
-        metric_dict = self.summarize_results(self.inference_df)
-        return metric_dict, self.inference_df
+        metric_dict = self.summarize_results(self.dataloader.inference_df)
+        return metric_dict
 
     def postprocess_responses(self):
-        self.inference_df[self.postprocessed_response_column] = self.inference_df[
-            self.response_column
-        ].map(lambda x: x[0])
+        self.dataloader.inference_df[self.postprocessed_response_column] = (
+            self.dataloader.inference_df[self.response_column].map(lambda x: x[0])
+        )
 
-        self.inference_df["subcategory"] = [
-            x["subcategory"] for x in self.inference_df["metadata"]
+        self.dataloader.inference_df["subcategory"] = [
+            x["subcategory"] for x in self.dataloader.inference_df["metadata"]
         ]
 
     def check_language(self, text: str, language: str):
         response_language = fast_langdetect.detect(text)["lang"]
-        if language == "id":
+        if language in ["id", "ms"]:
             if response_language in {
                 "id",
                 "ms",
             }:  # Malay is also accepted as Indonesian
-                return True
+                return True, response_language
         else:
             if response_language == language:
-                return True
+                return True, response_language
 
-        return False
+        return False, None
 
     def evaluate_response(self, row):
         """
@@ -105,7 +105,7 @@ class IFEvalMetric(SeaHelmMetric):
         and evaluates the response and returns True/False for instruction following or not.
         """
         category = row["subcategory"]
-        if self.lang in {"th"} and "number_words" in category:
+        if self.lang in {"th", "lo", "km", "my"} and "number_words" in category:
             # Skip instances with length constraint by words
             # for languages that do not use whitespace to separate words
             return row
@@ -127,9 +127,11 @@ class IFEvalMetric(SeaHelmMetric):
             if row["metadata"]["category"] != "language"
             else checker_kwargs["response_language"]
         )
-        row["correct_language"] = self.check_language(
+        correct_language, detected_language = self.check_language(
             text=response.replace("\n", " "), language=correct_language
         )
+        row["correct_language"] = correct_language
+        row["detected_language"] = detected_language
         row["lang_normalized_result"] = (
             False if not row["correct_language"] else row["result"]
         )
@@ -139,10 +141,16 @@ class IFEvalMetric(SeaHelmMetric):
     def summarize_results(self, inference_df: pd.DataFrame):
         evaluation_stats = {}
 
+        if self.lang in {"th", "lo", "km", "my"}:
+            inference_df = inference_df[
+                inference_df["subcategory"] != "length_constraints:number_words"
+            ]
+
         # Overall results
         # int() required to convert numpy.int64 to int for JSON serialization
-        overall_pass = int(inference_df["result"].value_counts()[True])
-        overall_fail = int(inference_df["result"].value_counts()[False])
+        value_counts = inference_df["result"].value_counts()
+        overall_pass = int(value_counts[True]) if True in value_counts else 0
+        overall_fail = int(value_counts[False]) if False in value_counts else 0
         evaluation_stats["overall_count"] = overall_pass + overall_fail
         evaluation_stats["overall_pass"] = overall_pass
         evaluation_stats["overall_acc"] = (

@@ -95,9 +95,9 @@ class NumberOfWordsChecker(Checker):
         return len(regexp.findall(text))
 
     def evaluate_response(self):
-        assert (
-            self.comparison_relation in COMPARISON_RELATIONS
-        ), f"{self.comparison_relation} is not a valid comparison relation."
+        assert self.comparison_relation in COMPARISON_RELATIONS, (
+            f"{self.comparison_relation} is not a valid comparison relation."
+        )
 
         num_words = self.count_words(self.model_response)
 
@@ -141,9 +141,9 @@ class NumberOfSentencesChecker(Checker):
         return len(sentences)
 
     def evaluate_response(self):
-        assert (
-            self.comparison_relation in COMPARISON_RELATIONS
-        ), f"{self.comparison_relation} is not a valid comparison relation."
+        assert self.comparison_relation in COMPARISON_RELATIONS, (
+            f"{self.comparison_relation} is not a valid comparison relation."
+        )
 
         num_sentences = self.count_sentences(self.model_response)
 
@@ -234,6 +234,9 @@ class PostscriptChecker(Checker):
             "P.P.S.": r"\s*p\.\s?p\.\s?s\..*$",
             "ป.ล.": r"\s*ป\.\s?ล\..*$",
             "ป.ป.ล.": r"\s*ป\.\s?ป\.\s?ล\..*$",
+            "பி.கு.": r"\s*பி\.\s?கு\..*$",
+            "பி.பி.கு.": r"\s*பி\.\s?பி\.\s?கு\..*$",
+            "ປ.ລ.": r"\s*ປ\.\s?ລ\..*$",
         }
 
     def evaluate_response(self):
@@ -264,6 +267,15 @@ CONSTRAINED_OPTIONS = {
     "th": {"คำตอบของฉันคือใช่", "คำตอบของฉันคือไม่", "คำตอบของฉันคืออาจจะ"},
     "jv": {"Jawabanku ya.", "Jawabanku ora.", "Jawabanku mungkin."},
     "su": {"Jawapan abdi enya.", "Jawapan abdi henteu.", "Jawapan abdi meureun."},
+    "ta": {"என்னுடைய பதில் ஆம்.", "என்னுடைய பதில் இல்லை.", "என்னுடைய பதில் ஒருவேளை இருக்கலாம்."},
+    "ms": {
+        "Jawapan saya ialah ya.",
+        "Jawapan saya ialah tidak.",
+        "Jawapan saya ialah mungkin.",
+    },
+    "my": {"ကျွန်ုပ်၏အဖြေသည် ဟုတ်ပါတယ်။", "ကျွန်ုပ်၏အဖြေသည် မဟုတ်ပါ။", "ကျွန်ုပ်၏အဖြေသည် တစ်ချို့ဖြစ်နိုင်ပါတယ်။"},
+    "lo": {"ຄໍາຕອບຂອງຂ້ອຍແມ່ນຈິງ.", "ຄໍາຕອບຂອງຂ້ອຍແມ່ນບໍ່ຈິງ.", "ຄໍາຕອບຂອງຂ້ອຍແມ່ນອາດຈະຈິງ."},
+    "km": {"ខ្ញុំយល់ស្រប។", "ខ្ញុំមិនយល់ស្រប។", "ខ្ញុំមិនច្បាស់ដែរ។"},
 }
 
 
@@ -333,7 +345,8 @@ class SectionChecker(Checker):
         # Original IFEval used \s? + section_title + \s?d+\s?
         # This misses out on cases where letters are used instead of numbers
         # \w seems to include Thai characters and numbers as well
-        section_title_pattern = r"\b" + self.section_title + r"\s?[\d|\w]+\b"
+        # We use \s+ instead of \s? to require at least one space between the section title and the number
+        section_title_pattern = r"\b" + self.section_title + r"\s+[\d|\w]+\b"
 
         # Equivalent to original IFEval's method of splitting by pattern and
         # subtracting 1 from number of split components
@@ -456,11 +469,11 @@ class WordExistenceChecker(Checker):
     def evaluate_response(self):
         text = self.model_response
         for word in self.keywords:
-            if self.language in {"en", "id", "vi", "tl", "jv", "su"}:
+            if self.language in {"en", "id", "vi", "jv", "su", "ms"}:
                 # Original IFEval does not include \b around the keyword
                 if not re.search(r"\b" + word + r"\b", text, flags=re.IGNORECASE):
                     return False
-            elif self.language in {"th"}:
+            elif self.language in {"my", "ta", "tl", "th", "lo", "km"}:
                 if not re.search(word, text):
                     return False
         return True
@@ -476,10 +489,10 @@ class WordAbsenceChecker(Checker):
     def evaluate_response(self):
         text = self.model_response
         for word in self.forbidden_words:
-            if self.language in {"en", "id", "vi", "tl", "jv", "su"}:
+            if self.language in {"en", "id", "vi", "jv", "su", "ms"}:
                 if re.search(r"\b" + word + r"\b", text, flags=re.IGNORECASE):
                     return False
-            elif self.language in {"th"}:
+            elif self.language in {"my", "ta", "tl", "th", "lo", "km"}:
                 if re.search(word, text):
                     return False
         return True
@@ -501,17 +514,17 @@ class WordFrequencyChecker(Checker):
         self.frequency = int(frequency)
 
     def count_keyword_occurrences(self, text: str):
-        if self.language in {"en", "id", "vi", "tl", "jv", "su"}:
+        if self.language in {"en", "id", "vi", "jv", "su", "ms"}:
             pattern = r"\b" + self.keyword + r"\b"
-        elif self.language in {"th"}:
+        elif self.language in {"my", "ta", "tl", "th", "lo", "km"}:
             pattern = self.keyword
 
         return len(re.findall(pattern, text, flags=re.IGNORECASE))
 
     def evaluate_response(self):
-        assert (
-            self.comparison_relation in COMPARISON_RELATIONS
-        ), f"{self.comparison_relation} is not a valid comparison relation."
+        assert self.comparison_relation in COMPARISON_RELATIONS, (
+            f"{self.comparison_relation} is not a valid comparison relation."
+        )
 
         num_occurrences = self.count_keyword_occurrences(self.model_response)
 
@@ -544,9 +557,9 @@ class NumberFrequencyChecker(Checker):
         return len(re.findall(self.number, text))
 
     def evaluate_response(self):
-        assert (
-            self.comparison_relation in COMPARISON_RELATIONS
-        ), f"{self.comparison_relation} is not a valid comparison relation."
+        assert self.comparison_relation in COMPARISON_RELATIONS, (
+            f"{self.comparison_relation} is not a valid comparison relation."
+        )
 
         num_occurrences = self.count_number_occurrences(self.model_response)
 

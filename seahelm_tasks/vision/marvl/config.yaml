@@ -1,0 +1,83 @@
+marvl:
+  metadata:
+    version: 1
+  name: marvl
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/marvl/marvl_dataloader.py
+  dataloader_class: MarvlDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    # en:
+    #   filepath: floschne/marvl
+    #   example_filepath:
+    #   max_tokens: 1024
+    #   prompt_template:
+    #     preamble: |-
+    #       Based on the images, is the given hypothesis True or False?
+
+    #       Provide your answer using the following format:
+    #       "{answer_tag} ANSWER"
+    #       Replace ANSWER with either True or False.
+    #     task_template: |-
+    #       Hypothesis:
+    #       {hypothesis}
+    #     answer_template: |-
+    #       {answer_tag} {label}
+    #     answer_tag: "Answer:"
+    id:
+      filepath: floschne/marvl
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Berdasarkan gambar-gambar ini, apakah hipotesis yang diberikan Benar atau Salah?
+
+          Berikan jawaban Anda menggunakan format berikut:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan Benar atau Salah.
+        task_template: |-
+          Hipotesis:
+          {hypothesis}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    ta:
+      filepath: floschne/marvl
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          இந்த படங்களை வைத்து, கொடுக்கப்பட்ட கூற்று உண்மையா அல்லது பொய்யா?
+
+          பின்வரும் வடிவமைப்பைப் பயன்படுத்தி உங்கள் பதிலை வழங்கவும்:
+          “{answer_tag} ANSWER”
+          ANSWER என்பதற்குப் பதிலாக உண்மை அல்லது பொய் என மாற்றி எழுதவும்.
+        task_template: |-
+          கூற்று:
+          {hypothesis}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "பதில்:"
+    zh:
+      filepath: floschne/marvl
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          根据图片，所给的假设是正确还是错误？
+
+          请使用以下格式提供你的答案：
+          "{answer_tag} ANSWER"
+          将 ANSWER 替换为 正确 或 错误。
+        task_template: |-
+          假设：
+          {hypothesis}
+        answer_template: |-
+          {answer_tag}{label}
+        answer_tag: "答案："

@@ -1,0 +1,184 @@
+musr_murder_mysteries:
+  metadata:
+    version: 1.0
+  name: musr_murder_mysteries
+  competency: english_evals
+  aggregation_group: musr
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 1
+  languages:
+    en:
+      filepath: TAUR-Lab/MuSR
+      example_filepath: seahelm_tasks/english_evals/musr/data/musr_murder_mysteries_examples.jsonl
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the two suspects in the story, we want to identify the murderer.
+
+          The murderer needs to fulfill all three criteria. They will have a motive (reason to kill the victim), means (access to weapon), and opportunity (access to crime scene) in order to have killed the victim.
+
+          Innocent suspects may fulfill two of these criteria and be suspicious for some other reason. However, they will not fulfill all three criteria.
+
+          If you believe that both suspects have a motive, means, and opportunity, you should make an educated guess and pick the one for whom these criteria are best established. If you believe that neither suspect has all three criteria established, then choose the suspect where the criteria are most clearly established.
+
+          You must follow this approach to answer the question:
+          1. Explain your reasoning step by step.
+          2. Determine which of the options provided is the best answer.
+          3. Provide your final answer at the end using the format "{answer_tag} {{answer}}" where {{answer}} is the number corresponding to the murderer.
+        task_template: |-
+          Story:
+          """
+          {narrative}
+          """
+
+          Question:
+          {question}
+
+          Options:
+          {choices}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+musr_murder_mysteries-logprobs:
+  metadata: ${musr_murder_mysteries.metadata}
+  name: musr_murder_mysteries-logprobs
+  competency: ${musr_murder_mysteries.competency}
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${musr_murder_mysteries.fewshot_num_examples}
+  aggregation_group: musr-logprobs
+  languages: ${musr_murder_mysteries.languages}
+
+musr_object_placements:
+  metadata:
+    version: 1.0
+  name: musr_object_placements
+  competency: english_evals
+  aggregation_group: musr
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 1
+  languages:
+    en:
+      filepath: TAUR-Lab/MuSR
+      example_filepath: seahelm_tasks/english_evals/musr/data/musr_object_placements_examples.jsonl
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          We want to identify where the specified person believes that a certain object is at the end of the story.
+
+          In order to do that, you need to keep track of where that person thinks the object is as the story progresses.
+
+          When an object is moved, the person may or may not observe the object being moved to its new location. If they are to know where the object is moved to, they must be able to see the new location that it moves to and not be too distracted by what they are doing. If they do not observe the object moving, they will still believe it to be in the last location where they observed it. However, if the person sees the object again at the new location, despite not seeing it being moved, they would then believe that the object is at this new location.
+
+          You must follow this approach to answer the question:
+          1. Explain your reasoning step by step.
+          2. Determine which of the options provided is the best answer.
+          3. Provide your final answer at the end using the format "{answer_tag} {{answer}}" where {{answer}} is the number corresponding to the location.
+        task_template: |
+          Story:
+          """
+          {narrative}
+          """
+
+          Question:
+          {question}
+
+          Options:
+          {choices}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+musr_object_placements-logprobs:
+  metadata: ${musr_object_placements.metadata}
+  name: musr_object_placements-logprobs
+  competency: ${musr_object_placements.competency}
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${musr_object_placements.fewshot_num_examples}
+  aggregation_group: musr-logprobs
+  languages: ${musr_object_placements.languages}
+
+musr_team_allocation:
+  metadata:
+    version: 1.0
+  name: musr_team_allocation
+  competency: english_evals
+  aggregation_group: musr
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 1
+  languages:
+    en:
+      filepath: TAUR-Lab/MuSR
+      example_filepath: seahelm_tasks/english_evals/musr/data/musr_team_allocation_examples.jsonl
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          We want to assign three people to two tasks.
+
+          Each person can only be assigned to one task. Additionally, one task will need to have two people assigned to work together on it. Assign them in a way that balances the best use of their abilities and the team dynamics of the two people assigned to the same task.
+
+          The story would allow you to determine the ability of each person for each task. Each person is either good, acceptable, or bad at a task. Also, the story would allow you to determine how well two people can work together. The teamwork between any two people is either good, acceptable or bad.
+
+          You must follow this approach to answer the question:
+          1. Explain your reasoning step by step.
+          2. Determine which of the options provided is the best answer.
+          3. Provide your final answer at the end using the format "{answer_tag} {{answer}}" where {{answer}} is the number corresponding to the best allocation option.
+        task_template: |
+          Story:
+          """
+          {narrative}
+          """
+
+          Question:
+          {question}
+
+          Options:
+          {choices}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+musr_team_allocation-logprobs:
+  metadata: ${musr_team_allocation.metadata}
+  name: musr_team_allocation-logprobs
+  competency: ${musr_team_allocation.competency}
+  dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
+  dataloader_class: MuSRDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${musr_team_allocation.fewshot_num_examples}
+  aggregation_group: musr-logprobs
+  languages: ${musr_team_allocation.languages}

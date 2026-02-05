@@ -1,37 +1,43 @@
 # Choose tasks to be run for each language.
 # Current list of tasks:
-# [sentiment, qa, qa-mc, metaphor, toxicity, paraphrase, translation-en-xx, translation-xx-en, translation-id-xx, translation-xx-id, abssum, causal, nli, mp-r, pragmatic-single, pragmatic-pair, if-eval, mt-bench, kalahi-mc]
+# [sentiment, qa, qa-mc, metaphor, toxicity, translation-en-xx, translation-xx-en, translation-id-xx, translation-xx-id, abssum, causal, nli, mp-r, pragmatic-single, pragmatic-pair, if-eval, mt-bench, kalahi-mc]
 # Supported languages:
-# [en, id, vi, th, ta, tl, jv, su]
-# Instead of a list, use <language>: "all" to specify all tasks to be run.
+# [id, vi, th, ta, tl, zh, ms, km, my, jv, su]
+
+vision:
+  en: ["xm3600", "world_cuisine_task1", "world_cuisine_task2"]
+  id: ["xm3600", "world_cuisine_task1", "world_cuisine_task2", "marvl", "cvqa"]
+  th: ["xm3600", "world_cuisine_task1", "world_cuisine_task2"]
+  tl: ["xm3600", "world_cuisine_task1", "world_cuisine_task2", "cvqa"]
+  zh: ["xm3600", "world_cuisine_task1", "world_cuisine_task2", "cvqa"]
+  vi: ["xm3600"]
+  ta: ["marvl", "cvqa"]
+  ms: ["cvqa"]
 
 seahelm:
-  id: ["sentiment", "qa", "metaphor", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair", "if-eval", "mt-bench"]
-  vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench"]
-  th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench"]
-  ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair"]
-  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "kalahi-mc"]
+  id: ["sentiment", "qa", "metaphor", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair", "if-eval", "mt-bench", "global_mmlu_lite"]
+  vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "global_mmlu_lite"]
+  th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "thai_exam"]
+  ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "mp-r", "pragmatic-single", "pragmatic-pair"]
+  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "kalahi-mc", "global_mmlu_lite"]
+  ms: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench", "global_mmlu_lite"]
+  my: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "global_mmlu_lite"]
 
-seahelm_plus:
-  id: ["sentiment", "qa", "metaphor", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair", "if-eval", "mt-bench"]
-  vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench"]
-  th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench"]
-  ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair"]
-  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "kalahi-mc"]
-  jv: ["sentiment", "qa-mc", "metaphor", "translation-id-xx", "translation-xx-id", "if-eval", "mt-bench"]
-  su: ["sentiment", "qa-mc", "metaphor", "translation-id-xx", "translation-xx-id", "if-eval", "mt-bench"]
-  
-all_tasks:
-  id: "all"
-  vi: "all"
-  th: "all"
-  ta: "all"
-  tl: "all"
-  jv: "all"
-  su: "all"
 
-kalahi:
-  tl: ["kalahi-mc"]
+seahelm_logprobs:
+  id: ["sentiment-logprobs", "qa", "metaphor-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
+  vi: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
+  th: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "thai_exam-logprobs"]
+  ta: ["sentiment-logprobs", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs"]
+  tl: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "kalahi-mc-logprobs", "global_mmlu_lite-logprobs"]
+  ms: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
+  my: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
 
 batayan:
   tl: ["sentiment", "belebele-qa-mc", "toxicity", "paraphrase", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli"]
+
+english_evals:
+  en: ["bbh", "gpqa", "ifeval", "math_hard", "mmlu_pro", "musr"]
+
+english_evals_logprobs:
+  en: ["bbh-logprobs", "bbh_dyck_languages", "bbh_multistep_arithmetic_two", "bbh_object_counting", "gpqa-logprobs", "ifeval", "math_hard", "mmlu_pro-logprobs", "musr-logprobs"]

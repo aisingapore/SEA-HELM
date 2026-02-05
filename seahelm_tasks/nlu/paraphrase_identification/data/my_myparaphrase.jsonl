@@ -1,0 +1,400 @@
+{"id":"myparaphrase_0000","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"နောက်မှ ပြန်လာ ခဲ့ မယ် ။","sentence2":"နောက် မှ ပဲ ပြန် လာ ခဲ့ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0001","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မားရိရော့ ဟိုတယ် ကို ဘယ်လို သွား ရ သလဲ သိ သလား ။","sentence2":"မားရိရော့ ဟိုတယ် ဘယ် မှာ ရှိ လဲ သိ သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0002","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ပြန်ပြော တာ ။","sentence2":"ပြန်လာ ခဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0003","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အမေရိက ကို ခေါ် ချင် တယ် ။","sentence2":"အမေရိက မှာ လျှောက်လည် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0004","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အကို က ကယ်လီဖိုးနီးယား ကို ရောက် ဖူး လား ။","sentence2":"အကို က ကယ်လီဖိုးနီးယား မှာ ပဲ နေ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0005","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တစ် ခု ရှိ ရင် ကောင်း မယ် ။","sentence2":"တစ် ခု ရှိ တာ က ဆိုး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0006","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တော် ပါ သေး ရဲ့","sentence2":"တော် သေး တာ ပေါ့"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0007","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ ပိုက်ဆံ က ဘယ်သူ့ အတွက် လဲ","sentence2":"ဒီ ပိုက်ဆံ က ဘယ်သူ့ ဖို့ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0008","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငပေါ ရဲ့ ။","sentence2":"ငကြောင် ရဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0009","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဖြစ် နိုင် ရင် ကျွန်တော့် ကို ကူညီ ပါ ။","sentence2":"ဖြစ် နိုင် လျှင် ကျွန်တော့် ကို ကူညီ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0010","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အပြင်ဘက် ကို ယူ သွား ပါ ။","sentence2":"အပြင် သွား ဖို့ အဆင်သင့် ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0011","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူမ ဘယ် မှာ လဲ သိ သလား ။","sentence2":"သူမ ဘယ်ဆီ လဲ ဆို တာ သိ သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0012","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာ ပြော မှာ လဲ ပြော လေ","sentence2":"ဘာ ပြော ချင် တာ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0013","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူအခု အလုပ်ရှုပ် နေ တာ ဖြစ် လိမ့် မယ် ။","sentence2":"သူ အခု အလုပ်များ နေ တာ ဖြစ် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0014","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ အတွက် စာ ပါ လား ။","sentence2":"ငါ့ အတွက် စား စရာ ပါ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0015","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စီးပွားရေး ကိစ္စ နဲ့ ဒီ ကို ရောက် နေ တယ် ။","sentence2":"စီးပွားရေး ကိစ္စ တွေ အားလုံး အဆင်ပြေ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0016","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ့ အလှည့် ပဲ ။","sentence2":"ငါ့ အလှည့် ရောက် ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0017","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြုပြီး ငွေလက်ခံ ရ မလား ။","sentence2":"ကျေးဇူးပြုပြီး ငွေလက်ခံ ပေး နိုင် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0018","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ တို့ အတူတူ ပဲ ။","sentence2":"သူ တို့ အတွေး တူ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0019","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သိပ် ကောင်း တာ ပဲ ။","sentence2":"အရမ်း ကောင်း တာ ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0020","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လို အရသာ ရှိ သလဲ ။","sentence2":"ဘာ အရသာ ရှိ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0021","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ ရဲ့ အီးမေးလ် ရ သလား ။","sentence2":"ငါ အီးမေးလ် ပို့ လိုက် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0022","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ်မပူ ပါ နဲ့ ။","sentence2":"စိတ်မဆိုး ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0023","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သတိထား ။","sentence2":"သိမ်းထား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0024","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လွှတ် စမ်း","sentence2":"လွှတ် လိုက် ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0025","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဖက်စ် ပို့ ချင် တယ် ။","sentence2":"ဖက်စ် ပို့ လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0026","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အေမီ က ဂျွန် ရဲ့ မိန်းကလေး သူငယ်ချင်း ။","sentence2":"အေမီ က ဂျွန် မှာ လာလည် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0027","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"၁၁:၃၀ ပြန်ရောက် မယ် လို့ ထင် သလား ။","sentence2":"၁၁:၃၀ အတိ မှာ ပြန်ရောက် လာ ခဲ့ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0028","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ မင်း ကို အရင်က မ တွေ့ ဘူး ပါ ဘူး ။","sentence2":"ငါ မင်း ကို အရင်က တွေ့ ဖူး တယ် နော် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0029","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အခု အချိန် မ ရှိ ဘူး ။","sentence2":"အခု အချိန် ရ သေး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0030","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကြိုက် တယ်","sentence2":"ကြိုက် လောက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0031","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သွား စမ်း ပါ ။","sentence2":"သွား ပြီ ဗျို့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0032","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မနက်ဖြန် မိုးရွာ ဖို့ ရှိ တယ် ။","sentence2":"မနက်ဖြန် မိုးရွာ လိမ့် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0033","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း လို ပဲ ။","sentence2":"မင်း သဘော ပါပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0034","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ် တော့ ရွှေ့ မှာ လဲ ။","sentence2":"ဘယ်တော့ ရပ် မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0035","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ တို့ ဘယ် အချိန် သွား မလဲ ။","sentence2":"ငါ တို့ ဘယ်နနာရီ သွား မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0036","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ စိုးရိမ် နဲ့ တော့","sentence2":"စိတ်မပူ နဲ့ တော့"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0037","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကိုယ် စား တာ ကိုယ် ရှင်း","sentence2":"ကိုယ် စား ပြီး သား ကိုယ် ရှင်း ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0038","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တစ်ရှူး အလိုရှိ တယ် ။","sentence2":"တစ်ရှူး လို ချင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0039","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ စားသောက်ဆိုင် က ဈေးမကြီး ဘူး ။","sentence2":"အဲဒီ စားသောက်ဆိုင် က စားကောင်း တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0040","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စီးပွားရေး ကောင်း တယ် ။","sentence2":"စီးပွားရေး မ ဆိုး ပါ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0041","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘတ်စ်ကား ဂိတ် ကို ပို့ ပေး မယ် ။","sentence2":"ကား ဂိတ် ကို ပို့ ပေး မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0042","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ် အချိန် တုန်းက ဖြစ်သွားတာ လဲ ။","sentence2":"ဘယ် အချိန် မှာ ဖြစ် သွား နိုင် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0043","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တကယ့် သားနား တယ်","sentence2":"တကယ် သနား တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0044","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ပျော် ကြ .ပျော် ကြ","sentence2":"ပျော် သလို နေ ကြ ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0045","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အသက် ဘယ်လောက် ရှိ ပြီ လဲ ။","sentence2":"အသက် ဘယ်လောက် လို့ မင်း ထင် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0046","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အဲဒီ လို ထင် တာ ပဲ","sentence2":"အဲဒီအတိုင်း ထင် တာ ပဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0047","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်လို အသုံးပြု ရ မလဲ မ သိ ဘူး ။","sentence2":"ဘာ လုပ် ဖို့ အသုံးပြု မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0048","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘော့စ်တွန် ကို ဘယ်တုန်းက ရောက် တာ လဲ ။","sentence2":"ဘော့စ်တွန် ရောက် တာ ကြာ ပြီ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0049","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မြန်မြန်","sentence2":"များများ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0050","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အချိန် မှန် ပါစေ ။","sentence2":"အချိန် မှန်မှန် နော် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0051","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျွန်တော် အင်္ဂလိပ် စာ လေ့လာ နေ တာ 1 နှစ် ရှိ ပြီ ။","sentence2":"ကျွန်တော် အင်္ဂလိပ်စာ လေ့လာ နေ တာ ကြာ ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0052","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ မင်း ကို ပြော ခဲ့ တာ တွေ ကို ဘယ်သူ့ ကို မှ လျှောက် မ ပြော နဲ့ ။","sentence2":"ငါ ပြောပြ ခဲ့ တာ တွေ ကို ဘယ်သူ့ ကို မှ ပြန် မ ပြော ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0053","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မနက် ၇ နာရီ မှာ ။","sentence2":"မနက် ဆို ၇ နာရီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0054","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လောက် လဲ ။","sentence2":"ဘယ်လောက် ကျ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0055","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ရောက် ပြီ လား ။","sentence2":"ရောက် သွား ပြီ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0056","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ခင်ဗျား နဲ့ သိကျွမ်း ရ တာ အရမ်း ဝမ်းသာ ပါ တယ် ။","sentence2":"ခင်ဗျား နဲ့ သိ ရ တာ အရမ်း ဝမ်းသာ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0057","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မနက်ဖြန် ကျွန်တော် ဒီ မှာ ပဲ ရှိ ပါ မယ် ။","sentence2":"မနက်ဖြန် ကျွန်တော် ဒီ မှာ ရှိ မယ် ထင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0058","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အချိန် အများကြီး ရှိ တယ် ။","sentence2":"အချိန် အများကြီး မ ရ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0059","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အင်္ဂလိပ် စကား ပြော တဲ့ ဆရာဝန် ဘယ် မှာ လဲ ။","sentence2":"ဆရာဝန် က အင်္ဂလိပ် စကား ပြော တတ် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0060","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဂျော်ဂျီယာ ကို ဘယ်လောက် ကြာ သလဲ ။","sentence2":"ဂျော်ဂျီယာ မှာ နေ တာ ကြာပြီ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0061","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ လို ချင် ဘူး ။","sentence2":"မ လို အပ် ပါ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0062","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရေကူးကန် ရှိ သလား ။","sentence2":"ရေကူးကန် ရှိ သင့် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0063","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အသံထွက် မှန် သလား ။","sentence2":"အသံ ကို မှတ်မိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0064","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သွား စမ်း ပါ","sentence2":"သွား ကြ စမ်း ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0065","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် ဘာမှ မ သိ ဘူး ။","sentence2":"ကျွန်တော် မ သိ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0066","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငွေ လဲ နှုံး က ဘယ်လောက် လဲ ။","sentence2":"ငွေ ဈေး ဘယ်လောက် ပေါက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0067","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"၂ မိုင် ထက် ပို ရှည် တယ် ။","sentence2":"၂ မိုင် လောက် သွား ရ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0068","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ခေါ် လိုက် မယ် ။","sentence2":"ခေါ် လိုက် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0069","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အိပ်မက် လှလှ မက် ပါစေ ။","sentence2":"အိပ်မက် တွေ မက် လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0070","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရင် တမမ ဖြစ် ပေ တော့","sentence2":"ရင် ပူ မ နေ ပါ နဲ့"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0071","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ်ချ စမ်း ပါ ။","sentence2":"စိတ်ဓာတ်မကျ ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0072","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"လက်မှတ် ဘယ် မှာ ဝယ် ရ မလဲ ။","sentence2":"လက်မှတ် ဖိုး ပေး လိုက် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0073","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မှန်းကြည့် ပါ ။","sentence2":"ခန့်မှန်းကြည့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0074","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အရမ်း စိတ်ဝင်စား ဖို့ ကောင်း တယ် ။","sentence2":"အရမ်း စိတ်ဝင်စား ဖို့ ကောင်း ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0075","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အသုံးတည့် ပါ တယ်","sentence2":"အသုံးကျ ပါ တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0076","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဟိုတယ် မှာ စားသောက်ဆိုင် ရှိ လား ။","sentence2":"ဟိုတယ် က စားသောက်ဆိုင် ရှိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0077","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကြိုတင် မှာ ချင် တယ် ။","sentence2":"ကြို မှာ လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0078","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း လိပ်စာ ဘာ လဲ ။","sentence2":"မင်း ရဲ့ လိပ်စာ က ဘာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0079","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အလုပ် ဘယ်လို လဲ ။","sentence2":"အလုပ် က အဆင်ပြေ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0080","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရင် ဆိုင် လိုက် စမ်း ပါ ။","sentence2":"ရပ်ဆိုင်း လိုက် ပါ ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0081","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ထွက် ခါ နီး ရင် ခေါ် လိုက် မယ် ။","sentence2":"ထွက် ခါ နီး ရင် ခေါ် လိုက် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0082","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အရမ်း မ ဝေး ဘူး ။","sentence2":"အရမ်း မ ဝ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0083","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဆုတောင်း ပေး ပါ တယ် ကွာ","sentence2":"ဆုတောင်း ပေး ပါ ဦး ကွာ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0084","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူတို့ ဘယ်သူ့ ကို ဖိတ် သွား လဲ","sentence2":"သူတို့ မင်း နဲ့ ငါ့ ကို ဖိတ် သွား တာ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0085","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ ဟာ ဘယ်လောက် လဲ ။","sentence2":"ဒီ ဟာ ဘယ်လောက် ကျ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0086","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ အိမ် က ဘဏ် နဲ့ နီး တယ် ။","sentence2":"မင်း အိမ် က ဘဏ် နဲ့ နီး လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0087","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျေနပ် သွား ပြီ","sentence2":"ကျေနပ် ရဲ့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0088","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဖြည်းဖြည်း မောင်း ။","sentence2":"ဖြည်းဖြည်း သက်သာ လုပ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0089","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ဒီ ကို ရောက် တာ ပထမဆုံး အကြိမ် ပဲ ။","sentence2":"ငါ ဒီ ကို ပထမဆုံး ရောက် တာ ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0090","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်လို ရ နေ သလဲ ။","sentence2":"ဘယ်လို နေ ရ သလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0091","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အရင်က ဒီ လို တစ်ခါ မှ မ ကြုံ ဖူး ဘူး ။","sentence2":"အရင်က ဒီ လို ဘယ်တုန်းက မှ မ ကြုံ ဖူး ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0092","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘာ ကွာ လို့ လဲ","sentence2":"ဘာ ကြာ လို့ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0093","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ခဏတဖြုတ် စောင့်ဆိုင်း ပေး ရ လျှင် စိတ်ဆိုး မှာ လား","sentence2":"ခဏလောက် စောင့် ပေး ရ ရင် စိတ်ဆိုး မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0094","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အခု အချိန် ထိ တော့ ဟုတ် နေ သေး တယ် ။","sentence2":"အခု အချိန် ထိ တော့ အဆင်ပြေ နေ သေး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0095","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စဉ်းစား ကြည့် ။","sentence2":"စဉ်းစား သာ ကြည့် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0096","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ် မှာ တွေ့ ချင် လဲ ။","sentence2":"မင်း နဲ့ ဘယ် မှာ တွေ့ ရ မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0097","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း သောက် စရာ တခုခု ယူ မလား ။","sentence2":"မင်း တခုခု သောက် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0098","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စာတိုက် နှင့် လမ်း တဖက်တချက် ။","sentence2":"စာတိုက် နဲ့ တစ်လမ်းခြား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0099","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူမ က ယဉ် တယ် ။","sentence2":"သူမ က ရိုး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0100","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ နေရာ မှာ ။","sentence2":"ဒီ နား မှာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0101","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သွား...သေ လိုက်","sentence2":"လဲ သေ လိုက်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0102","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘာ တွေ လဲ","sentence2":"ဘာ လုပ် လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0103","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ မှာ ။","sentence2":"ဒီ မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0104","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဟိုဘက် မှာ စားသောက်ဆိုင် တစ် ဆိုင် ရှိ တယ် ၊ ဒါပေမယ့် သိပ် ကောင်း တယ် လို့ မ ထင် ဘူး ။","sentence2":"ဟိုဘက် မှာ စားသောက်ဆိုင် တစ် ဆိုင် ရှိ တယ် ၊ စား လို့ လည်း အရမ်း ကောင်း တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0105","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ မှာ ပိုက်ဆံ မ ရှိ ဘူး ။","sentence2":"ငါ့ မှာ ပိုက်ဆံ ပေါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0106","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အကောင်း ဖက် က တွေး စမ်း ပါ","sentence2":"အကောင်း ကို ပဲ တွေး စမ်း ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0107","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ ဘယ် မှာ လဲ ။","sentence2":"သူ ဘယ်ဆီ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0108","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မ ဆိုး ပါ ဘူး ။","sentence2":"မ ဆူ ကြ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0109","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒါ အရမ်း အရေးကြီး တယ် ။","sentence2":"ဒါ အရမ်း အရေး ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0110","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အိုကေ လား ။","sentence2":"အဆင်ပြေ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0111","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ အခု မ ရှိ ဘူး ။","sentence2":"သူ အခု ရှိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0112","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဆုတောင်း ပေး ပါ တယ် ကွာ ။","sentence2":"ဆုတောင်း ပေး ကြ ပါ ဦး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0113","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘာ သဲလွန်စ များ ရှိ လဲ","sentence2":"သဲလွန်စ က ဘာ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0114","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်လောက် ကျ မှာ လဲ ။","sentence2":"ဘယ်လောက် ကြာ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0115","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ သိ တဲ့ အကြောင်း ဘယ်လို ပြော မလဲ?","sentence2":"မ သိ တာ ကို ဘယ်လို ပြော မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0116","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ညနေ လာ ကြ မှာ လား ။","sentence2":"မနက် လာ ကြ မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0117","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ ဒီနေ့ သင်တန်း ပျက် တယ် ။","sentence2":"သူ ဒီနေ့ သင်တန်း လာ မှာ မ ဟုတ် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0118","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အောင်ပြီ ဟေ့","sentence2":"အောင်ပြီ ကွ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0119","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘဏ် က ဝေး လား ။","sentence2":"ဘဏ် က နီး လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0120","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ် အချိန် လဲ ။","sentence2":"ဘယ်တော့ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0121","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ့ မိသားစု မနက်ဖြန် လာ မယ် ။","sentence2":"သူ့ မိသားစု တွေ မနက်ဖြန် ပြန် မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0122","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မနက်ဖြန် အားလပ်ရက် သွား မယ် ။","sentence2":"မနက်ဖြန် က အားလပ်ရက် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0123","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ဒီ စာ ကို ဘယ်သူ့ ကို ပေး ရ မလဲ","sentence2":"ဒီ စာ ကို ငါ ဘယ်သူ့ ကို ပေးပေး ရ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0124","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အရင်က တခါ မှ မ မြင် ဖူး ဘူး ။","sentence2":"အရင် တခါ ဆုံ ဖူး တယ် နော် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0125","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စိတ်ပူ တယ် ။","sentence2":"စိုးရိမ် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0126","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ မိနစ် ၂၀ အတွင်း ပြန်ရောက် မယ် ။","sentence2":"သူ မိနစ် ၂၀ အတွင်း ပြန်ရောက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0127","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကောင်း လိုက် တဲ့ လက်ရာ","sentence2":"လက်ရာ က ကောင်း တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0128","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ကို ငါ အရင်က ဘယ် မှာ တွေ့ ဖူး တာ ပါ လိမ့် ။","sentence2":"ငါ အရင်က မင်း ကို ဘယ် မှာ မြင် ဖူး ပါ လိမ့် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0129","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"နေမကောင်း ဘူး လား ။","sentence2":"နေကောင်း တယ် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0130","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ ပြော ပါ နဲ့ တော့ ကွာ ။","sentence2":"ပြောမနေ ပါ နဲ့ တော့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0131","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာ ခြားနား နေ လို့ လဲ","sentence2":"ဘာ တွေ မ တူ လို့ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0132","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ဘယ်သူ့ ကို ပြော ရ မလဲ","sentence2":"ငါ က ဘယ်သူ့ ကို ပြော ရ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0133","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ မှာ ငါ့ နံပါတ် ။","sentence2":"ဒီ မှာ သူ့ နံပါတ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0134","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရပ် လိုက်","sentence2":"ရွှေ့ လိုက်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0135","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ ကို သတိပေး မလား ။","sentence2":"ငါ့ ကို သတိ ပေး ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0136","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အစားအစာ က အရသာ ရှိ တယ် ။","sentence2":"အစားအစာ က စားကောင်း တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0137","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ့ ကို အိမ် ကို ပို့ပေး လို့ ရ မလား ။","sentence2":"ငါ့ အိမ် ကို လိုက် ပို့ ပေး လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0138","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်လို လဲ ။","sentence2":"ဘာ လို လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0139","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ အနီးအနား မှာ စတိုးဆိုင် ရှိ လား ။","sentence2":"ဒီ အနား မှာ စတိုးဆိုင် ရှိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0140","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ မှာ လူ တွေ အများကြီး ပဲ ။","sentence2":"ဒီ နေရာ မှာ လူ တွေ အများကြီး ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0141","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဖြစ် နိုင် ပါ တယ်","sentence2":"ဖြစ် နိုင်လောက် တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0142","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အဲဒါ တော့ သံသယ မ ရှိ နဲ့","sentence2":"အဲဒါ တော့ သံသယ ကင်းကင်း ထား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0143","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း တွေ့လိုက် လား ။","sentence2":"မင်း ရောတွေ့မိလိုက် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0144","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"နားလည် ပြီ ။","sentence2":"သဘောပေါက် ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0145","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကံကောင်း ပါစေ ။","sentence2":"ကံကောင်း မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0146","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ပျော် တယ် ။","sentence2":"ပျက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0147","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ် ရှည်ရှည် ထား ပါ ။","sentence2":"စိတ် ကို ငြိမ်ငြိမ် ထား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0148","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"နံစော် နေ တာ ပဲ","sentence2":"နံစော်ညစ်ပတ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0149","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ခင်ဗျား တံခါး ဖွင့် ပေး ရ လျှင် စိတ်ဆိုး မှာ ပါ လား","sentence2":"ခင်ဗျား တံခါး ဖွင့် ပေး ရ ရင် စိတ်ဆိုး မိ မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0150","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ဝိုင် ယူ မလား ။","sentence2":"မင်း ဝိုက်ယူ လိုက် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0151","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သတိထား ။","sentence2":"သတ္တိထား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0152","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကြိုးစား ကြည့် လို့ ရ မလား ။","sentence2":"ကြိုးစား ကြည့် သင့် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0153","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လောက် ဝေးလဲ ။","sentence2":"ဘယ်လောက် တောင် ဝေး လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0154","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ငါပြော တာ ကြားရ လား ။","sentence2":"ငါပြော တာ မင်း ကြား တယ် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0155","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လူ ဘယ်နှယောက် လဲ ။","sentence2":"လူ ဘယ်လောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0156","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ် မှာ လဲ ။","sentence2":"မင်း ဘယ် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0157","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စမ်း လုပ် ကြည့် ။","sentence2":"စမ်း လုပ် ကြည့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0158","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ်ရှည်ရှည် ထား စမ်း ပါ","sentence2":"စိတ်အေးအေး ထား ပါ ကွာ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0159","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း က အရမ်း ကောင်း တယ် ။","sentence2":"မင်း က အရမ်း ထက်မြက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0160","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီကနေ 2 blocks လောက် သွား ရ တယ် ။","sentence2":"ဒီကနေ တော်တော်လေး သွား ရ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0161","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ကို လာကြို မယ် ။","sentence2":"မင်း လာကြို မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0162","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ ရောက် နေ တာ ၂ ရက် ရှိ ပြီ","sentence2":"ဒီ ရောက် တာ နှစ် ရက် လောက် ရှိ ပြီ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0163","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တွေ့ ရ တာ ဝမ်းသာ ပါ တယ် ။","sentence2":"သူ ဝမ်းသွား နေ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0164","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ မင်း ကို လွမ်း တယ် ။","sentence2":"မင်း ငါ့ ကို လွမ်း လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0165","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကလေး ဘယ်နှစ်ယောက် ရှိ သလဲ ။","sentence2":"ကလေး တွေ က အသက် ဘယ်လောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0166","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ခုံ လွတ် ရှိ သေး လား","sentence2":"ခုံ အလွတ် တွေ ရှိ သေး လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0167","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ က လေ ချည်း ပဲ ။","sentence2":"သူ က လေ သမား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0168","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ပြော မ နေ ပါ နဲ့ တော့ ကွာ ။","sentence2":"ပြောပြ မ နေ ပါ နဲ့ တော့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0169","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မနက် ၆ နာရီ ။","sentence2":"မနက်ဖြန် ၆ နာရီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0170","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျနော် က မေးခွန်း တွေ အများကြီး မေး လျှင် ခင်ဗျား စိတ်ဆိုး မှာ ပါ လား","sentence2":"ကျနော် မေးခွန်း တွေ တပုံကြီး မေး ရင် ခင်ဗျား စိတ်ဆိုး မှာ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0171","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဖြေ ထုတ် ပါ ။","sentence2":"အဖြေ ပြော ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0172","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အိုကေ လား","sentence2":"အဆင်ပြေ ရဲ့ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0173","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အခွင့်အရေး ကို ရယူ ပါ ။","sentence2":"အခွင့်ကောင်း ကို စောင့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0174","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ နေရာ ကို မ သွား ဘူး လို့ ကတိပေး သလား ။","sentence2":"အဲဒီ လို နောက်တစ်ခါ မ ပြော တော့ ဘူး လို့ ကတိပေး သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0175","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ မှာ သင့် အမှာ ။","sentence2":"ဒီ မှာ သင် မှာ ထား တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0176","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်နှစ်ည လဲ ။","sentence2":"ဘယ်နှည လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0177","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဂရုစိုက် ပါ ။","sentence2":"ဂုဏ်ယူ ပါ တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0178","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အခန်း သန့်ရှင်း နေ တယ် ။","sentence2":"အခန်း က ဝင်းလက် နေ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0179","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဟုတ် ချင် မှ ဟုတ် မယ်","sentence2":"ဟုတ် လောက် မယ် ထင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0180","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာ ဖြစ် တာ လဲ ။","sentence2":"ဘာ ဖြစ် လို့လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0181","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ်မဆိုး ပါ နဲ့ နော် ။","sentence2":"စိတ်မပူ ပါ နဲ့ နော် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0182","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စား လို့ မ ပြီး သေး ဘူး ။","sentence2":"စား လို့ ကောင်း ရဲ့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0183","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ရဲ ကို ခေါ် ပါ ။","sentence2":"ရဲ ကို တိုင် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0184","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒါ ကို သတိရ ပါ","sentence2":"အဲဒါ ကို သတိထား ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0185","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ်တော့ ပြန် လာ မှာ လဲ ။","sentence2":"မင်း ဘယ်တော့မှ ပြန်လာ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0186","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကောင်း ပြီ ။","sentence2":"ကောင်း ပါ ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0187","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ ဟာပဲ ယူ မယ် ။","sentence2":"အဲဒီ ဟာ ယူ ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0188","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မြို့ မြေပုံ တစ် ခု ရှိ ချင် တယ် ။","sentence2":"မြို့ မြေပုံ တစ်ခု ငါ လို ချင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0189","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ အတည် ပြော တာ ။","sentence2":"ငါ တကယ် ပြော တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0190","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ခုံ လွတ် ရှိ သေး လား ။","sentence2":"ခုံ အလွတ် ရှိ သေး လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0191","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျွန်တော် မျက်စိလည် လမ်းပျောက် နေ လို့ ပါ ။","sentence2":"ကျွန်တော် မျက်စိ နာ ပြီး အသံပျောက် နေ လို့ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0192","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒါ ဘယ် မှာ လဲ ။","sentence2":"အဲဒါ ဘယ်သူ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0193","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ရှင်း ပါ့ မယ် ။","sentence2":"ငါ ပေး မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0194","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ ရှင်း လိုက် ပါ့ မယ် ။","sentence2":"ငါ တကာခံ ပါ့ မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0195","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စိတ်တို ဖို့ ကောင်း လိုက် တာ ။","sentence2":"စိတ်ပျက် ဖို့ ကောင်း လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0196","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ရပ် လိုက် \/ခဏ နေ ဦး","sentence2":"ခဏလောက် ရပ် ဦး"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0197","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်သူ ငါ့ ကို ဖုန်းဆက် တာ လဲ","sentence2":"ငါ့ ဆီ ဘယ်သူ ဖုန်းဆက် တာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0198","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လူ တွေ ရဲ့ စရိုက် တွေ ပျက်ပြား ကုန် ပြီ ။","sentence2":"လူ တွေ ရဲ့ စရိုက် တွေ ပျက်ယွင်း ကုန် ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0199","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အဲဒီ လမ်း ။","sentence2":"အဲဒီ လမ်းမ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0200","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အကုန် စား တာ ။","sentence2":"အကုန် သောက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0201","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စာအုပ် က စားပွဲ အရှေ့ မှာ ။","sentence2":"စာအုပ် က စားပွဲ နား မှာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0202","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"နောက်မကျ နဲ့ နော် ။","sentence2":"နောက်မှ ပြန် တွေ့ ကြ မယ် နော် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0203","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ နေ့ အလုပ် လုပ် မှာ လား ။","sentence2":"ဒီ နေ့ အလုပ် လာ မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0204","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အဲဒါ လုံလောက် ပါ တယ် ။","sentence2":"အဲဒါ အဆင်ပြေ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0205","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် အရက် ကို ဘယ်တော့မှ မ သောက် ဘူး ။","sentence2":"ကျွန်တော် ဘယ်တော့မှ အရက် မ သောက် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0206","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အရသာ ရှိ တယ် ။","sentence2":"အရသာ ကောင်း တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0207","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်လောက် ကြာ မှာ လဲ ။","sentence2":"ဘယ်လောက် ပါ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0208","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း လာ မယ် လို့ ငါ မျှော်လင့် ပါ တယ် ။","sentence2":"မင်း လာ နိုင် မယ် လို့ ငါ မျှော်လင့် မိ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0209","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကောင်း သော ခရီးစဉ် ဖြစ် ပါစေ ။","sentence2":"ခရီးစဉ် အဆင်ပြေ ပါစေ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0210","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ရှုပ်ပွ နေ တာ ပဲ ။","sentence2":"ရှုပ်ထွေး နေ တာ ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0211","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ပဲ ဆုံးဖြတ် လိုက်","sentence2":"မင်း ဆုံးဖြတ် တာ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0212","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ပြန် လာ တဲ့ အထိ ဒီကနေ စောင့် ပါ ။","sentence2":"ငါ ပြန် လာ တဲ့ အထိ ဒီ နေရာ က နေ စောင့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0213","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သမ္မာအာဇီဝ အလုပ် ပဲ","sentence2":"ကောင်းရောင်းကောင်းဝယ် အလုပ် ပဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0214","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ ပူ ပါ နဲ့ ။","sentence2":"စိတ်မပူ ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0215","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်ဘက် ကွေ့ ပါ ။","sentence2":"ဘယ် လမ်း လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0216","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် လမ်းပျောက် ပြီ ။","sentence2":"ကျွန်တော် တော့ လမ်းပျောက် နေ ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0217","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း မိသားစု မှာ လူ ဘယ်နှစ်ယောက် ရှိ လဲ ။","sentence2":"မင်း တို့ မိသားစုဝင် ဘယ်နှစ်ယောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0218","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အခု လား ၊ နောက်မှ လား ။","sentence2":"အခု လိုက် မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0219","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒါ အနံ့ ဆိုး တယ် ။","sentence2":"အဲဒါ အရမ်း ဆိုး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0220","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကော်ဖီ တိုက် လို့ ကျေးဇူးတင် ပါ တယ် ။","sentence2":"ကော်ဖီ အတွက် ကျေးဇူး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0221","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျယ်ကျယ် ပြော ပါ ။","sentence2":"စကား ကို ကျယ်ကျယ် ပြော ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0222","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ ဘယ် က လဲ ။","sentence2":"သူမ ဘယ် က လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0223","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒါ အတည် ပဲ ။","sentence2":"ဒါ အတည့် ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0224","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ တို့ မနေ့က ရောက် တယ် ။","sentence2":"သူ တို့ မနေ့က ပြန် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0225","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သရုပ်ဆောင် ကောင်း တယ်","sentence2":"သရုပ်ဆောင် တာ ကောင်း တယ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0226","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လို ချက် ရ သလဲသိ သလား ။","sentence2":"ဘယ်လို ချက်ပြုတ် ရ လဲ သိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0227","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်တုန်းက ရောက် တာ လဲ ။","sentence2":"ဘယ် အချိန် က ရောက် တာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0228","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တစ် နေ့ ကို ဘယ်လောက် ကျ လဲ ။","sentence2":"တစ် နေ့ ကို ဘယ်လောက် အိပ် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0229","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တီဗီ ကြည့် ရ တာ ကြိုက် တယ် ။","sentence2":"ရုပ်မြင်သံကြား ကြည့် ရ တာ ကြိုက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0230","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မီး နဲ့ မ ကစား ဘူး လို့ ကတိပေး သလား ။","sentence2":"မီး နဲ့ ကစား တာ ဘေးမကင်း ပါ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0231","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"၅ ဒေါ်လာ ထက် နဲ ပါ တယ် ။","sentence2":"၅ ဒေါ်လာ ဆို နဲ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0232","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကြိုးစား ကြည့် ။","sentence2":"ကြိုးစား ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0233","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာ တွေ ပြော နေ တာ လဲ","sentence2":"ဘာ တွေ လာ ပြော နေ တာ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0234","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မ လိမ် ဘူး လို့ ကတိပေး သလား ။","sentence2":"မ လိမ် တတ် ဘူး လို့ ကတိပေး လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0235","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘာ ဘာသာ လဲ ။","sentence2":"မင်း ဘယ် ဘာသာဝင် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0236","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်သူ့ ဟာ လဲ","sentence2":"ဘယ်သူ့ အတွက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0237","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လက်ဖက်ရည် တစ် ခွက် ကျေးဇူးပြုပြီး ပေး ပါ ။","sentence2":"ကျေးဇူးပြုပြီး လက်ဖက်ရည် တစ် ခွက် လောက် ပေး ပါ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0238","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြု၍ အိပ်ယာ ၂ ခု နဲ့ အခန်း လို ချင် တယ် ။","sentence2":"ကျေးဇူးပြု၍ အိပ်ယာ ၂ ခု နဲ့ အခန်း စီစဉ် ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0239","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အရမ်း ကောင်း တယ် လို့ ထင် တယ် ။","sentence2":"အရမ်း ကောင်း အောင် ပြင်ဆင် ထား ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0240","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကိုးရို့ကားယား ကြီး","sentence2":"ဂွတိဂွကျ ကြီး"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0241","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် ဆေးလိပ် မ သောက် ပါ ဘူး ။","sentence2":"ကျွန်တော် ဆေးလိပ် မ သောက် တတ် ပါ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0242","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီနေ့ ရာသီဥတု ဘယ်လို လဲ ။","sentence2":"ဒီနေ့ ရာသီဥတု အခြေအနေ ဘယ်လို လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0243","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"၄ ရက် အတွင်း အိမ် ပြန် မယ် ။","sentence2":"၄ ရက် လောက် နေ ရင် ပြန် လာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0244","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မ ကြား ရ ဘူး ။","sentence2":"မ ကြိုက် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0245","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ က သီချင်းဆို ရ တာ ကို ပျော်ရွှင် တယ် ။","sentence2":"သူက သီချင်းဆို ရ တာ ကျေနပ် နေ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0246","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကူညီ ခွင့် ရ တာ ကျွန်တော် ဝမ်းသာ ပါ တယ် ။","sentence2":"အကူအညီ ပေး ခွင့် ရ တာ ကျွန်တော် ဝမ်းသာ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0247","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အမေရိကန် သံရုံး ကို ဘယ်လို သွား ရ မလဲ ။","sentence2":"အမေရိကန် သံရုံး မှာ အလုပ် လုပ် တာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0248","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒုက္ခမရှာ နဲ့ ။","sentence2":"ဒုက္ခမရှာ စမ်း ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0249","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျနော် ပြတင်းတံခါး ဖွင့် လျှင် ခင်ဗျား စိတ်ဆိုး မှာ ပါ လား","sentence2":"ကျနော် ပြတင်းပေါက် တွေ ဖွင့် ရင် ခင်ဗျား စိတ်ဆိုး မှာ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0250","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကိုင် ထား ပေး လို့ ရ မလား ။","sentence2":"ကွယ် ထား ပေး လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0251","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ပိုက်ဆံ လုံးဝ မ ရှိ ဘူး ။","sentence2":"ပိုက်ဆံ လုံးလုံးလျားလျား မ ရှိ ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0252","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ယောက်ျား က ဘော့စ်တွန်က လား ။","sentence2":"သူ က ဘော့စ်တွန် က မင်း ယောက်ျား လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0253","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒါ အရမ်း ခက် တယ် ။","sentence2":"ဒါ အလုပ် မ လုပ် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0254","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ မ သိ ဘူး ။","sentence2":"ငါ သိ သွား ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0255","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ညီအမ နှစ် ယောက် ရှိ မယ် ။","sentence2":"ညီအမ သုံး ယောက် ရှိ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0256","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ် အချိန် သွား မှာ လဲ ။","sentence2":"ဘယ်တော့ လောက် သွား မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0257","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒါ မ ဖြစ် နိုင် ဘူး ။","sentence2":"အဲဒီတော့ ဘာ ဖြစ် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0258","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လေယာဉ် နဲ့ လား ၊ ရထား နဲ့ လား ။","sentence2":"လေယာဉ်ပျံ နဲ့ လား ၊ ရထား နဲ့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0259","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တပတ် မှာ ဘယ်နှစ်နာရီ အလုပ် လုပ် သလဲ ။","sentence2":"တပတ် မှာ အလုပ် ချိန် ဘယ်နှစ်နာရီ ရှိ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0260","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရုပ်ရှင် ဘယ်လို လဲ ။","sentence2":"ရုပ်ရှင် သွား ချင် သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0261","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း အီးမေးလ် ဘာ လဲ ။","sentence2":"မင်း အီးမေးလ် လိပ်စာ က ဘာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0262","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ခေါင်းကိုက် တယ် ။","sentence2":"ခေါင်း ကြိုက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0263","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စစ် ကြည့် ပါရစေ ။","sentence2":"စဉ်းစား ကြည့် ပါရစေ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0264","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ် အချိန် ထွက် ရ မလဲ ။","sentence2":"ဘယ် အချိန် ထုတ် ရ မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0265","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ထူးခြား ပါ ပေ့ ။","sentence2":"ထူးခြား သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0266","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အပြင် မှာ အေး လား ။","sentence2":"အပြင် မှာ ချမ်း လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0267","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တက်ဆက် က လှပ တဲ့ နေရာ လို့ ကြား ဖူး တယ် ။","sentence2":"တင်ဆက် တာ အရမ်း ကောင်း တယ် လို့ ကြား ဖူး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0268","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဟို မှာ ထိုင် လို့ ရ မလား ။","sentence2":"ဟိုဟာ ဘယ်လောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0269","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကိစ္စ လေး ပေါ် လာ လို့ သွား လိုက် ဦး မယ်","sentence2":"အလုပ် လေး ပေါ် လာ လို့ သွား လိုက် ဦး မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0270","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ဒီ စာ ကို ဘယ်သူ့ ကို ပေး ခဲ့ တာ လဲ","sentence2":"မင်း ပေး ခဲ့ တာ က ဘာ စာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0271","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း နဲ့ မင်း မိန်းမ ခရီး မှာ ပျော်ရွှင် ပါစေ လို့ မျှော်လင့် ပါ တယ် ။","sentence2":"မင်း နဲ့ မင်း အမျိုးသမီး လမ်းခရီး မှာ ပျော် ပါစေ လို့ မျှော်လင့် ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0272","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ် အချိန် စ လဲ ။","sentence2":"ဘယ် အချိန် အဆ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0273","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သတိထား ပါ ။","sentence2":"သတိလေး ထား ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0274","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ ဘက် မှာ ။","sentence2":"ဟို ဘက် မှာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0275","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ ဂရုမစိုက် ဘူး ။","sentence2":"ငါ ဂရုစိုက် ပါ့ မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0276","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"နယူးရောက် ကို လက်မှတ် တစ်စောင် ကျေးဇူးပြု ပေး ပါ ။","sentence2":"ကျေးဇူးပြုပြီး နယူးရောက် ရောက် တဲ့ လက်မှတ် တစ်စောင် ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0277","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တွေ့ ပြီး ပြီ ။","sentence2":"တွေး ကြည့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0278","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ် မှာ နေ လဲ ။","sentence2":"ဘယ်ဆီ နေ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0279","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဆေး သောက် ရဲ့ လား ။","sentence2":"သောက်ဆေး ပါ ရဲ့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0280","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လာ လေ ကွာ","sentence2":"လာ လိုက် လေ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0281","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"နဲနဲ ။","sentence2":"နဲနဲ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0282","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ထပ် လွဲ သွား တယ် ကွာ","sentence2":"ထပ် လွဲ ပြန် ပြီ ကွာ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0283","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ တို့ သောက်ရေ ၂ ခွက် ယူ မယ် ၊ ကျေးဇူးပြုပြီး ပေး ပါ ။","sentence2":"ငါ့ အတွက် သောက်ရေ ၂ ခွက် ယူပေး လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0284","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တစ် ယောက် ခန်း လို ချင် တယ် ။","sentence2":"တစ် ယောက် အခန်း လို ချင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0285","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဟို အရှေ့ ဘလော့ မှာ ပါ ။","sentence2":"ဟို အရှေ့ က အခန်း မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0286","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ထူးဆန်း လိုက် တာ ။","sentence2":"ထူးခြား လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0287","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာ ဖြစ် တာ လဲ","sentence2":"ဘာ ဖြစ် နေ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0288","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ထူးဆန်း လိုက် တာ ။","sentence2":"ထူးထူးဆန်းဆန်းပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0289","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လောက် ရှည် သလဲ ။","sentence2":"ဘယ်လောက် အထိ ရှည် သလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0290","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါတို့ အရင်က တွေ့ ဖူး လား ။","sentence2":"ငါတို့ အရင် က တွေ့ ဖူး ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0291","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"နာရီ ပျောက် သွား တယ် ။","sentence2":"နာရီ ပျောက် သွား ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0292","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မြို့ထဲ မှာ နိုက်ကလပ် ရှိ လား ။","sentence2":"မြို့ထဲ မှာ နိုက်ကလပ် ပေါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0293","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ က အမေရိကန် တစ် ယောက် ပါ ။","sentence2":"ငါ အမေရိကန် မှာ နေ ဖူး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0294","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဖုန်း နံပါတ် ဘယ်လောက် လဲ ။","sentence2":"ဖုန်း နံပါတ် ရ နိုင် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0295","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ တို့ ကလေး တွေ က အမေရိကား မှာ ။","sentence2":"ငါ တို့ ကလေး တွေ အမေရိကား ကို သွား မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0296","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အကောင်းဆုံး ပဲ ။","sentence2":"အကောင်း ပါ ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0297","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ရိုးသား ပါ ။","sentence2":"အရိုး စား ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0298","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ့ ကို ခေါ် လိုက် ပါ ။","sentence2":"ငါ့ ကို ခေါ် လိုက် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0299","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူငယ်ချင်း တွေ ရောက်လာ တော့ စားသောက်ဆိုင် က ထွက် တော့ မယ် ။","sentence2":"သူငယ်ချင်း တွေ နဲ့ အတူ စားသောက်ဆိုင် မှာ ထိုင် ခဲ့ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0300","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မစ်စတာ စမစ် နဲ့ ကျေးဇူးပြုပြီး ပြော ချင် တယ် ။","sentence2":"မစ်စ စမစ်နဲ့ ကျေးဇူးပြု၍ စကားပြော နိုင် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0301","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငါ မင်း ကို အကြွေး တင် နေ ပြီ","sentence2":"မင်း ငါ့ အကြွေး ပြန် ဆပ် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0302","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မှန်းကြည့် စမ်း","sentence2":"မင်း မှန်းကြည့်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0303","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ့ ကို ဒီ ကို လာ ပါ လို့ ပြော ပေး လို့ ရ မလား ။","sentence2":"သူ့ ကို ဒီ နား လာ ပါ လို့ ပြော ပေး လို့ ရ မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0304","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ မှာ မ လုပ် ခင် မင်း ဘယ် မှာ လုပ် ခဲ့ လဲ ။","sentence2":"ဒီ မှာ အလုပ် မ ရ ခင် ဘယ် မှာ လုပ် ခဲ့ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0305","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အတူတူ ယူ မယ် ။","sentence2":"အတူတူ ပဲ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0306","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ ဟုတ် တာ မ ပြော နဲ့ ။","sentence2":"မ ဟုတ် တာ တွေ မ ပြော စမ်း ပါ နဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0307","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ် တစ်ခု ကို အကြိုက်ဆုံး လဲ ။","sentence2":"မင်း ဘယ်ဟာ ကို အကြိုက်ဆုံး လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0308","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ကို မေးခွန်း တစ် ခု မေး ချင် တယ် ။","sentence2":"မင်း မေး တဲ့ မေးခွန်း က ဘာလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0309","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အောက် နေ ပြီ","sentence2":"ခေတ်မမှီ ဘူး"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0310","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တခုခုဆို ယား တတ် သလား ။","sentence2":"တခုခု ဆို ယောင် တတ် သလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0311","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ အိမ် ကို ဘယ်သူ ဆောက် ခဲ့ တာ လဲ","sentence2":"ဒီ အိမ် ကို ဦးဘ ဆောက် ခဲ့ တာ ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0312","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြုပြီး ဓါတ်ဆီ အပြည့် ဖြည့် ပေး ပါ ။","sentence2":"ကျေးဇူးပြုပြီး ဓါတ်ဆီ ဆိုင် ပြ ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0313","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တယောက်ယောက် ကို စောင့် နေ တာ လား ။","sentence2":"တယောက်ယောက် ကို တွေ့ မိ လိုက် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0314","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ငြိမ်ငြိမ် နေ ပါ ။","sentence2":"ငြိမ်းချမ်း နေ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0315","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ ခုံ လူ ရှိ လား","sentence2":"ဒီ ခုံ က လူ ရှိ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0316","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စားသောက်ဆိုင် မှာ စား ဖူး လား ။","sentence2":"စားသောက်ဆိုင် မှာ သွား စား မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0317","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ့ ကို တောင်းပန် ။","sentence2":"ငါ့ ကို တောင်းပန် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0318","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် ဗိုက်ဝ ပြီ ။","sentence2":"ကျွန်တော် ဗိုက်ပြည့် ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0319","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ရေ တစ်ခွက် ယူ မလား ။","sentence2":"ရေ တစ်ခွက် မင်း ယူဦး မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0320","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဆင်ပြေ သလား ။","sentence2":"အဆင်သင့် ပဲ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0321","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဦးဝိစာရ အဝိုင်း နဲ့ သိပ် မ ဝေး ဘူး ။","sentence2":"ဦးဝိစာရ အဝိုင်း ကို ကျော် လိုက် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0322","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အရမ်း ဈေးမကြီး ဘူး ။","sentence2":"အရမ်း ဈေးပေါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0323","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ ဘော့စ်တွန် တက္ကသိုလ် မှာ စာသင် တယ် ။","sentence2":"သူ ဘော့စ်တွန် တက္ကသိုလ် မှာ တက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0324","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ပေါင်မုန့် ထပ် ရ နိုင် မလား ။","sentence2":"ပေါက်စီ ထပ် ရ နိုင် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0325","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဒီ ဟာ ကို အမေရိကား ကို ပို့ ချင် တယ် ။","sentence2":"ဒါ ကို အမေရိကား ပို့ ချင် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0326","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဆက် ပြော ပါ ။","sentence2":"ဆက် လုပ် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0327","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ကော်ဖီ လား ။","sentence2":"လက်ဖက်ရည် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0328","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အိပ်မက် ကောင်းကောင်း မက် ပါစေ ။","sentence2":"အိပ်မက် လှလှ မက် ပါစေ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0329","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ လို မ ဟုတ် ရ ပါ ဘူး ။","sentence2":"အဲဒီ လို ထင် တာ ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0330","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ် က ကျောင်းတက် ခဲ့ သလဲ ။","sentence2":"ဘယ် ကျောင်း တက် ခဲ့ တာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0331","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မျက်နှာပူ ဖို့ ကောင်း လိုက် တာ ။","sentence2":"မျက်နှာပူ စရာ ကောင်း လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0332","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သက်တမ်း ပျက်ပြယ် သွား ပြီ ။","sentence2":"သက်တမ်း ကုန် သွား ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0333","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သင် ပေး မယ် ။","sentence2":"သင်ပြ ပေး မယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0334","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အခုချက်ချင်း","sentence2":"အခု ပဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0335","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"လူ များ လေ ပျော် ဖို့ ကောင်း လေ ။","sentence2":"လူ များ လေ စိတ်ပျက် ဖို့ ကောင်း လေ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0336","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ့ ကို မ ကြိုက် ဘူး ။","sentence2":"ဒါ ကို မ ကြိုက် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0337","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အလုပ် ရှုပ် သလား ။","sentence2":"အလုပ် များ နေ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0338","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျွန်တော် ဘာမှ မ ပြောနိုင် ပါ ဘူး ။","sentence2":"ကျွန်တော် ဘာမှ မ ပြော ချင် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0339","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘတ်စ်ကား မှတ်တိုင် ကို ဘယ် အချိန် သွား မလဲ ။","sentence2":"ရထား ဘူတာ ကို ဘယ် အချိန် သွား မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0340","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"သူ ဒီ ကို လာ မှာ မ ဟုတ် ဘူး ။","sentence2":"သူ ဒီ ကို မ လာ လောက် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0341","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘာ သောက် ချင် လဲ ။","sentence2":"မင်း က ဘာ သောက် ချင် တာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0342","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ နေ့ နှင်းကျ လိမ့် မယ် ။","sentence2":"ဒီ နေ့ ဘယ် နှရက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0343","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တည့်တည့် သွား ပါ ။","sentence2":"တိတ်တိတ် နေ ကြ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0344","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဈေးပေါ တာ ရှိ သေး လား ။","sentence2":"ဈေးပေါ တာ သုံး နေ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0345","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အားလုံး အဆင်သင့် ဖြစ် ပြီ လား","sentence2":"အားလုံး အဆင်သင့် ပဲ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0346","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ်သူ နဲ့ လဲ ။","sentence2":"ဘယ်သူ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0347","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဘယ် နိုင်ငံ က လဲ","sentence2":"ဘယ်ဆီ က လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0348","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"နားမလည် ဘူး ။","sentence2":"နားလည် သွား မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0349","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဝ အောင် စား ။","sentence2":"ဝင် အောင် စား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0350","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဝတ် တွေ က ဈေးပေါ တယ် လို့ ထင် တယ် ။","sentence2":"အဝတ် ဈေးပေါ တာ တွေ ဝယ် မ လို့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0351","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စူ ပါမတ်ကတ် နား မှာ ပါ ။","sentence2":"စူ ပါမတ်ကတ် ထဲ မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0352","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ပါးစပ် ပိတ်","sentence2":"မင်း ပါးစပ် ပိတ်"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0353","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ့ ကို စောင့် ဦး ။","sentence2":"ငါ့ ကို စောင့် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0354","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငကြောင် ရဲ့ ။","sentence2":"ငရူး ရဲ့ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0355","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အိမ်ပြန် တော့ မလို့ လား ။","sentence2":"အိမ်ပြန် ကြ တော့ မလို့ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0356","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တိုက်ဆိုင် လိုက် တာ ။","sentence2":"တိုက်တိုက်ဆိုင်ဆိုင် ပဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0357","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ နားဆွဲ တွေ က ဘယ်လောက် လဲ ။","sentence2":"အဲဒီ နားကပ် တွေ က ဘယ်လောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0358","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ့ ကို ကူညီ မှာ လား ။","sentence2":"သူ့ ဆီ က ကူညီ ရ မှာ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0359","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"စုစုပေါင်း ဘယ်လောက် များ လဲ ။","sentence2":"စုစုပေါင်း ဘယ်လောက် ကျ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0360","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ် မှာ ထား ခဲ့ လဲ ။","sentence2":"မင်း ထား ခဲ့ တာ ဘယ်နား လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0361","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဟိုဘက် က လူ က ဘယ်သူ လဲ ။","sentence2":"ဟိုဘက် က လူ က မင်း လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0362","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မိမိကိုယ်တိုင် လုပ် ပါ ၊ ကြိုးစား ပါ ။","sentence2":"ကိုယ့်ဘာသာ ကြိုးစား လုပ် ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0363","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘာ စား ချင် လဲ ။","sentence2":"မင်း ဘာနဲ့ စား ချင် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0364","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သူ အရမ်း နာမည်ကြီး တယ် ။","sentence2":"သူ အရင်က နာမည်ကြီး တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0365","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြု၍ ရေ တစ် ပုလင်း ဝယ် ချင် တယ် ။","sentence2":"ကျေးဇူးပြု၍ ရေ တစ် ပုလင်း လောက် ရ နိုင် မလား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0366","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"တစ် ည ဘယ်လောက် လဲ ။","sentence2":"တစ် ည တည်းခ ဘယ်လောက် လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0367","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ဘယ်တော့ ပြန်လာ မှာ လဲ ။","sentence2":"မင်း ဘယ် အချိန် ပြန်လာ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0368","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"လှုပ်ရှား လိုက် ကြ စို့","sentence2":"လှုပ်လှုပ်ရှားရှား ပဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0369","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"လေဆိပ် ဘယ် မှာ လဲ ။","sentence2":"လေဆိပ် က ဘယ် မှာ တုန်း ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0370","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒီ မှာ ဒီ ထောင့် မှာ ပဲ ။","sentence2":"အဲဒီ မှာ ဟို ထောင့် နား မှာ ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0371","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ချီကာဂို ကို ဘယ်လောက် ဝေး သလဲ ။","sentence2":"ချီကာဂို ကို ဘယ် အချိန် ရောက် မလဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0372","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲ့ဒီ အမျိုးသမီး က ဆရာမ တစ် ယောက် ပါ","sentence2":"အဲ့ဒီ အမျိုးသမီး က ဘယ်သူ လဲ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0373","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အမှာ စကား ယူ လို့ ရ မလား ။","sentence2":"မှာ စရာ စကား ရှိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0374","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ ဟာ မ ဟုတ် ဘူး ။","sentence2":"ဟို ဟာ မ ဟုတ် ဘူး ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0375","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"သတ္တိ ရှိ စမ်း ပါ ။","sentence2":"သတ္တိ နည်း လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0376","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျွန်တော် က မနက် 6 နာရီ တိုင်း မှာ အိပ်ရာ က ထ လေ့ ရှိ တယ် ။","sentence2":"ကျွန်တော် မနက်တိုင်း ၆ နာရီ မှာ အိပ်ရာ ထ တတ် ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0377","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း သူငယ်ချင်း ကို ဘယ်တော့ သွားခေါ် မှာ လဲ ။","sentence2":"မင်း သူငယ်ချင်း က ဘယ်တော့ လာ မှာ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0378","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"တကယ် စိတ်ထိခိုက် ရ တယ် ။","sentence2":"တကယ် ဝမ်းသာ ပါ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0379","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း အပေါ် မှာ ငါ ကျေးဇူး ကြွေး တင် သွား ပြီ","sentence2":"မင်း ကျေးဇူး ကြွေး ငါ့ မှာ တင် သွား ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0380","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မ ထိ နဲ့ (လက်ရှောင်)","sentence2":"လက်ရှောင် နေ လိုက် ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0381","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျေးဇူးတင် ပါ တယ် ။","sentence2":"ကျေးဇူး ပါ"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0382","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ယောက်ျား လား ။ မိန်းမ လား ။","sentence2":"ယောက်ျားလေး ပါ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0383","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အဲဒါ ကြည့် ရ တာ အရမ်း ကောင်း တယ် ။","sentence2":"အဲဒါ ကြည့် ရ တာ အရမ်း မိုက် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0384","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ငါ ဗိုက် တအား ဆာ တယ် ။","sentence2":"ငါ ဗိုက် အရမ်း ဆာ တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0385","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘာယူဦး မလဲ ၊ ဘာလို သေး လဲ ။","sentence2":"ဘာ တွေ လို သေး လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0386","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ဒီ ည တွေ့ မယ် ။","sentence2":"ဒီည အား လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0387","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အဲဒါ မ လို ချင် ဘူး ။","sentence2":"အဲဒါ မှန် တယ် ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0388","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျနော် တရေးတမော ခေတ္တ အိပ် လျှင် ခင်ဗျား စိတ်ဆိုး မှာ ပါ လား","sentence2":"ကျနော် တမှေးလောက် အိပ် ရင် ခင်ဗျား စိတ်ဆိုး မှာ လား"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0389","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"အသက် ၂၆ နှစ် ရှိ ပြီ ။","sentence2":"အသက် ၂၆ နှစ် ပြည့် ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0390","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အနီးဆုံး ဆေးရုံ က ဘယ် မှာ လဲ ။","sentence2":"အနီးအနား မှာ ရုပ်ရှင် ရုံ ရှိ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0391","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကြောက် သလား ။","sentence2":"ကြောက် တတ် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0392","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ်လောက် များ လဲ ။","sentence2":"ဘယ်လောက် လောက် များ လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0393","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"စိတ်ဝင်စား ဖို့ ကောင်း လိုက် တာ ။","sentence2":"စိတ်လှုပ်ရှား ဖို့ ကောင်း လိုက် တာ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0394","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"နေ့စဉ် မနက် ၆ နာရီ ထ တယ် ။","sentence2":"နေ့စဉ် ရုံး ဘယ် အချိန် သွား လဲ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0395","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"မင်း ရေ ယူ မလား ။","sentence2":"မင်း ရေ ယူ ပါ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0396","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကောင်း သော အကြံဉာဏ် ရှိ လား ။","sentence2":"ကောင်း သော အကြံဉာဏ် ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0397","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"အောက်တိုဘာ ၂၂ ရက် ။","sentence2":"အောက်တိုဘာ မှာ အေး ပြီ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0398","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"မင်း ကို ဒုက္ခမပေး ချင် ဘူး ။","sentence2":"မင်း ကို ဒုက္ခ ပေး မိ ပြီ လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0399","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ဘယ် ဟုတ် ပါ့ မလဲ","sentence2":"ဘယ်လို လုပ် ဟုတ် ရ မှာ လဲ"}],"metadata":{"language":"my"}}

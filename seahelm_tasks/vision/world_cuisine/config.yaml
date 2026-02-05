@@ -1,0 +1,299 @@
+world_cuisine_task1:
+  metadata:
+    version: 1
+  name: world_cuisine_task1
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/world_cuisine/world_cuisine_dataloader.py
+  dataloader_class: WorldCuisineDataloader
+  aggregation_group: world_cuisine
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Answer using the following format only:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the selected option. Use letters A, B, C, D, or E only as your answer.
+        task_template: |-
+          Question: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+    id:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawablah hanya dengan menggunakan format berikut ini:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, C, D atau E saja sebagai jawabannya.
+        task_template: |-
+          Pertanyaan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    th:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+    tl:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Sumagot gamit ang sumusunod na format:
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, C, D o E sa sagot mo.
+        task_template: |-
+          Tanong: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+    zh:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          仅使用以下格式回答:
+          "{answer_tag} ANSWER"
+          将 ANSWER 替换为您选择的答案。使用字母 A、B、C、D 或 E 作为答案。
+        task_template: |-
+          问题: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "答案:"
+    jv:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawaban mung nganggo format iki:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER karo jawaban sing dipilih. Tulisen mung huruf A, B, C, D utawa E kanggo njawab pertanyaane.
+        task_template: |-
+          Pitakonan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    su:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawap ngan ngagunakeun format di handap ieu:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER ku jawapan nu geus dipilih. Gunakeun hurup A, B, C, D atawa E salaku jawapan.
+        task_template: |-
+          Patarosan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+
+world_cuisine_task2:
+  metadata:
+    version: 1
+  name: world_cuisine_task2
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/world_cuisine/world_cuisine_dataloader.py
+  dataloader_class: WorldCuisineDataloader
+  aggregation_group: world_cuisine
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Answer using the following format only:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the selected option. Use letters A, B, C, D, or E only as your answer.
+        task_template: |-
+          Question: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+    id:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawablah hanya dengan menggunakan format berikut ini:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, C, D atau E saja sebagai jawabannya.
+        task_template: |-
+          Pertanyaan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    th:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยจะต้องแทนที่ ANSWER ด้วยคำตอบของคุณด้วยตัวอักษร A, B, C, D หรือ E เท่านั้น
+        task_template: |-
+          คำถาม: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+    tl:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Sumagot gamit ang sumusunod na format:
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, C, D o E sa sagot mo.
+        task_template: |-
+          Tanong: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+    zh:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          仅使用以下格式回答:
+          "{answer_tag} ANSWER"
+          将 ANSWER 替换为您选择的答案。使用字母 A、B、C、D 或 E 作为答案。
+        task_template: |-
+          问题: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "答案:"
+    jv:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawaban mung nganggo format iki:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER karo jawaban sing dipilih. Tulisen mung huruf A, B, C, D utawa E kanggo njawab pertanyaane.
+        task_template: |-
+          Pitakonan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    su:
+      filepath: worldcuisines/vqa-v1.1
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawap ngan ngagunakeun format di handap ieu:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER ku jawapan nu geus dipilih. Gunakeun hurup A, B, C, D atawa E salaku jawapan.
+        task_template: |-
+          Patarosan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+          E: {option_e}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"

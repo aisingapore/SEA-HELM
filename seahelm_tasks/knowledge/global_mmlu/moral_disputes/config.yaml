@@ -1,0 +1,150 @@
+global_mmlu_moral_disputes:
+  metadata:
+    version: 1
+    changes: Reshuffled labels from original dataset
+  name: global_mmlu_moral_disputes
+  competency: knowledge
+  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
+  dataloader_class: GlobalMMLUDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  aggregation_group: global_mmlu
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          Answer only using the following format.
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the selected option. Use the letter A, B, C, or D as the answer.
+        task_template: |-
+          Question:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "Answer:"
+    id:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          Jawablah hanya dengan menggunakan format berikut ini.
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, C, atau D saja sebagai jawabannya.
+        task_template: |-
+          Pertanyaan:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "Jawaban:"
+    vi:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          Chỉ trả lời bằng cách sử dụng định dạng sau.
+          "{answer_tag} ANSWER"
+          Thay thế ANSWER bằng câu trả lời được chọn. Chỉ sử dụng chữ cái A, B, C hoặc D làm câu trả lời của bạn.
+        task_template: |-
+          Câu hỏi:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "Câu trả lời:"
+    ms:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          Jawab hanya menggunakan format berikut.
+          "{answer_tag} ANSWER"
+          Gantikan ANSWER dengan pilihan yang dipilih. Gunakan huruf A, B, C, atau D sebagai jawapan anda.
+        task_template: |-
+          Soalan:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "Jawapan:"
+    zh:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          仅使用以下格式回答。
+          "{answer_tag} ANSWER"
+          将 ANSWER 替换为您选择的答案。使用字母 A、B、C 或 D 作为答案。
+        task_template: |-
+          问题:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "答案:"
+    tl:
+      filepath: CohereLabs/Global-MMLU
+      example_filepath: CohereLabs/Global-MMLU
+      max_tokens: 16
+      prompt_template:
+        preamble: |-
+          Sumagot gamit ang sumusunod na format.
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, C, o D sa sagot mo.
+        task_template: |-
+          Tanong:
+          ```
+          {question}
+          ```
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: "{answer_tag} {label}"
+        answer_tag: "Sagot:"
+global_mmlu_moral_disputes-logprobs:
+  metadata: ${global_mmlu_moral_disputes.metadata}
+  name: global_mmlu_moral_disputes-logprobs
+  competency: ${global_mmlu_moral_disputes.competency}
+  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
+  dataloader_class: GlobalMMLUDataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${global_mmlu_moral_disputes.fewshot_num_examples}
+  aggregation_group: global_mmlu-logprobs
+  languages: ${global_mmlu_moral_disputes.languages}

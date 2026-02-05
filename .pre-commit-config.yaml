@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch, dev, --branch, main]
+      - id: debug-statements
+      - id: requirements-txt-fixer
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.14.10
+    hooks:
+      # Run the linter.
+      - id: ruff-check
+        types_or: [python, pyi]
+        args: [--fix]
+        exclude: ^rouge_score/
+      # Format imports
+      - id: ruff-check
+        types_or: [python, pyi]
+        args: ["--select", "I", "--fix"]
+        exclude: ^rouge_score/
+      # Run the formatter.
+      - id: ruff-format
+        types_or: [python, pyi]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0
+    hooks:
+      - id: prettier

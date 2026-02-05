@@ -1,0 +1,23 @@
+ifeval:
+  metadata:
+    version: 1.1
+  changes:
+    v1.1: Correct mistake in data point with key 1174 and increase max tokens to 2048
+  name: ifeval
+  competency: english_evals
+  dataloader_file: seahelm_tasks/english_evals/ifeval/ifeval_dataloader.py
+  dataloader_class: IFEvalDataloader
+  metric_file: seahelm_tasks/english_evals/ifeval/ifeval.py
+  metric_class: IFEvalMetric
+  metric: normalized_prompt_level_strict_acc
+  fewshot_num_examples:
+    instruct: 0
+  languages:
+    en:
+      filepath: google/IFEval
+      max_tokens: 2048
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""

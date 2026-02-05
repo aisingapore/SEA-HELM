@@ -1,0 +1,141 @@
+cvqa:
+  metadata:
+    version: 1
+  name: cvqa
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/cvqa/cvqa_dataloader.py
+  dataloader_class: CVQADataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    id:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawablah hanya dengan menggunakan format berikut ini:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, C, atau D saja sebagai jawabannya.
+        task_template: |-
+          Pertanyaan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    ta:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
+          "{answer_tag} ANSWER"
+          தேர்ந்தெடுக்கப்பட்ட பதிலுடன் ANSWER ஐ மாற்றவும். A, B, C அல்லது D என்ற எழுத்துக்களில் மட்டும் பதிலளிக்கவும்.
+        task_template: |-
+          கேள்வி: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "பதில்:"
+    tl:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Sumagot gamit ang sumusunod na format:
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, C, o D sa sagot mo.
+        task_template: |-
+          Tanong: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+    zh:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          仅使用以下格式回答:
+          "{answer_tag} ANSWER"
+          将 ANSWER 替换为您选择的答案。使用字母 A、B、C 或 D 作为答案。
+        task_template: |-
+          問題: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "答案:"
+    ms:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawab guna format ini sahaja:
+          "{answer_tag} ANSWER"
+          Gantikan ANSWER dengan pilihan yang dipilih. Gunakan huruf A, B, C, atau D sebagai jawapan.
+        task_template: |-
+          Soalan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawapan:"
+    jv:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawaban mung nganggo format iki:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER karo jawaban sing dipilih. Tulisen mung huruf A, B, C, utawa D kanggo njawab pertanyaane.
+        task_template: |-
+          Pitakonan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    su:
+      filepath: afaji/cvqa
+      example_filepath:
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          Jawap ngan ngagunakeun format di handap ieu:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER ku jawapan nu geus dipilih. Gunakeun hurup A, B, C, atawa D salaku jawapan.
+        task_template: |-
+          Patarosan: {question}
+          A: {option_a}
+          B: {option_b}
+          C: {option_c}
+          D: {option_d}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"

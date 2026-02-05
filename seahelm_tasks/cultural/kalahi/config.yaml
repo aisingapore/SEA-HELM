@@ -1,29 +1,50 @@
 kalahi-mc:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: kalahi-mc
   competency: cultural
-  metric_file: seahelm_tasks/cultural/kalahi/kalahi.py
-  metric_class: KalahiMCMetric
+  dataloader_file: src/dataloaders/huggingface_dataloader.py
+  dataloader_class: HuggingFaceDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
   metric: normalized_accuracy
-  null_label: none
-  temperature: 0
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
   languages:
     tl:
-      filepath: seahelm_tasks/cultural/kalahi/data/tl_kalahi_mc.jsonl
+      filepath: aisingapore/Cultural-Evaluation-Kalahi
+      example_filepath:
       max_tokens: 32
       prompt_template:
-        template: |-
+        preamble: |-
           Piliin ang pinaka-angkop na sagot sa sumusunod na tanong.
 
           Sumagot gamit ang sumusunod na format.
-          Sagot: $OPTION
-
-          Palitan ang $OPTION gamit ang napiling sagot. Gumamit lang ng letrang {mcq_options} sa sagot mo.
-
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER gamit ang napiling sagot. Gumamit lang ng letrang A, B, C, o D sa sagot mo.
+        task_template: |-
           Tanong:
           ```
           {question}
 
           {mcq}
           ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+kalahi-mc-logprobs:
+  metadata: ${kalahi-mc.metadata}
+  name: kalahi-mc-logprobs
+  competency: ${kalahi-mc.competency}
+  dataloader_file: ${kalahi-mc.dataloader_file}
+  dataloader_class: ${kalahi-mc.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${kalahi-mc.fewshot_num_examples}
+  languages: ${kalahi-mc.languages}

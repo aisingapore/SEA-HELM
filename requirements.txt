@@ -1,15 +1,36 @@
-bert-score==0.3.13
-datasets==3.0.1
-einops==0.8.0
-evaluate==0.4.3
-fast-langdetect==0.2.2
-litellm==1.61.20
+anthropic==0.71.0
+# causal-conv1d==1.5.2
+datasets[audio,vision]==4.5.0
+# einops==0.8.01
+fast-langdetect==0.3.2
+fsspec==2025.10.0
+gcsfs==2025.10.0
+google-cloud-storage==3.8.0
+google-genai==1.60.0
+immutabledict==4.2.2
+jieba==0.42.1
+langdetect==1.0.9
+litellm==1.81.1
+# mamba-ssm==2.2.5
+math-verify[antlr4_13_2]==0.9.0
 nltk==3.9.1
-omegaconf==2.3.0
-openai==1.64.0
-pyonmttok==1.37.1
-pythainlp==5.0.5
-sacrebleu==2.4.3
-scikit-learn==1.4.2
-transformers==4.48.3
-vllm==0.7.3
+omegaconf==2.4.0.dev3
+open-clip-torch==3.2.0
+openai==2.15.0
+opencc==1.1.9
+pre-commit==4.5.1
+pyonmttok==1.38.1
+pythainlp==5.2.0
+ruff==0.14.10
+sacrebleu==2.6.0
+scikit-learn==1.8.0
+# setuptools==80.9.0
+sympy==1.14.0
+tenacity==9.1.2
+tiktoken==0.12.0
+# transformers==4.57.0
+tree-sitter-java==0.21.0
+tree-sitter-javascript==0.21.4
+tree_sitter==0.21.3
+vllm[audio]==0.15.0
+wonderwords==3.0.1

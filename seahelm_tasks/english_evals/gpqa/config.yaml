@@ -1,0 +1,105 @@
+gpqa_main:
+  metadata:
+    version: 1.1
+  changes:
+    v1.1: Use the original GPQA dataset from HuggingFace
+  name: gpqa_main
+  competency: english_evals
+  dataloader_file: seahelm_tasks/english_evals/gpqa/gpqa_dataloader.py
+  dataloader_class: GPQADataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: Idavidrein/gpqa
+      example_filepath: seahelm_tasks/english_evals/gpqa/data/gpqa_examples.jsonl
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Given the following question and four options, choose the best answer.
+
+          Your response should follow this format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |
+          Question:
+          {question}
+
+          Options:
+          A. {choice1}
+          B. {choice2}
+          C. {choice3}
+          D. {choice4}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+gpqa_main-logprobs:
+  metadata: ${gpqa_main.metadata}
+  name: gpqa_main-logprobs
+  competency: ${gpqa_main.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${gpqa_main.fewshot_num_examples}
+  languages: ${gpqa_main.languages}
+
+gpqa_diamond:
+  metadata:
+    version: 1.0
+  name: gpqa_diamond
+  competency: english_evals
+  dataloader_file: seahelm_tasks/english_evals/gpqa/gpqa_dataloader.py
+  dataloader_class: GPQADataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: Idavidrein/gpqa
+      example_filepath: seahelm_tasks/english_evals/gpqa/data/gpqa_examples.jsonl
+      max_tokens: 2048
+      prompt_template:
+        preamble: |
+          Given the following question and four options, choose the best answer.
+
+          Your response should follow this format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} {{answer}}"
+          where {{answer}} is the letter corresponding to the best answer.
+        task_template: |
+          Question:
+          {question}
+
+          Options:
+          A. {choice1}
+          B. {choice2}
+          C. {choice3}
+          D. {choice4}
+        answer_template: |-
+          {cot_content}
+
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+gpqa_diamond-logprobs:
+  metadata: ${gpqa_diamond.metadata}
+  name: gpqa_diamond-logprobs
+  competency: ${gpqa_diamond.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${gpqa_diamond.fewshot_num_examples}
+  languages: ${gpqa_diamond.languages}

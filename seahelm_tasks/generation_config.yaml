@@ -1,5 +1,0 @@
-generation_kwargs:
-  top_p: 1.0 # HuggingFace default
-  top_k: 50 # HuggingFace default
-  repetition_penalty: 1.0 # HuggingFace default
-  seed: 1234

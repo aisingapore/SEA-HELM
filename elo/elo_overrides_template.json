@@ -1,0 +1,7 @@
+{
+  "IGNORE_TASK_LANG": { "task_name": ["language_name"] },
+  "IGNORE_LANG": ["language_name"],
+  "IGNORE_TASK": ["task_name"],
+  "IGNORE_MODEL": ["model_name"],
+  "METRICS_OVERRIDE_DICT": { "task_name": "overriden_metric_name" }
+}

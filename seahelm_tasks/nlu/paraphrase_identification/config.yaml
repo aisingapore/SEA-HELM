@@ -1,28 +1,31 @@
 paraphrase:
   metadata:
-    version: 1
+    version: 1.1
+    changes:
+      v1.1: Changed answer reference from $OPTION to ANSWER in the prompt template.
   name: paraphrase_identification
   competency: nlu
-  metric_file: seahelm_tasks/nlu/paraphrase_identification/paraphrase_identification.py
-  metric_class: ParaphraseIdentificationMetric
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
   metric: normalized_accuracy
-  null_label: none
-  temperature: 0
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
   languages:
     tl:
       filepath: seahelm_tasks/nlu/paraphrase_identification/data/tl_paws.jsonl
       example_filepath: seahelm_tasks/nlu/paraphrase_identification/data/tl_paws_examples.jsonl
       max_tokens: 32
       prompt_template:
-        template: |-
+        preamble: |-
           Bibigyan ka ng dalawang pangungusap, SENTENCE_1 at SENTENCE_2. Tukuyin kung alin sa sumusunod na pahayag ang pinaka-angkop para sa SENTENCE_1 at SENTENCE_2.
           A: Paraprase ang SENTENCE_2 ng SENTENCE_1.
           B: Hindi paraprase ang SENTENCE_2 ng SENTENCE_1.
 
           Sumagot gamit ang sumusunod na format.
-          Sagot: $OPTION
-          Palitan ang $OPTION ng napiling sagot. Gumamit lang ng titik A o B sa sagot mo.{fewshot_examples}
-
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A o B sa sagot mo.
+        task_template: |2-
           SENTENCE_1:
           ```
           {sentence1}
@@ -31,16 +34,43 @@ paraphrase:
           ```
           {sentence2}
           ```
-        fewshot_example: |2-
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+    my:
+      filepath: seahelm_tasks/nlu/paraphrase_identification/data/my_myparaphrase.jsonl
+      example_filepath: seahelm_tasks/nlu/paraphrase_identification/data/my_myparaphrase_examples.jsonl
+      max_tokens: 32
+      prompt_template:
+        preamble: |-
+          သင့်အား SENTENCE_1 နှင့် SENTENCE_2 ဟူသော ဝါကျနှစ်ခုကို ပေးထားပါမည်။ SENTENCE_1 နှင့် SENTENCE_2 တို့အတွက် အောက်ပါဖော်ပြချက်များထဲမှ မည်သည့်အချက်က အကောင်းဆုံး ကိုက်ညီမှုရှိသည်ကို ဆုံးဖြတ်ပါ။
+          က- SENTENCE_2 သည် SENTENCE_1 ၏ အဓိပ္ပာယ်တူ ဝါကျ ဖြစ်သည်။
+          ခ- SENTENCE_2 သည် SENTENCE_1 ၏ အဓိပ္ပာယ်တူ ဝါကျ မဟုတ်ပါ။
 
-
-          SENTENCE_1:
+          အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ-
+          "{answer_tag} ANSWER"
+          ANSWER နေရာတွင် သင်ရွေးချယ်ထားသော အဖြေကို အစားထိုးထည့်ပါ။ အဖြေအတွက် က သို့မဟုတ် ခ အက္ခရာကို အသုံးပြုပါ။
+        task_template: |2-
+          SENTENCE_1-
           ```
           {sentence1}
           ```
-          SENTENCE_2:
+          SENTENCE_2-
           ```
           {sentence2}
           ```
-          Sagot: {label}
-        fewshot_label: 'Sagot: {label}'
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "အဖြေ-"
+
+paraphrase-logprobs:
+  metadata: ${paraphrase.metadata}
+  name: paraphrase-logprobs
+  competency: ${paraphrase.competency}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  max_n_runs: 1
+  fewshot_num_examples: ${paraphrase.fewshot_num_examples}
+  languages: ${paraphrase.languages}

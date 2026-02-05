@@ -1,0 +1,5 @@
+{"id":"myparaphrase_0000","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြု၍ အိပ်ယာ ၂ ခု နဲ့ အခန်း လို ချင် တယ် ။","sentence2":"ကျေးဇူးပြု၍ အိပ်ယာ ၂ ခု နဲ့ အခန်း စီစဉ် ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0001","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြုပြီး ဖြည်းဖြည်း ပြော ပါ ။","sentence2":"ကျေးဇူးပြုပြီး ဖြည်းဖြည်း ပြောင်း ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0002","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကျေးဇူးပြုပြီး လေဆိပ် ကို ပို့ပေး ပါ ။","sentence2":"ကျေးဇူးပြုပြီး လေဆိပ် ကို မောင်း ပေး ပါ ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0003","label":"ခ","text_label":"non-paraphrase","prompts":[{"sentence1":"ကြိုက် တယ် ။","sentence2":"ကြိုက် လား ။"}],"metadata":{"language":"my"}}
+{"id":"myparaphrase_0004","label":"က","text_label":"paraphrase","prompts":[{"sentence1":"ကြိုးစား ကြည့် ။","sentence2":"ကြိုးစား ပါ ။"}],"metadata":{"language":"my"}}
