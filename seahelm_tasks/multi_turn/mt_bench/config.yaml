@@ -1,9 +1,265 @@
 mt-bench:
   metadata:
-    version: 1.1
-    changes:
-      v1.1: Increased max_token limit to 4096.
+    version: 1.0
   name: mt-bench
+  competency: multi-turn
+  dataloader_file: src/dataloaders/huggingface_dataloader.py
+  dataloader_class: HuggingFaceDataloader
+  metric_file: src/metrics/llm_judges/pairwise_llm_judge_metric.py
+  metric_class: PairwiseLLMJudgeMetric
+  metric: weighted_win_rate
+  use_judges: true
+  judge_file: src/judges/pairwise_judge.py
+  judge_class: PairwiseJudge
+  judge:
+    judge_model_name: gpt-4.1-2025-04-14
+    judge_model_type: OpenAI
+    batch_api_calls: true
+    judge_generation_kwargs:
+      temperature: 0.6
+      max_tokens: 2048
+    judge_prompts:
+      without-reference:
+        - system_prompt: |-
+            Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. You should choose the assistant that follows the user's instructions and answers the user's question better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. The language used by the AI assistants should also be the same as that used in the user question. Begin your evaluation by comparing the two responses and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "{A_wins}" if assistant A is better, "{B_wins}" if assistant B is better, and "{Tie}" for a tie.
+          prompt_template: |-
+            [User Question]
+            {question_1}
+
+            [The Start of Assistant A's Answer]
+            {answer_a_1}
+            [The End of Assistant A's Answer]
+
+            [The Start of Assistant B's Answer]
+            {answer_b_1}
+            [The End of Assistant B's Answer]
+        - system_prompt: |-
+            Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user questions. You should choose the assistant that follows the user's instructions and answers the user's questions better. Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses. The language used by the AI assistants should also be the same as that used in the user question. You should focus on who provides a better answer to the second user question. Begin your evaluation by comparing the responses of the two assistants and provide a short explanation. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "{A_wins}" if assistant A is better, "{B_wins}" if assistant B is better, and "{Tie}" for a tie.
+          prompt_template: |-
+            <|The Start of Assistant A's Conversation with User|>
+
+            ### User:
+            {question_1}
+
+            ### Assistant A:
+            {answer_a_1}
+
+            ### User:
+            {question_2}
+
+            ### Assistant A:
+            {answer_a_2}
+
+            <|The End of Assistant A's Conversation with User|>
+
+
+            <|The Start of Assistant B's Conversation with User|>
+
+            ### User:
+            {question_1}
+
+            ### Assistant B:
+            {answer_b_1}
+
+            ### User:
+            {question_2}
+
+            ### Assistant B:
+            {answer_b_2}
+
+            <|The End of Assistant B's Conversation with User|>
+      with-reference:
+        - system_prompt: |-
+            Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. Your evaluation should consider correctness and helpfulness. The language used by the AI assistants should also be the same as that used in the user question. You will be given a reference answer, assistant A's answer, and assistant B's answer. Your job is to evaluate which assistant's answer is better. Begin your evaluation by comparing both assistants' answers with the reference answer. Identify and correct any mistakes. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "{A_wins}" if assistant A is better, "{B_wins}" if assistant B is better, and "{Tie}" for a tie.
+          prompt_template: |-
+            [User Question]
+            {question_1}
+
+            [The Start of Reference Answer]
+            {ref_answer_1}
+            [The End of Reference Answer]
+
+            [The Start of Assistant A's Answer]
+            {answer_a_1}
+            [The End of Assistant A's Answer]
+
+            [The Start of Assistant B's Answer]
+            {answer_b_1}
+            [The End of Assistant B's Answer]
+        - system_prompt: |-
+            Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user questions. Your evaluation should consider correctness and helpfulness. The language used by the AI assistants should also be the same as that used in the user question. You will be given reference answers, the assistant A's answers, the assistant B's answers. Your job is to determine which assistant provides correct and helpful answers to the second user question. Begin your evaluation by comparing both assistants' answers with the reference answers. Identify and correct any mistakes. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "{A_wins}" if assistant A is better, "{B_wins}" if assistant B is better, and "{Tie}" for a tie.
+          prompt_template: |-
+            <|The Start of Reference Answer|>
+
+            ### User:
+            {question_1}
+
+            ### Reference answer:
+            {ref_answer_1}
+
+            ### User:
+            {question_2}
+
+            ### Reference answer:
+            {ref_answer_2}
+
+            <|The End of Reference Answer|>
+
+
+            <|The Start of Assistant A's Conversation with User|>
+
+            ### User:
+            {question_1}
+
+            ### Assistant A:
+            {answer_a_1}
+
+            ### User:
+            {question_2}
+
+            ### Assistant A:
+            {answer_a_2}
+
+            <|The End of Assistant A's Conversation with User|>
+
+
+            <|The Start of Assistant B's Conversation with User|>
+
+            ### User:
+            {question_1}
+
+            ### Assistant B:
+            {answer_b_1}
+
+            ### User:
+            {question_2}
+
+            ### Assistant B:
+            {answer_b_2}
+
+            <|The End of Assistant B's Conversation with User|>
+  baseline_model: gpt-4.1-2025-04-14
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    en:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    id:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    lo:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    km:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    vi:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    th:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    tl:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    jv:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    su:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ta:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ms:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    my:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    zh:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench
+      max_tokens: 1024
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+  ties_allowed: true
+  judgement_labels:
+    "A_wins": "[[A]]"
+    "B_wins": "[[B]]"
+    "Tie": "[[C]]"
+  categories_with_reference:
+    - math
+    - reasoning
+
+mt-bench-increased-tokens:
+  metadata:
+    version: 1.0
+  name: mt-bench-increased-tokens
   competency: multi-turn
   dataloader_file: src/dataloaders/huggingface_dataloader.py
   dataloader_class: HuggingFaceDataloader
