@@ -3,7 +3,7 @@ global_mmlu_lite_logical_fallacies:
     version: 1
     changes: Reshuffled labels from original dataset
   name: global_mmlu_lite_logical_fallacies
-  competency: sea_knowledge
+  competency: knowledge
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
   metric: normalized_accuracy
@@ -14,8 +14,8 @@ global_mmlu_lite_logical_fallacies:
     base: 5
   languages:
     en:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_en_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_en_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_en_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_en_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -34,8 +34,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: "Answer:"
     id:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_id_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_id_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_id_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_id_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -54,8 +54,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: "Jawaban:"
     my:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_my_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_my_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_my_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_my_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -74,8 +74,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: အဖြေ-
     zh:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_zh_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_zh_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_zh_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_zh_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -94,8 +94,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: "答案:"
     vi:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_vi_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_vi_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_vi_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_vi_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -114,8 +114,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: "Câu trả lời:"
     ms:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_ms_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_ms_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_ms_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_ms_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -134,8 +134,8 @@ global_mmlu_lite_logical_fallacies:
         answer_template: "{answer_tag} {label}"
         answer_tag: "Jawapan:"
     tl:
-      filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_tl_test.jsonl
-      example_filepath: seahelm_tasks/sea_knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_tl_dev.jsonl
+      filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_tl_test.jsonl
+      example_filepath: seahelm_tasks/knowledge/global_mmlu_lite/logical_fallacies/global_mmlu_lite_logical_fallacies_tl_dev.jsonl
       max_tokens: 16
       prompt_template:
         preamble: |-
@@ -157,6 +157,8 @@ global_mmlu_lite_logical_fallacies-logprobs:
   metadata: ${global_mmlu_lite_logical_fallacies.metadata}
   name: global_mmlu_lite_logical_fallacies-logprobs
   competency: ${global_mmlu_lite_logical_fallacies.competency}
+  dataloader_file: ${global_mmlu_lite_logical_fallacies.dataloader_file}
+  dataloader_class: ${global_mmlu_lite_logical_fallacies.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities

@@ -3,8 +3,8 @@ global_mmlu_logical_fallacies:
     version: 1
     changes: Reshuffled labels from original dataset
   name: global_mmlu_logical_fallacies
-  competency: sea_knowledge
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
+  competency: knowledge
+  dataloader_file: seahelm_tasks/knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -138,8 +138,8 @@ global_mmlu_logical_fallacies-logprobs:
   metadata: ${global_mmlu_logical_fallacies.metadata}
   name: global_mmlu_logical_fallacies-logprobs
   competency: ${global_mmlu_logical_fallacies.competency}
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
-  dataloader_class: GlobalMMLUDataloader
+  dataloader_file: ${global_mmlu_logical_fallacies.dataloader_file}
+  dataloader_class: ${global_mmlu_logical_fallacies.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
