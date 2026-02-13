@@ -73,11 +73,7 @@ class ThaiExamDataloader(HuggingFaceDataloader):
                     "prompts": [
                         {
                             "question": row["question"],
-                            "a": row["a"],
-                            "b": row["b"],
-                            "c": row["c"],
-                            "d": row["d"],
-                            "e": row["e"],
+                            **{x: row[x] for x in "abcde" if x in row},
                         }
                     ],
                     "metadata": {
@@ -123,11 +119,7 @@ class ThaiExamDataloader(HuggingFaceDataloader):
                     "prompts": [
                         {
                             "question": row["question"],
-                            "a": row["a"],
-                            "b": row["b"],
-                            "c": row["c"],
-                            "d": row["d"],
-                            "e": row["e"],
+                            **{x: row[x] for x in "abcde" if x in row},
                         }
                     ],
                     "metadata": {
