@@ -4,7 +4,7 @@ global_mmlu_business_ethics:
     changes: Reshuffled labels from original dataset
   name: global_mmlu_business_ethics
   competency: knowledge
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -138,8 +138,8 @@ global_mmlu_business_ethics-logprobs:
   metadata: ${global_mmlu_business_ethics.metadata}
   name: global_mmlu_business_ethics-logprobs
   competency: ${global_mmlu_business_ethics.competency}
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
-  dataloader_class: GlobalMMLUDataloader
+  dataloader_file: ${global_mmlu_business_ethics.dataloader_file}
+  dataloader_class: ${global_mmlu_business_ethics.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
