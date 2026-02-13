@@ -6,7 +6,7 @@ thai_exam_a_level:
   name: thai_exam_a_level
   competency: knowledge
   aggregation_group: thai_exam
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/thai_exam/thai_exam_dataloader.py
   dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -44,8 +44,8 @@ thai_exam_a_level-logprobs:
   name: thai_exam_a_level-logprobs
   competency: ${thai_exam_a_level.competency}
   aggregation_group: thai_exam-logprobs
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
-  dataloader_class: ThaiExamDataloader
+  dataloader_file: ${thai_exam_a_level.dataloader_file}
+  dataloader_class: ${thai_exam_a_level.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
@@ -62,7 +62,7 @@ thai_exam_ic:
   name: thai_exam_ic
   competency: knowledge
   aggregation_group: thai_exam
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/thai_exam/thai_exam_dataloader.py
   dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -99,8 +99,8 @@ thai_exam_ic-logprobs:
   name: thai_exam_ic-logprobs
   competency: ${thai_exam_ic.competency}
   aggregation_group: thai_exam-logprobs
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
-  dataloader_class: ThaiExamDataloader
+  dataloader_file: ${thai_exam_ic.dataloader_file}
+  dataloader_class: ${thai_exam_ic.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
@@ -117,7 +117,7 @@ thai_exam_onet:
   name: thai_exam_onet
   competency: knowledge
   aggregation_group: thai_exam
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/thai_exam/thai_exam_dataloader.py
   dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -155,8 +155,8 @@ thai_exam_onet-logprobs:
   name: thai_exam_onet-logprobs
   competency: ${thai_exam_onet.competency}
   aggregation_group: thai_exam-logprobs
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
-  dataloader_class: ThaiExamDataloader
+  dataloader_file: ${thai_exam_onet.dataloader_file}
+  dataloader_class: ${thai_exam_onet.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
@@ -173,7 +173,7 @@ thai_exam_tgat:
   name: thai_exam_tgat
   competency: knowledge
   aggregation_group: thai_exam
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/thai_exam/thai_exam_dataloader.py
   dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -211,8 +211,8 @@ thai_exam_tgat-logprobs:
   name: thai_exam_tgat-logprobs
   competency: ${thai_exam_tgat.competency}
   aggregation_group: thai_exam-logprobs
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
-  dataloader_class: ThaiExamDataloader
+  dataloader_file: ${thai_exam_tgat.dataloader_file}
+  dataloader_class: ${thai_exam_tgat.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
@@ -229,7 +229,7 @@ thai_exam_tpat1:
   name: thai_exam_tpat1
   competency: knowledge
   aggregation_group: thai_exam
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/thai_exam/thai_exam_dataloader.py
   dataloader_class: ThaiExamDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -267,8 +267,8 @@ thai_exam_tpat1-logprobs:
   name: thai_exam_tpat1-logprobs
   competency: ${thai_exam_tpat1.competency}
   aggregation_group: thai_exam-logprobs
-  dataloader_file: seahelm_tasks/sea_knowledge/thai_exam/thai_exam_dataloader.py
-  dataloader_class: ThaiExamDataloader
+  dataloader_file: ${thai_exam_tpat1.dataloader_file}
+  dataloader_class: ${thai_exam_tpat1.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities

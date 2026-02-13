@@ -4,7 +4,7 @@ global_mmlu_college_medicine:
     changes: Reshuffled labels from original dataset
   name: global_mmlu_college_medicine
   competency: knowledge
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
+  dataloader_file: seahelm_tasks/knowledge/global_mmlu/global_mmlu_dataloader.py
   dataloader_class: GlobalMMLUDataloader
   metric_file: src/metrics/f1_acc_metric.py
   metric_class: F1AccMetric
@@ -138,8 +138,8 @@ global_mmlu_college_medicine-logprobs:
   metadata: ${global_mmlu_college_medicine.metadata}
   name: global_mmlu_college_medicine-logprobs
   competency: ${global_mmlu_college_medicine.competency}
-  dataloader_file: seahelm_tasks/sea_knowledge/global_mmlu/global_mmlu_dataloader.py
-  dataloader_class: GlobalMMLUDataloader
+  dataloader_file: ${global_mmlu_college_medicine.dataloader_file}
+  dataloader_class: ${global_mmlu_college_medicine.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
