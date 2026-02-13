@@ -157,8 +157,6 @@ global_mmlu_lite_logical_fallacies-logprobs:
   metadata: ${global_mmlu_lite_logical_fallacies.metadata}
   name: global_mmlu_lite_logical_fallacies-logprobs
   competency: ${global_mmlu_lite_logical_fallacies.competency}
-  dataloader_file: ${global_mmlu_lite_logical_fallacies.dataloader_file}
-  dataloader_class: ${global_mmlu_lite_logical_fallacies.dataloader_class}
   metric_file: src/metrics/logprob_metric.py
   metric_class: LogProbMetric
   metric: average_cumulative_probabilities
