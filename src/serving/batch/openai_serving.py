@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 
 import importlib_metadata
 import pandas as pd
@@ -41,6 +42,25 @@ except Exception:
     )
 
 
+def is_openai_model_name_supported(model_name: str) -> bool:
+    """Check whether an OpenAI model name is supported.
+
+    This first checks against dynamically fetched model IDs from the OpenAI API.
+    If that list is unavailable, stale, or missing a newly released model, it falls
+    back to validating known OpenAI naming prefixes.
+
+    Args:
+        model_name (str): Model identifier.
+
+    Returns:
+        bool: True if model name appears valid for OpenAI serving.
+    """
+    if model_name in OPENAI_MODELS:
+        return True
+
+    return re.match(r"^(gpt|o1|o3|o4)(-|$)", model_name.lower()) is not None
+
+
 class OpenAIServing(BaseBatchServing):
     """
     A serving class that uses OpenAI for language model completions.
@@ -70,14 +90,23 @@ class OpenAIServing(BaseBatchServing):
         self.base_url = base_url
         self.is_base_model = is_base_model
 
-        assert model_name in OPENAI_MODELS, f"Invalid OpenAI model name: {model_name}"
+        assert is_openai_model_name_supported(model_name), (
+            f"Invalid OpenAI model name: {model_name}"
+        )
         self.num_retries = num_retries
         if api_key is None:
             self.api_key = os.getenv("OPENAI_API_KEY")
         else:
             self.api_key = api_key
 
-        self.tokenizer = tiktoken.encoding_for_model(self.model_name)
+        try:
+            self.tokenizer = tiktoken.encoding_for_model(self.model_name)
+        except KeyError:
+            logger.warning(
+                "Unable to resolve tokenizer for model '%s'. Falling back to cl100k_base.",
+                self.model_name,
+            )
+            self.tokenizer = tiktoken.get_encoding("cl100k_base")
 
         self.kwargs_map = {
             "max_tokens": "max_completion_tokens",
@@ -269,8 +298,8 @@ class OpenAIServing(BaseBatchServing):
             retrieved_batch = self.client.batches.retrieve(
                 batch_id=create_batch_response.id,
             )
-
-            if retrieved_batch.output_file_id is not None:
+            status = (retrieved_batch.status or "").lower()
+            if status in {"completed", "failed", "cancelled", "expired"}:
                 break
             else:
                 logger.info(
@@ -281,21 +310,22 @@ class OpenAIServing(BaseBatchServing):
 
         logger.info("OpenAI batch is completed")
 
-        file_content = self.client.files.content(file_id=retrieved_batch.output_file_id)
-        file_content.write_to_file(output_file_path)
-        # convert file_content to unicode
-        pd.read_json(output_file_path, lines=True).to_json(
-            output_file_path, orient="records", lines=True, force_ascii=False
-        )
-
-        if retrieved_batch.error_file_id is not None:
-            error_file_content = self.client.files.content(
-                file_id=retrieved_batch.error_file_id
-            )
-            logger.warning(
-                "Errors occurred during batch generation. Error details:\n%s",
-                error_file_content.read(),
-            )
+        if retrieved_batch.status == "completed" and retrieved_batch.output_file_id:
+            file_content = self.client.files.content(file_id=retrieved_batch.output_file_id)
+            file_content.write_to_file(output_file_path)
+            # convert file_content to unicode
+            pd.read_json(output_file_path, lines=True).to_json(
+                output_file_path, orient="records", lines=True, force_ascii=False
+            )       
+        else:
+            if retrieved_batch.error_file_id is not None:
+                error_file_content = self.client.files.content(
+                    file_id=retrieved_batch.error_file_id
+                )
+                logger.warning(
+                    "Errors occurred during batch generation. Error details:\n%s",
+                    error_file_content.read(),
+                )
 
         return file_content.read()
 

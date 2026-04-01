@@ -1,7 +1,11 @@
 from src.base_logger import get_logger
 from src.serving.batch.anthropic_serving import ANTHROPIC_MODELS, AnthropicServing
 from src.serving.batch.base_batch_serving import BaseBatchServing as BaseBatchServing
-from src.serving.batch.openai_serving import OPENAI_MODELS, OpenAIServing
+from src.serving.batch.openai_serving import (
+    OPENAI_MODELS,
+    OpenAIServing,
+    is_openai_model_name_supported,
+)
 from src.serving.batch.vertexai_serving import VERTEXAI_MODELS, VertexAIServing
 from src.serving.local.base_serving import BaseServing as BaseServing
 from src.serving.local.litellm_serving import LiteLLMServing
@@ -99,7 +103,9 @@ def get_serving_class(
             **model_args,
         )
     elif model_type.lower() == "openai":
-        assert model_name in OPENAI_MODELS, f"Unsupported OpenAI model: {model_name}"
+        assert is_openai_model_name_supported(model_name), (
+            f"Unsupported OpenAI model: {model_name}"
+        )
         assert batch_api_calls, "Only batch API calls are supported for OpenAI models."
         llm = OpenAIServing(
             model_name=model_name,
