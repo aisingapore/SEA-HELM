@@ -1,0 +1,15 @@
+maxifeval:
+  metadata:
+    version: 1
+  name: "maxifeval"
+  competency: "instruction-following"
+  metric_file: "seahelm_tasks/instruction_following/maxifeval/maxifeval.py"
+  metric_class: "MaxIFEvalMetric"
+  metric: averaged_loose_maxifeval_score"
+  temperature: 0
+  languages:
+    en:
+      filepath: "seahelm_tasks/instruction_following/maxifeval/beta_maxifeval_prompts.jsonl"
+      max_tokens: 1024
+      prompt_template:
+        template: "{text}"
