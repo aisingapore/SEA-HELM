@@ -1,0 +1,58 @@
+hallusionbench:
+  metadata:
+    version: 1
+  name: hallusionbench
+  competency: hallucinations
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/hallusionbench/hallusionbench_dataloader.py
+  dataloader_class: HallusionBenchDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: lmms-lab/HallusionBench
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Use the following format to provide the answer:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with either TRUE or FALSE.
+        task_template: |-
+          {question}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+
+hallusionbench_image:
+  metadata:
+    version: 1
+  name: hallusionbench_image
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/hallusionbench/hallusionbench_dataloader.py
+  dataloader_class: HallusionBenchDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: lmms-lab/HallusionBench
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Use the following format to provide the answer:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with either TRUE or FALSE.
+        task_template: |-
+          {question}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"

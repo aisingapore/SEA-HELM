@@ -1,0 +1,92 @@
+mmmu_pro_10_options:
+  metadata:
+    version: 1
+  name: mmmu_pro_10_options
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/MMMU_Pro/mmmu_pro_dataloader.py
+  dataloader_class: MMMUProDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: MMMU/MMMU_Pro
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Provide your answer at the end using the following format:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the correct option letter, e.g. A, B, C, D, E, F, G, H, I, J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+
+mmmu_pro_4_options:
+  metadata:
+    version: 1
+  name: mmmu_pro_4_options
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/MMMU_Pro/mmmu_pro_dataloader.py
+  dataloader_class: MMMUProDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: MMMU/MMMU_Pro
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Provide your answer at the end using the following format:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the correct option letter, e.g. A, B, C, D.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+
+mmmu_pro_vision:
+  metadata:
+    version: 1
+  name: mmmu_pro_vision
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/MMMU_Pro/mmmu_pro_dataloader.py
+  dataloader_class: MMMUProDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: MMMU/MMMU_Pro
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Provide your answer at the end using the following format:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the correct option letter, e.g. A, B, C, D, E, F, G, H, I, J.
+        task_template: ""
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"

@@ -24,6 +24,7 @@ class CVQADataloader(HuggingFaceImageDataloader):
         model_name: str = "",
         run_base_path: str = "",
         inference_file_type: str = "jsonl",
+        num_workers: int = 16,
     ):
         """Initialize the CVQADataloader.
 
@@ -42,6 +43,7 @@ class CVQADataloader(HuggingFaceImageDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
 
         self.language_map = {

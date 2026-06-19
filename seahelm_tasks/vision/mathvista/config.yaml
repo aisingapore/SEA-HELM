@@ -1,0 +1,67 @@
+mathvista_mini_multi_choice:
+  metadata:
+    version: 1
+  name: mathvista_mini_multi_choice
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/mathvista/mathvista_dataloader.py
+  dataloader_class: MathVistaDataloader
+  aggregation_group: mathvista
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: AI4Math/MathVista
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Please answer the question.
+
+          Provide your answer at the end using the following format:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the correct option letter, e.g. A, B, C, D.
+        task_template: |-
+          Question:
+          {question}
+          Choices:
+          {choices_text}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+
+mathvista_mini_free_form:
+  metadata:
+    version: 1
+  name: mathvista_mini_free_form
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  dataloader_file: seahelm_tasks/vision/mathvista/mathvista_dataloader.py
+  dataloader_class: MathVistaDataloader
+  aggregation_group: mathvista
+  metric: normalized_math_verify_score
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    en:
+      filepath: AI4Math/MathVista
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Please answer the question.
+
+          Provide your answer at the end using the format "$\boxed{{ANSWER}}$" where ANSWER is the number or expression that solves the problem. If units are provided, do not include the units in the answer.
+        task_template: |-
+          Question:
+          {question}
+        answer_template: |-
+          {label}
+        answer_tag: "boxed{"

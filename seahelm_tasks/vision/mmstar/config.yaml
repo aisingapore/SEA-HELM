@@ -1,0 +1,29 @@
+mmstar:
+  metadata:
+    version: 1
+  name: mmstar
+  competency: vision
+  task_modality: vision
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  dataloader_file: seahelm_tasks/vision/mmstar/mmstar_dataloader.py
+  dataloader_class: MMStarDataloader
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: Lin-Chen/MMStar
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Use the following format to provide the answer:
+          "{answer_tag} ANSWER"
+          Replace ANSWER with the correct option letter, e.g. A, B, C, D.
+        task_template: |-
+          {question}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
