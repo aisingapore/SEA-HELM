@@ -31,9 +31,24 @@
 ## 🎉 Latest Updates
 
 <details open>
-<summary><strong>20 Jan 2026</strong></summary>
+<summary><strong>19 Jun 2026</strong></summary>
+   
+1. The inference code for SEA-HELM has been refactored. 
+    1. Serving classes are now categorized as Offline, Online and Batched serving.
+    2. New inference strategy class to allow for more code reuse
+2. Added new English evals
+3. Added new Long Context evals
+4. Added SEA Safeguard Bench
+5. Added new Criteria-based evaluations
+    1. OpenAI's HealthBench
+    2. SEA-MT-Bench-Judge
+    3. Kalahi-Judge
+    4. LINDSEA-Judge 
+6. Added code sandbox environment and added Livecodebench v6
+</details>
 
-<strong>Changelog:</strong>
+<details>
+<summary><strong>20 Jan 2026</strong></summary>
 
 1. SEA-HELM now uses a multple run evaluation methodology. A total of 8 runs are used for the leaderboard with each run using the default generation kwargs provided by each model provider.
 1. Added helper jupyter notebooks for evaluation integrity (`helpers/result_integrity_status.ipynb`) and score aggregation (`helpers/results_aggregation.ipynb`)
