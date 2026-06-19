@@ -24,6 +24,7 @@ class GlobalMMLUDataloader(HuggingFaceDataloader):
         model_name: str = "",
         run_base_path: str = "",
         inference_file_type: str = "jsonl",
+        num_workers: int = 16,
     ):
         """Initialize the GlobalMMLUDataloader.
 
@@ -42,6 +43,7 @@ class GlobalMMLUDataloader(HuggingFaceDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
         self.seed = 976843
 
@@ -120,7 +122,7 @@ class GlobalMMLUDataloader(HuggingFaceDataloader):
 
             dataset = dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=dataset.column_names,
                 with_indices=True,
             )
@@ -210,7 +212,7 @@ class GlobalMMLUDataloader(HuggingFaceDataloader):
 
             self.example_dataset = self.example_dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=self.example_dataset.column_names,
                 with_indices=True,
             )
