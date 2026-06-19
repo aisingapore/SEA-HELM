@@ -1,5 +1,5 @@
-import asyncio
 import os
+import time
 from datetime import datetime
 
 import fsspec
@@ -7,7 +7,12 @@ import importlib_metadata
 import pandas as pd
 from google import genai
 from google.cloud import storage
-from google.genai.types import BatchJob, CreateBatchJobConfig, JobState
+from google.genai.types import (
+    BatchJob,
+    CreateBatchJobConfig,
+    JobState,
+    ThinkingLevel,
+)
 
 from src.base_logger import get_logger
 from src.serving.batch.base_batch_serving import BaseBatchServing
@@ -28,11 +33,11 @@ if os.getenv("GOOGLE_GENAI_USE_VERTEXAI") != "true":
 has_google_credentials = False
 for key in env_vars:
     if os.environ.get(key):
-        logger.info(f"Using {key} provided.")
+        logger.info("Using %s provided.", key)
         has_google_credentials = True
     else:
         logger.warning(
-            f"{key} not provided. Please set your {key} environment variable."
+            "%s not provided. Please set your %s environment variable.", key, key
         )
 
 if has_google_credentials:
@@ -70,9 +75,9 @@ class VertexAIServing(BaseBatchServing):
         self,
         model_name: str,
         base_url: str | None = None,
-        api_key: str | None = None,
+        api_key: str | None = None,  # unused
         is_base_model: bool = False,
-        num_retries: int = 5,
+        default_reasoning_effort: ThinkingLevel | None = ThinkingLevel.MEDIUM,
     ) -> None:
         """Initialize the VertexAIServing instance.
 
@@ -82,18 +87,18 @@ class VertexAIServing(BaseBatchServing):
             api_key (str, optional): The API key for authentication. Defaults to None.
             is_base_model (bool, optional): Whether this is a base model that requires special
                 chat template handling. Defaults to False.
-            num_retries (int, optional): Number of retries for failed requests. Defaults to 5.
         """
         self.model_name = model_name
         self.base_url = base_url
-        self.api_key = api_key
         self.is_base_model = is_base_model
+        self.default_reasoning_effort = default_reasoning_effort
+
+        self.friendly_name = "Vertex AI"
 
         assert model_name in VERTEXAI_MODELS, f"Invalid Gemini model name: {model_name}"
-        self.num_retries = num_retries
 
-        self.vertex_project = os.environ.get("VERTEXAI_PROJECT", "")
-        self.vertex_location = os.environ.get("VERTEXAI_LOCATION", "us-central1")
+        self.vertex_project = os.environ.get("GOOGLE_CLOUD_PROJECT", "")
+        self.vertex_location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
         self.client = genai.Client(
             vertexai=True,
             project=self.vertex_project,
@@ -132,18 +137,18 @@ class VertexAIServing(BaseBatchServing):
         """
         return {"google-genai": importlib_metadata.version("google-genai")}
 
-    def _convert_content_to_vertexai_format(self, content):
+    def _convert_content_to_batch_format(self, content: str | list[dict]) -> list[dict]:
         """
         Convert content from OpenAI format to Vertex AI format for multimodal support.
 
         Args:
-            content: Either a string (text-only) or list of content parts (multimodal)
+            content (str | list[dict]): Either a string (text-only) or list of content parts (multimodal)
 
         Returns:
-            Properly formatted content for Vertex AI's API
+            list[dict]: Properly formatted content for Vertex AI's API
         """
         if isinstance(content, str):
-            # Text-only content - wrap in Anthropic's text format
+            # Text-only content - wrap in Vertex AI's text format
             return [{"text": content}]
         elif isinstance(content, list):
             # Multimodal content - convert each part
@@ -207,74 +212,60 @@ class VertexAIServing(BaseBatchServing):
                     )
             return parts
 
-    def prepare_llm_batches(
-        self,
-        llm_batch_file_path: str,
-        conversations: list,
-        custom_ids: list | None = None,
-        **generation_kwargs,
-    ) -> None:
-        """Prepare the batch file for Vertex AI
+    def create_request(
+        self, conversation: list[dict], custom_id: str, generation_kwargs: dict
+    ) -> dict:
+        """Build a single Vertex AI batch request object.
+
+        Converts an OpenAI-style conversation into the Vertex AI content format,
+        extracting any system message into a ``system_instruction`` field.
 
         Args:
-            llm_batch_file_path (str): Path where the batch request file will be saved.
-            conversations (list): List of conversations, where each conversation is a list
-                of message dictionaries with 'role' and 'content' keys.
-            custom_ids (list, optional): List of custom identifiers for each request.
-                If None, uses sequential integer strings. Defaults to None.
-            **generation_kwargs: Additional generation parameters to include in requests.
+            conversation (list[dict]): List of message dicts with ``role`` and ``content`` keys.
+                A ``system`` role message is extracted and placed in ``system_instruction``.
+            custom_id (str): Unique identifier stored in the request ``labels``, used to
+                correlate responses.
+            generation_kwargs (dict): Generation parameters forwarded as ``generationConfig``
+                (e.g. ``maxOutputTokens``, ``temperature``).
+
+        Returns:
+            dict: A dict with a single ``"request"`` key containing the Vertex AI request body.
         """
-        requests = []
-        idx = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
+        messages = []
+        system_message = None
+        for message in conversation:
+            if message["role"] == "system":
+                system_message = message["content"]
+                continue
 
-        # Vertex AI batch API requires a specific format for the generation kwargs
-        selected_generation_kwargs = {}
-        for k, v in generation_kwargs.items():
-            if k in self.kwargs_map:
-                selected_generation_kwargs[self.kwargs_map[k]] = v
-            else:
-                logger.warning(f"Unsupported generation kwarg for Vertex AI API: {k}")
+            messages.append(
+                {
+                    "role": message["role"],
+                    "parts": self._convert_content_to_batch_format(message["content"]),
+                }
+            )
 
-        for ix, conversation in enumerate(conversations):
-            messages = []
-            system_message = None
-            for message in conversation:
-                if message["role"] == "system":
-                    system_message = message["content"]
-                    continue
-
-                messages.append(
-                    {
-                        "role": message["role"],
-                        "parts": self._convert_content_to_vertexai_format(
-                            message["content"]
-                        ),
-                    }
-                )
-
-            custom_id = custom_ids[ix] if custom_ids else f"{idx}_{ix}"
-            request = {
-                "request": {
-                    "contents": messages,
-                    "generationConfig": selected_generation_kwargs,
-                    "labels": {"custom_id": custom_id},
-                },
+        if self.default_reasoning_effort is not None:
+            generation_kwargs["thinkingConfig"] = {
+                "thinkingLevel": self.default_reasoning_effort
             }
 
-            if system_message:
-                request["request"]["system_instruction"] = {
-                    "parts": [{"text": system_message}]
-                }
+        request = {
+            "request": {
+                "contents": messages,
+                "generationConfig": generation_kwargs,
+                "labels": {"custom_id": custom_id},
+            },
+        }
 
-            requests.append(request)
-        df = pd.DataFrame(requests)
-        df.to_json(llm_batch_file_path, orient="records", lines=True, force_ascii=False)
+        if system_message:
+            request["request"]["system_instruction"] = {
+                "parts": [{"text": system_message}]
+            }
+        return request
 
-    async def abatch_generate(
-        self,
-        file_path: str,
-        output_file_path: str,
-        sleep_time: int = 10,
+    def batch_generate(
+        self, file_path: str, output_file_path: str, sleep_time: int = 10
     ) -> list:
         """Generate batch responses using Vertex AI batch API
 
@@ -299,13 +290,13 @@ class VertexAIServing(BaseBatchServing):
 
         # Create batch prediction job
         batch_job = self.create_batch(batch_outputs_path, batch_file_uri)
-        await asyncio.sleep(sleep_time)
+        time.sleep(sleep_time)
 
         # Refresh the batch job until complete
         logger.info("Waiting for VertexAI batch to complete...")
         counter = 1
         while batch_job.state not in self.batch_job_states:
-            await asyncio.sleep(sleep_time)
+            time.sleep(sleep_time)
             logger.info(
                 "Still waiting (%ds has elapsed)...",
                 counter * sleep_time,
@@ -349,7 +340,7 @@ class VertexAIServing(BaseBatchServing):
         blob_path = f"{batch_outputs_dir}/{batch_file_name}"
         blob = self.bucket.blob(blob_path)
         blob.upload_from_filename(file_path, if_generation_match=0)
-        logger.info(f"Batch file {batch_file_name} uploaded to {blob_path}")
+        logger.info("Batch file %s uploaded to %s", batch_file_name, blob_path)
         batch_file_uri = f"gs://{self.bucket_name}/{blob_path}"
         return batch_outputs_path, batch_file_uri, batch_outputs_dir
 
@@ -399,12 +390,14 @@ class VertexAIServing(BaseBatchServing):
         blob_path = f"gs://{file_paths[0]}"
 
         df = pd.read_json(blob_path, lines=True)
+
+        # remove failed requests
         df["id"] = df.apply(lambda x: self.get_ids_from_batch(x), axis=1)
         df = df.sort_values(by="id").reset_index(drop=True)
         df.to_json(
             batch_output_filepath, orient="records", lines=True, force_ascii=False
         )
-        logger.info(f"Batch predictions downloaded to {batch_output_filepath}")
+        logger.info("Batch predictions downloaded to %s", batch_output_filepath)
 
         predictions = df.to_dict("records")
         return predictions
@@ -425,7 +418,7 @@ class VertexAIServing(BaseBatchServing):
         for blob in blobs:
             blob.delete()
 
-        logger.info(f"All objects in '{batch_outputs_dir}' deleted")
+        logger.info("All objects in '%s' deleted", batch_outputs_dir)
 
     def get_response(self, output: dict) -> str:
         """
@@ -449,7 +442,9 @@ class VertexAIServing(BaseBatchServing):
                         "finishReason", ""
                     )
                     logger.warning(
-                        f"No response for {custom_id} because of finishReason: {finishReason}"
+                        "No response for %s because of finishReason: %s",
+                        custom_id,
+                        finishReason,
                     )
                     response = ""
             elif output["response"].get("promptFeedback") is not None:
@@ -457,14 +452,16 @@ class VertexAIServing(BaseBatchServing):
                     "blockReason", ""
                 )
                 logger.warning(
-                    f"No response for {custom_id} because of blockReason: {blockReason}"
+                    "No response for %s because of blockReason: %s",
+                    custom_id,
+                    blockReason,
                 )
                 response = ""
             else:
-                logger.warning(f"No response for {custom_id}")
+                logger.warning("No response for %s", custom_id)
                 response = ""
         except Exception:
-            logger.warning(f"No response for {custom_id}")
+            logger.warning("No response for %s", custom_id)
             response = ""
         return response
 
@@ -478,6 +475,20 @@ class VertexAIServing(BaseBatchServing):
             string: Comma-separated string of custom IDs.
         """
         return batch["request"]["labels"]["custom_id"]
+
+    def get_valid_ids_from_batch(self, batch: dict) -> str | None:
+        """
+        Extract valid custom IDs from batch outputs.
+
+        Args:
+            batch (dict): The batch output dictionary.
+        Returns:
+            string | None: string of custom ID if the request is successful, None otherwise.
+        """
+        if batch["status"] == "":
+            return self.get_ids_from_batch(batch)
+        else:
+            return None
 
     def batch_tokenize(self, messages: list[list]) -> list[dict]:
         """

@@ -1,6 +1,6 @@
-import asyncio
 import os
 import re
+import time
 
 import importlib_metadata
 import pandas as pd
@@ -74,44 +74,40 @@ class OpenAIServing(BaseBatchServing):
         base_url: str | None = None,
         api_key: str | None = None,
         is_base_model: bool = False,
-        num_retries: int = 5,
+        default_reasoning_effort: str | None = "medium",
     ) -> None:
         """Initialize the OpenAIServing instance.
 
         Args:
-            model (str): The model identifier to use for completions.
+            model_name (str): The model identifier to use for completions.
             base_url (str, optional): The base URL for the API endpoint. Defaults to None.
             api_key (str, optional): The API key for authentication. Defaults to None.
             is_base_model (bool, optional): Whether this is a base model that requires special
                 chat template handling. Defaults to False.
-            num_retries (int, optional): Number of retries for failed requests. Defaults to 5.
         """
         self.model_name = model_name
         self.base_url = base_url
+        if api_key is not None:
+            kwargs = {"api_key": api_key}
+        else:
+            kwargs = {}
         self.is_base_model = is_base_model
+
+        self.friendly_name = "OpenAI"
 
         assert is_openai_model_name_supported(model_name), (
             f"Invalid OpenAI model name: {model_name}"
         )
-        self.num_retries = num_retries
-        if api_key is None:
-            self.api_key = os.getenv("OPENAI_API_KEY")
-        else:
-            self.api_key = api_key
 
-        try:
-            self.tokenizer = tiktoken.encoding_for_model(self.model_name)
-        except KeyError:
-            logger.warning(
-                "Unable to resolve tokenizer for model '%s'. Falling back to cl100k_base.",
-                self.model_name,
-            )
-            self.tokenizer = tiktoken.get_encoding("cl100k_base")
+        self.tokenizer = tiktoken.encoding_for_model(self.model_name)
 
         self.kwargs_map = {
+            "temperature": "temperature",
             "max_tokens": "max_completion_tokens",
+            "top_p": "top_p",
+            "seed": "seed",
         }
-        self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+        self.client = OpenAI(base_url=self.base_url, **kwargs)
 
     def load_model(self):
         """No-op for OpenAI serving as model is hosted externally."""
@@ -164,6 +160,158 @@ class OpenAIServing(BaseBatchServing):
                 output.extend(["<|im_start|>", "assistant\n"])
         return output
 
+    def create_request(
+        self, conversation: list[dict], custom_id: str, generation_kwargs: dict
+    ) -> dict:
+        """Build a single OpenAI batch request object.
+
+        Constructs a request dict in the JSONL format expected by the OpenAI
+        batch API (``/v1/chat/completions`` endpoint).
+
+        Args:
+            conversation (list[dict]): List of message dicts with ``role`` and ``content`` keys.
+            custom_id (str): Unique identifier for this request, used to correlate responses.
+            generation_kwargs (dict): Generation parameters (e.g. ``max_completion_tokens``,
+                ``temperature``).
+
+        Returns:
+            dict: A request dict with ``custom_id``, ``method``, ``url``, and ``body`` keys.
+        """
+        body = (
+            generation_kwargs.copy()
+        )  # must copy to ensure that the values don't change
+        body["model"] = self.model_name
+        body["messages"] = conversation
+
+        if self.default_reasoning_effort is not None:
+            body["reasoning_effort"] = self.default_reasoning_effort
+
+        request = {
+            "custom_id": custom_id,
+            "method": "POST",
+            "url": "/v1/chat/completions",
+            "body": body,
+        }
+        return request
+
+    def batch_generate(
+        self, file_path: str, output_file_path: str, sleep_time: int = 10
+    ) -> list:
+        """Generate batch responses using the OpenAI batch API.
+
+        Args:
+            file_path (str): The path to the file containing the batch requests.
+            output_file_path (str): The path to the file where the batch responses will be saved.
+            sleep_time (int, optional): The time to wait between status checks in seconds. Defaults to 10.
+        """
+        file_obj = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="batch",
+        )
+
+        time.sleep(sleep_time)
+        batch_input_file_id = file_obj.id
+        assert batch_input_file_id is not None, (
+            f"Failed to create input file, expected a non null file_id but got {batch_input_file_id}"
+        )
+
+        create_batch_response = self.client.batches.create(
+            input_file_id=batch_input_file_id,
+            endpoint="/v1/chat/completions",
+            completion_window="24h",
+        )
+        logger.info("Prompts sent via OpenAI batch API")
+
+        logger.info("Waiting for OpenAI batch to complete...")
+        counter = 1
+        while True:
+            time.sleep(sleep_time)
+
+            retrieved_batch = self.client.batches.retrieve(
+                batch_id=create_batch_response.id,
+            )
+
+            status = str(retrieved_batch.status).lower()
+            if status in {"completed", "failed", "cancelled", "expired"}:
+                break
+            else:
+                logger.info(
+                    "Still waiting (%ds has elapsed)...",
+                    counter * sleep_time,
+                )
+                counter += 1
+
+        logger.info("OpenAI batch is completed")
+
+        if retrieved_batch.status == "completed" and retrieved_batch.output_file_id:
+            file_content = self.client.files.content(
+                file_id=retrieved_batch.output_file_id
+            )
+            file_content.write_to_file(output_file_path)
+            # convert file_content to unicode
+            pd.read_json(output_file_path, lines=True).to_json(
+                output_file_path, orient="records", lines=True, force_ascii=False
+            )
+
+        if retrieved_batch.error_file_id is not None:
+            error_file_content = self.client.files.content(
+                file_id=retrieved_batch.error_file_id
+            )
+            logger.warning(
+                "Errors occurred during batch generation. Error details:\n%s",
+                error_file_content.read(),
+            )
+
+        return file_content.read()
+
+    def get_response(self, output: dict) -> str:
+        """Get the response from the output.
+
+        Args:
+            output (dict): The output to get the response from.
+
+        Returns:
+            str: The response from the output.
+        """
+        return output["response"]["body"]["choices"][0]["message"]["content"]
+
+    def get_ids_from_batch(self, batch: dict) -> str:
+        """
+        Extract custom IDs from batch outputs.
+
+        Args:
+            batch (dict): The batch output dictionary.
+        Returns:
+            string: Comma-separated string of custom IDs.
+        """
+        return batch["custom_id"]
+
+    def get_valid_ids_from_batch(self, batch: dict) -> str | None:
+        """
+        Extract valid custom IDs from batch outputs.
+
+        Args:
+            batch (dict): The batch output dictionary.
+        Returns:
+            string | None: string of custom ID if the request is successful, None otherwise.
+        """
+        return self.get_ids_from_batch(batch)
+
+    def batch_tokenize(self, messages: list[list]) -> list[dict]:
+        """
+        Tokenize multiple messages in batch.
+
+        Args:
+            messages (list[list]): List of messages to tokenize.
+
+        Returns:
+            list[dict]: List of tokenization responses.
+        """
+        # TODO handle cases when encode does not work
+        batch_response = [self.tokenize(message) for message in messages]
+
+        return batch_response
+
     def tokenize(self, message: list, add_generation_prompt: bool = True) -> list:
         """Tokenize a message.
 
@@ -200,156 +348,6 @@ class OpenAIServing(BaseBatchServing):
                 tokens.extend(self.tokenizer.encode(input))
 
         return tokens
-
-    def batch_tokenize(self, messages: list[list]) -> list[dict]:
-        """
-        Tokenize multiple messages in batch.
-
-        Args:
-            messages (list[list]): List of messages to tokenize.
-
-        Returns:
-            list[dict]: List of tokenization responses.
-        """
-        # TODO handle cases when encode does not work
-        batch_response = [self.tokenize(message) for message in messages]
-
-        return batch_response
-
-    def prepare_llm_batches(
-        self,
-        llm_batch_file_path: str,
-        conversations: list,
-        custom_ids: list | None = None,
-        **generation_kwargs,
-    ) -> None:
-        """Prepare LLM batches.
-
-        Args:
-            llm_batch_file_path (str): The path to the LLM batch file.
-            conversations (list): List of conversations, where each conversation is a list
-                of message dictionaries with 'role' and 'content' keys.
-            custom_ids (list, optional): List of custom identifiers for each request.
-                If None, uses sequential integer strings. Defaults to None.
-            **generation_kwargs: Additional generation parameters to include in requests.
-        """
-        batches = []
-        id = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
-
-        kwargs = {
-            (self.kwargs_map[k] if k in self.kwargs_map else k): v
-            for k, v in generation_kwargs.items()
-        }
-
-        for i, convo in enumerate(conversations):
-            # prepare body of batch to send to OpenAI API
-            body = kwargs.copy()  # must copy to ensure that the values don't change
-            body["model"] = self.model_name
-            body["messages"] = convo
-
-            custom_id = f"{id}_{i}" if custom_ids is None else custom_ids[i]
-
-            output = {
-                "custom_id": custom_id,
-                "method": "POST",
-                "url": "/v1/chat/completions",
-                "body": body,
-            }
-            batches.append(output)
-        df = pd.DataFrame(batches)
-        df.to_json(llm_batch_file_path, orient="records", lines=True, force_ascii=False)
-
-    async def abatch_generate(
-        self,
-        file_path: str,
-        output_file_path: str,
-        sleep_time: int = 10,
-    ) -> None:
-        """Generate batch responses asynchronously.
-
-        Args:
-            file_path (str): The path to the file containing the batch requests.
-            output_file_path (str): The path to the file where the batch responses will be saved.
-            sleep_time (int, optional): The time to wait between status checks in seconds. Defaults to 10.
-        """
-        file_obj = self.client.files.create(
-            file=open(file_path, "rb"),
-            purpose="batch",
-        )
-
-        await asyncio.sleep(sleep_time)
-        batch_input_file_id = file_obj.id
-        assert batch_input_file_id is not None, (
-            "Failed to create input file, expected a non null file_id but got {batch_input_file_id}"
-        )
-
-        create_batch_response = self.client.batches.create(
-            input_file_id=batch_input_file_id,
-            endpoint="/v1/chat/completions",
-            completion_window="24h",
-        )
-        logger.info("Prompts sent via OpenAI batch API")
-
-        logger.info("Waiting for OpenAI batch to complete...")
-        counter = 1
-        while True:
-            await asyncio.sleep(sleep_time)
-
-            retrieved_batch = self.client.batches.retrieve(
-                batch_id=create_batch_response.id,
-            )
-            status = (retrieved_batch.status or "").lower()
-            if status in {"completed", "failed", "cancelled", "expired"}:
-                break
-            else:
-                logger.info(
-                    "Still waiting (%ds has elapsed)...",
-                    counter * sleep_time,
-                )
-                counter += 1
-
-        logger.info("OpenAI batch is completed")
-
-        if retrieved_batch.status == "completed" and retrieved_batch.output_file_id:
-            file_content = self.client.files.content(file_id=retrieved_batch.output_file_id)
-            file_content.write_to_file(output_file_path)
-            # convert file_content to unicode
-            pd.read_json(output_file_path, lines=True).to_json(
-                output_file_path, orient="records", lines=True, force_ascii=False
-            )       
-        else:
-            if retrieved_batch.error_file_id is not None:
-                error_file_content = self.client.files.content(
-                    file_id=retrieved_batch.error_file_id
-                )
-                logger.warning(
-                    "Errors occurred during batch generation. Error details:\n%s",
-                    error_file_content.read(),
-                )
-
-        return file_content.read()
-
-    def get_response(self, output: dict) -> str:
-        """Get the response from the output.
-
-        Args:
-            output (dict): The output to get the response from.
-
-        Returns:
-            str: The response from the output.
-        """
-        return output["response"]["body"]["choices"][0]["message"]["content"]
-
-    def get_ids_from_batch(self, batch: dict) -> str:
-        """
-        Extract custom IDs from batch outputs.
-
-        Args:
-            batch (dict): The batch output dictionary.
-        Returns:
-            string: Comma-separated string of custom IDs.
-        """
-        return batch["custom_id"]
 
 
 if __name__ == "__main__":

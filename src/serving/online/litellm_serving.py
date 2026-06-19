@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
@@ -10,10 +9,7 @@ import litellm
 import requests
 from litellm.exceptions import LITELLM_EXCEPTION_TYPES
 from litellm.llms.vllm.completion import handler as vllm_handler
-from litellm.types.utils import ModelResponse
 from litellm.utils import get_optional_params
-
-from src.serving.local.base_serving import BaseServing
 
 litellm.drop_params = True
 
@@ -159,7 +155,7 @@ def batch_completion_with_retries(
     return results
 
 
-class LiteLLMServing(BaseServing):
+class LiteLLMServing:
     """
     A serving class that uses LiteLLM for language model completions.
 
@@ -174,13 +170,13 @@ class LiteLLMServing(BaseServing):
         api_key: str | None = None,
         is_base_model: bool = False,
         ssl_verify: bool = True,
-        max_workers: int = 100,
+        max_workers: int = 256,
     ):
         """
         Initialize the LiteLLMServing instance.
 
         Args:
-            model (str): The model identifier to use for completions.
+            model_name (str): The model identifier to use for completions.
             base_url (str, optional): The base URL for the API endpoint. Defaults to None.
             api_key (str, optional): The API key for authentication. Defaults to None.
             is_base_model (bool, optional): Whether this is a base model that requires special
@@ -215,37 +211,6 @@ class LiteLLMServing(BaseServing):
             dict: Dictionary containing the LiteLLM version.
         """
         return {"litellm_version": importlib_metadata.version("litellm")}
-
-    def generate(
-        self,
-        messages: list,
-        logprobs: bool = False,
-        num_retries: int = 10,
-        **generation_kwargs,
-    ):
-        """
-        Generate a completion for a single conversation.
-
-        Args:
-            messages (list): List of messages forming the conversation.
-            logprobs (bool, optional): Whether to return log probabilities. Defaults to False.
-            num_retries (int, optional): Number of retries for failed requests. Defaults to 10.
-            **generation_kwargs: Additional generation parameters.
-
-        Returns:
-            The completion response from the model.
-        """
-        response = litellm.completion_with_retries(
-            model=self.model_name,
-            messages=messages,
-            base_url=self.base_url,
-            api_key=self.api_key,
-            logprobs=logprobs,
-            num_retries=num_retries,
-            retry_strategy="exponential_backoff_retry",
-            **generation_kwargs,
-        )
-        return response
 
     def tokenize(self, message: list) -> dict:
         """
@@ -299,79 +264,48 @@ class LiteLLMServing(BaseServing):
 
         return batch_response
 
-    def batch_generate(
-        self,
-        batch_messages: list[list],
-        logprobs: bool = False,
-        use_retries: bool = True,
-        num_retries: int = 10,
-        retry_strategy: str = "exponential_backoff_retry",
-        **generation_kwargs,
+    def generate_completions(
+        self, prompts: list[list] | list, generation_kwargs: dict | list[dict]
     ) -> list:
+        """
+        Generate responses for a given batch of prompts.
+
+        Args:
+            prompts (list[list]): The batch of prompts to generate responses for.
+            generation_kwargs: Additional generation kwargs.
+
+        Returns:
+            list: The generated responses.
+        """
+        raise NotImplementedError(
+            "generate_completions method not supported. Please use generate_chat_responses for LiteLLMServing."
+        )
+
+    def generate_chat_responses(
+        self, conversations: list[list] | list, generation_kwargs: dict | list[dict]
+    ) -> list[Any]:
         """
         Generate completions for multiple conversations in batch.
 
         Args:
-            batch_messages (list[list]): List of message conversations to process.
-            logprobs (bool, optional): Whether to return log probabilities. Defaults to False.
-            use_retries (bool, optional): Whether to use retry logic. Defaults to True.
-            num_retries (int, optional): Number of retries for failed requests. Defaults to 10.
-            retry_strategy (str, optional): Strategy for retries.
-                Defaults to "exponential_backoff_retry".
-            **generation_kwargs: Additional generation parameters.
+            conversations (list[list]): List of message conversations to process.
+            generation_kwargs: Additional generation parameters.
 
         Returns:
             list: List of completion responses.
         """
-        if use_retries:
-            batch_response = batch_completion_with_retries(
-                model=self.model_name,
-                messages=batch_messages,
-                base_url=self.base_url,
-                api_key=self.api_key,
-                logprobs=logprobs,
-                max_workers=self.max_workers,
-                num_retries=num_retries,
-                retry_strategy=retry_strategy,
-                **generation_kwargs,
-            )
-        else:
-            batch_response = litellm.batch_completion(
-                model=self.model_name,
-                messages=batch_messages,
-                base_url=self.base_url,
-                api_key=self.api_key,
-                logprobs=logprobs,
-                max_workers=self.max_workers,
-                **generation_kwargs,
-            )
-        return batch_response
-
-    async def agenerate(
-        self, messages: list, logprobs: bool = False, **generation_kwargs
-    ):
-        """
-        Generate a completion asynchronously for a single conversation.
-
-        Args:
-            messages (list): List of messages forming the conversation.
-            logprobs (bool, optional): Whether to return log probabilities. Defaults to False.
-            **generation_kwargs: Additional generation parameters.
-
-        Returns:
-            The async completion response from the model.
-        """
-        response = await litellm.acompletion(
+        responses = batch_completion_with_retries(
             model=self.model_name,
-            messages=messages,
+            messages=conversations,
             base_url=self.base_url,
             api_key=self.api_key,
-            logprobs=logprobs,
+            max_workers=self.max_workers,
             **generation_kwargs,
         )
-        return response
 
-    def get_response(self, output) -> str:
+        return responses
+
+    def get_response(self, output: Any) -> str:
         """
         Extract the response content from the model output.
 
@@ -383,67 +317,65 @@ class LiteLLMServing(BaseServing):
         """
         return output["choices"][0]["message"]["content"]
 
-    def convert_response_to_json(self, response: ModelResponse) -> dict:
-        """Convert the response to a JSON serializable format.
+    def cleanup(self) -> None:
+        """No-op for LiteLLM serving as there are no local resources to clean up."""
+        pass
+
+    def parse_output(self, output: Any, custom_id: str | None = None) -> dict:
+        """Parse the outputs of the generated responses.
 
         Args:
-            response (ModelResponse): The response to convert.
+            output (Any): The generated output to parse.
+            custom_id (str, optional): The custom ID associated with the input. Defaults to None.
 
         Returns:
-            dict: The JSON serializable response.
+            dict: The parsed outputs.
         """
-        return {
-            "id": response.id,
-            "created": response.created,
-            "model": response.model,
-            "system_fingerprint": response.system_fingerprint,
-            "choices": [choice.to_dict() for choice in response.choices],
-            "usage": response.usage.to_dict(),
-        }
+        # Handle LiteLLM Error types
+        if type(output) in LITELLM_EXCEPTION_TYPES:
+            return {
+                "finish_reasons": None,
+                "responses": None,
+                "reasoning_contents": None,
+                "custom_ids": custom_id,
+                "token_usages": None,
+                "function_calls": None,
+                "tool_calls": None,
+                "logprobs": None,
+                "errors": type(output).__name__,
+            }
 
-    def parse_outputs(
-        self,
-        generated_outputs: list,
-        conversations: list | None = None,
-        tokenize_prompts: bool = False,
-        use_logprobs: bool = False,
-    ) -> dict:
-        """
-        Parse the generated outputs into a structured format.
+        try:
+            parsed_output = {
+                "finish_reasons": output["choices"][0]["finish_reason"],
+                "responses": self.get_response(output),
+                "reasoning_contents": output["choices"][0]["message"].get(
+                    "reasoning_content"
+                ),
+                "custom_ids": custom_id,
+                "token_usages": {
+                    "prompt_tokens": output["usage"]["prompt_tokens"],
+                    "completion_tokens": output["usage"]["completion_tokens"],
+                },
+                "function_calls": output["choices"][0]["message"].get("function_call"),
+                "tool_calls": output["choices"][0]["message"].get("tool_calls"),
+                "logprobs": output["choices"][0].get("logprobs"),
+                "errors": None,
+            }
+        except Exception as e:
+            parsed_output = {
+                "finish_reasons": None,
+                "responses": None,
+                "reasoning_contents": None,
+                "custom_ids": custom_id,
+                "token_usages": None,
+                "function_calls": None,
+                "tool_calls": None,
+                "logprobs": None,
+                "errors": str(e),
+            }
 
-        Args:
-            generated_outputs (list): List of generated outputs from the model.
-            conversations (list, optional): List of original conversations.
-                Defaults to None.
-            tokenize_prompts (bool, optional): Whether to tokenize the prompts.
-                Defaults to False.
-
-        Returns:
-            dict: Dictionary containing parsed responses, errors, and optionally tokenized prompts.
-        """
-        responses = []
-        errors = []
-        tokenized_prompts = []
-
-        for output in generated_outputs:
-            # Handle LiteLLM Error types
-            if type(output) in LITELLM_EXCEPTION_TYPES:
-                responses.append(None)
-                errors.append(type(output).__name__)
-            else:
-                responses.append(self.get_response(output))
-                errors.append(None)
-
-        if tokenize_prompts:
-            tokenized_prompts = self.batch_tokenize(conversations)
-
-        outputs = {
-            "responses": responses,
-            "errors": errors,
-            "tokenized_prompts": tokenized_prompts,
-        }
-
-        return outputs
+        return parsed_output
 
 
 if __name__ == "__main__":
@@ -456,14 +388,7 @@ if __name__ == "__main__":
     litellmModel = LiteLLMServing(model_name, base_url, api_key, is_base_model=False)
 
     messages = [{"role": "user", "content": "ELI5: Why is the sky blue"}]
-    # run generation
-    response = litellmModel.generate(messages)
-    print(response)
 
     # run batch generation
-    response = litellmModel.batch_generate([messages for _ in range(5)])
-    print(response)
-
-    # run async generation
-    response = asyncio.run(litellmModel.agenerate(messages))
+    response = litellmModel.generate_chat_responses([messages for _ in range(5)], {})
     print(response)

@@ -1,4 +1,3 @@
-import os
 from collections import Counter
 from enum import Enum
 
@@ -47,10 +46,7 @@ class PairwiseLLMJudgeMetric(SeaHelmMetric):
             )
         self.model_name = dataloader.model_name
         self.baseline_model = task_config.config.get("baseline_model", "")
-        self.judge_model_name = task_config.config["judge"].get("judge_model_name", "")
-
-    def get_judgement_file_name(self) -> str:
-        return f"{os.path.basename(self.model_name)}_{self.task}_{self.lang}_{self.baseline_model}_{os.path.basename(self.judge_model_name)}_judgement.jsonl"
+        self.judge_model_name = task_config.config.judge.get("judge_model_name", "")
 
     # Implementing the abstract method from SeahelmMetric
     def calculate_metrics(self) -> tuple[dict, pd.DataFrame]:
@@ -66,15 +62,12 @@ class PairwiseLLMJudgeMetric(SeaHelmMetric):
                 - DataFrame: The inference dataframe with additional columns.
         """
         # Get judgements
-        llm_judgement_file_path = os.path.join(
-            self.dataloader.get_parent_folder(),
-            self.get_judgement_file_name(),
-        )
+        llm_judgement_file_path = self.dataloader.get_judge_batch_response_filepath()
         judgement_df = pd.read_json(llm_judgement_file_path, lines=True)
 
         # Create metadata dataframe
         judgement_meta_df = pd.DataFrame(
-            judgement_df["custom_id"].map(lambda x: x.split("_")).to_list(),
+            judgement_df["custom_ids"].map(lambda x: x.split("_")).to_list(),
             columns=["question_id", "turn", "order"],
         )
         judgement_df = pd.concat([judgement_df, judgement_meta_df], axis=1)
@@ -82,14 +75,14 @@ class PairwiseLLMJudgeMetric(SeaHelmMetric):
         # Parse judgements
         judgement_df["verdict"] = judgement_df.apply(
             lambda row: self.parse_judgement(
-                row["parsed_response"], row["order"] == "baseline-before"
+                row["responses"], row["order"] == "baseline-before"
             ),
             axis=1,
         )
 
         # Process inference dataframe
-        inference_df_rows = []
-        for _, row in self.dataloader.inference_df.iterrows():
+        dataframe_rows = []
+        for _, row in self.dataloader.dataframe.iterrows():
             question_id = str(row["question_id"])
             judgements = judgement_df[judgement_df["question_id"] == question_id]
 
@@ -106,21 +99,24 @@ class PairwiseLLMJudgeMetric(SeaHelmMetric):
 
             row["final_judgement"] = final_judgement
 
-            inference_df_rows.append(row)
+            dataframe_rows.append(row)
 
-        self.dataloader.inference_df = pd.DataFrame(inference_df_rows)
+        self.dataloader.dataframe = pd.DataFrame(dataframe_rows)
 
         # Calculate metrics
         metrics = self.get_judge_metrics(
-            self.dataloader.inference_df["final_judgement"],
-            [x["category"] for x in self.dataloader.inference_df["metadata"]],
+            self.dataloader.dataframe["final_judgement"],
+            [x["category"] for x in self.dataloader.dataframe["metadata"]],
         )
-        self.dataloader.inference_df["individual_scores"] = [
-            {
-                "weighted_win_rate": [self.get_score(turn) for turn in x],
-            }
-            for x in self.dataloader.inference_df["final_judgement"]
-        ]
+        self.dataloader.update_individual_scores(
+            [
+                {
+                    "weighted_win_rate": [self.get_score(turn) for turn in x],
+                }
+                for x in self.dataloader.dataframe["final_judgement"]
+            ]
+        )
+
         return metrics
 
     def get_score(self, judgement: int) -> float:
@@ -184,21 +180,21 @@ class PairwiseLLMJudgeMetric(SeaHelmMetric):
             # Get win rate for category
             subset_win_rate = self.get_win_rate(subset_judgements)
             metric_dict["categories"].update({category: subset_win_rate})
-            logger.info(f"Win rate for category <{category}>: {subset_win_rate}")
+            logger.info("Win rate for category <%s>: %.2f", category, subset_win_rate)
 
         # Get overall win rate
         overall_win_rate = self.get_win_rate(
             [j for judgement_pair in judgement_list for j in judgement_pair]
         )
         metric_dict["win_rate"] = overall_win_rate
-        logger.info(f"Overall win rate: {overall_win_rate}")
+        logger.info("Overall win rate: %.2f", overall_win_rate)
 
         # Get weighted win rate
         weighted_win_rate = sum(list(metric_dict["categories"].values())) / len(
             metric_dict["categories"]
         )
         metric_dict["weighted_win_rate"] = weighted_win_rate * 100
-        logger.info(f"Weighted win rate: {weighted_win_rate}")
+        logger.info("Weighted win rate: %.2f", weighted_win_rate)
 
         return metric_dict
 

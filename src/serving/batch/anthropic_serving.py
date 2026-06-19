@@ -1,5 +1,5 @@
-import asyncio
 import os
+import time
 
 import anthropic
 import importlib_metadata
@@ -16,11 +16,11 @@ env_vars = {"ANTHROPIC_API_KEY": False}
 
 for key in env_vars:
     if os.environ.get(key):
-        logger.info(f"Using {key} provided.")
+        logger.info("Using %s provided.", key)
         env_vars[key] = True
     else:
         logger.warning(
-            f"{key} not provided. Please set your {key} environment variable."
+            "%s not provided. Please set your %s environment variable.", key, key
         )
 
 if env_vars["ANTHROPIC_API_KEY"]:
@@ -56,7 +56,7 @@ class AnthropicServing(BaseBatchServing):
         base_url: str | None = None,
         api_key: str | None = None,
         is_base_model: bool = False,
-        num_retries: int = 5,
+        default_reasoning_effort: str | None = "medium",
     ) -> None:
         """
         Initialize the AnthropicServing instance.
@@ -67,26 +67,32 @@ class AnthropicServing(BaseBatchServing):
             api_key (str, optional): The API key for authentication. Defaults to None.
             is_base_model (bool, optional): Whether this is a base model that requires special
                 chat template handling. Defaults to False.
-            num_retries (int, optional): Number of retries for failed requests. Defaults to 5.
 
         Raises:
             AssertionError: If the specified model is not available in the Anthropic API.
         """
         self.model_name = model_name
         self.base_url = base_url
-        self.api_key = api_key
+        if api_key is not None:
+            kwargs = {"api_key": api_key}
+        else:
+            kwargs = {}
         self.is_base_model = is_base_model
-        self.num_retries = num_retries
+        self.default_reasoning_effort = default_reasoning_effort
 
-        self.client = (
-            anthropic.Anthropic()
+        self.friendly_name = "Anthropic"
+
+        self.client = anthropic.Anthropic(
+            **kwargs
         )  # API key is loaded from environment variable ANTHROPIC_API_KEY
 
         assert self.model_name in ANTHROPIC_MODELS, (
             f"Model {self.model_name} is not available in Anthropic API. Available models: {ANTHROPIC_MODELS}"
         )
 
-        self.kwargs_map = ["temperature", "max_tokens", "top_p", "top_k"]
+        self.kwargs_map = {
+            x: x for x in ["temperature", "max_tokens", "top_p", "top_k"]
+        }
         self.processing_states = ["in_progress", "canceling", "ended"]
         self.result_types = ["succeeded", "errored", "cancelled", "expired"]
 
@@ -103,15 +109,15 @@ class AnthropicServing(BaseBatchServing):
         """
         return {"anthropic_version": importlib_metadata.version("anthropic")}
 
-    def _convert_content_to_anthropic_format(self, content):
+    def _convert_content_to_batch_format(self, content: str | list[dict]) -> list[dict]:
         """
         Convert content from OpenAI format to Anthropic format for multimodal support.
 
         Args:
-            content: Either a string (text-only) or list of content parts (multimodal)
+            content (str | list[dict]): Either a string (text-only) or list of content parts (multimodal)
 
         Returns:
-            Properly formatted content for Anthropic's API
+            list[dict]: Properly formatted content for Anthropic's API
         """
         if isinstance(content, str):
             # Text-only content - wrap in Anthropic's text format
@@ -161,80 +167,66 @@ class AnthropicServing(BaseBatchServing):
             # Fallback for unexpected content types
             raise ValueError(f"Invalid content type: {type(content)}")
 
-    def prepare_llm_batches(
-        self,
-        llm_batch_file_path: str,
-        conversations: list,
-        custom_ids: list | None = None,
-        **generation_kwargs,
-    ) -> None:
-        """
-        Prepare batch requests for Anthropic's batch API and save to file.
+    def create_request(
+        self, conversation: list[dict], custom_id: str, generation_kwargs: dict
+    ) -> dict:
+        """Build a single Anthropic batch request object.
+
+        Converts an OpenAI-style conversation (including an optional system message)
+        into the ``Request`` format expected by Anthropic's messages batch API.
 
         Args:
-            llm_batch_file_path (str): Path where the batch request file will be saved.
-            conversations (list): List of conversations, where each conversation is a list
-                of message dictionaries with 'role' and 'content' keys.
-            custom_ids (list, optional): List of custom identifiers for each request.
-                If None, uses sequential integer strings. Defaults to None.
-            **generation_kwargs: Additional generation parameters to include in requests.
+            conversation (list[dict]): List of message dicts with ``role`` and ``content`` keys.
+                A ``system`` role message is extracted and passed as a top-level ``system`` parameter.
+            custom_id (str): Unique identifier for this request, used to correlate responses.
+            generation_kwargs (dict): Generation parameters (e.g. ``max_tokens``, ``temperature``).
+
+        Returns:
+            dict: A dict with a single ``"request"`` key containing the :class:`Request` object.
         """
-        requests = []
-        idx = os.path.splitext(os.path.split(llm_batch_file_path)[-1])[0]
+        messages = []
+        output_config = {}
+        system_message = None
+        for message in conversation:
+            if message["role"] == "system":
+                system_message = message["content"]
+                continue
 
-        # Anthropic API only allows certain generation kwargs
-        selected_generation_kwargs = {}
-        for k, v in generation_kwargs.items():
-            if k in self.kwargs_map:
-                selected_generation_kwargs[k] = v
-            else:
-                logger.warning(f"Unsupported generation kwarg for Anthropic API: {k}")
-
-        for ix, conversation in enumerate(conversations):
-            messages = []
-            system_message = None
-            for message in conversation:
-                if message["role"] == "system":
-                    system_message = message["content"]
-                    continue
-
-                messages.append(
-                    {
-                        "role": message["role"],
-                        "content": self._convert_content_to_anthropic_format(
-                            message["content"]
-                        ),
-                    }
-                )
-
-            if system_message is not None:
-                selected_generation_kwargs["system"] = system_message
-
-            request = Request(
-                custom_id=custom_ids[ix] if custom_ids else f"{idx}_{ix}",
-                params=MessageCreateParamsNonStreaming(
-                    model=self.model_name,
-                    messages=messages,
-                    **selected_generation_kwargs,
-                ),
+            messages.append(
+                {
+                    "role": message["role"],
+                    "content": self._convert_content_to_batch_format(
+                        message["content"]
+                    ),
+                }
             )
-            requests.append({"request": request})
 
-        df = pd.DataFrame(requests)
-        df.to_json(llm_batch_file_path, orient="records", lines=True, force_ascii=False)
+        if system_message is not None:
+            generation_kwargs["system"] = system_message
 
-    async def abatch_generate(
-        self,
-        file_path: str,
-        output_file_path: str,
-        sleep_time: int = 10,
+        if self.default_reasoning_effort is not None:
+            output_config["effort"] = self.default_reasoning_effort
+
+        request = Request(
+            custom_id=custom_id,
+            params=MessageCreateParamsNonStreaming(
+                model=self.model_name,
+                messages=messages,
+                output_config=output_config,
+                **generation_kwargs,
+            ),
+        )
+        return {"request": request}
+
+    def batch_generate(
+        self, file_path: str, output_file_path: str, sleep_time: int = 10
     ) -> list:
         """
         Generate batch responses using Anthropic's batch API.
 
         Args:
             file_path (str): The path to the file containing the batch requests.
-            output_file_path (str): The path to the file where the batch responses will be saved.
+            output_file_path (str): The path to the file where the batch r`esponses will be saved.
             sleep_time (int, optional): Time to wait between status checks in seconds.
                 Defaults to 10.
 
@@ -247,14 +239,14 @@ class AnthropicServing(BaseBatchServing):
             requests=requests_df["request"].tolist(),
         )
 
-        await asyncio.sleep(sleep_time)
+        time.sleep(sleep_time)
 
         # Refresh job status until it is completed
         logger.info("Waiting for Anthropic batch job to complete...")
         counter = 1
 
         while message_batch.processing_status != "ended":
-            await asyncio.sleep(sleep_time)
+            time.sleep(sleep_time)
             logger.info(
                 "Still waiting (%ds has elapsed)...",
                 counter * sleep_time,
@@ -310,6 +302,17 @@ class AnthropicServing(BaseBatchServing):
             string: Comma-separated string of custom IDs.
         """
         return batch["request"]["custom_id"]
+
+    def get_valid_ids_from_batch(self, batch: dict) -> str | None:
+        """
+        Extract valid custom IDs from batch outputs.
+
+        Args:
+            batch (dict): The batch output dictionary.
+        Returns:
+            string | None: string of custom ID if the request is successful, None otherwise.
+        """
+        return self.get_ids_from_batch(batch)
 
     def batch_tokenize(self, messages: list[list]) -> list[dict]:
         """

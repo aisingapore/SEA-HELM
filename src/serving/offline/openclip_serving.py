@@ -9,7 +9,7 @@ from huggingface_hub import snapshot_download
 from tqdm import tqdm
 
 from src.base_logger import get_logger
-from src.serving.local.base_serving import BaseServing
+from src.serving.offline.base_offline_serving import BaseOfflineServing
 
 logger = get_logger(__name__)
 
@@ -86,11 +86,13 @@ class CLIPCapDataset(torch.utils.data.Dataset):
         return len(self.data)
 
 
-class OpenClipServing(BaseServing):
-    """
-    A serving class that uses OpenClip for image and text embeddings.
+class OpenClipServing(BaseOfflineServing):
+    """A serving class that uses OpenCLIP to score image–caption pairs.
 
-    This class provides methods for generating responses from language models using the OpenClip.
+    Computes CLIPScore (image–text cosine similarity) and RefCLIPScore
+    (text–text cosine similarity against reference captions) using the
+    ``xlm-roberta-large-ViT-H-14`` model.  Intended as a local judge for
+    vision-captioning tasks such as XM3600.
     """
 
     def __init__(
@@ -100,6 +102,23 @@ class OpenClipServing(BaseServing):
         num_workers: int = 8,
         device: str = "cuda",
     ) -> None:
+        """Initialise the OpenClipServing instance.
+
+        The model is *not* loaded here; call :meth:`load_model` before running
+        any inference.
+
+        Args:
+            model_name (str): Hugging Face model ID used to download the
+                ``open_clip_pytorch_model.bin`` checkpoint via
+                ``snapshot_download``.
+            batch_size (int, optional): Number of images/captions per
+                encoder forward pass. Defaults to 64.
+            num_workers (int, optional): Number of DataLoader worker
+                processes for pre-processing. Defaults to 8.
+            device (str, optional): PyTorch device string (e.g. ``"cuda"``
+                or ``"cpu"``) on which the model will run. Defaults to
+                ``"cuda"``.
+        """
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.model_name = model_name
@@ -107,7 +126,15 @@ class OpenClipServing(BaseServing):
         self.is_model_loaded = False
 
     def load_model(self) -> None:
-        """Load OpenClip tokenizer and model onto CUDA and set eval mode."""
+        """Download and load the OpenCLIP model and tokenizer.
+
+        This method is idempotent: if the model is already loaded it returns
+        immediately.  On first call it downloads the checkpoint from the
+        Hugging Face Hub via ``snapshot_download``, creates the
+        ``xlm-roberta-large-ViT-H-14`` model with the associated
+        preprocessing transform, sets the model to eval mode, and initialises
+        the tokenizer.
+        """
         if self.is_model_loaded:
             # no op as model is already loaded
             return
@@ -124,36 +151,36 @@ class OpenClipServing(BaseServing):
             self.tokenizer = open_clip.get_tokenizer("xlm-roberta-large-ViT-H-14")
             self.is_model_loaded = True
 
-    def generate(
-        self, messages: list, logprobs: bool = False, **generation_kwargs
+    def generate_completions(
+        self, prompts: list[list] | list, generation_kwargs: dict | list[dict]
     ) -> Any:
-        raise NotImplementedError("Use batch_generate for OpenClipServing.")
+        """Not implemented for OpenCLIP.
 
-    def batch_generate(
-        self, batch_messages: list[list], logprobs: bool = False, **generation_kwargs
+        OpenCLIP operates on image–caption pairs and does not support raw
+        text-completion prompts.  Use :meth:`generate_chat_responses` instead.
+
+        Raises:
+            NotImplementedError: Always.
+        """
+        raise NotImplementedError("Use generate_chat_responses for OpenClipServing.")
+
+    def generate_chat_responses(
+        self, conversations: list[list] | list, generation_kwargs: dict | list[dict]
     ) -> list[Any]:
         """Generate responses for a given batch of messages.
 
         Args:
-            batch_messages (list[list]): The batch of messages to generate responses for.
-            logprobs (bool, optional): Whether to return log probabilities. Defaults to False.
-            **generation_kwargs: Additional generation kwargs.
+            conversations (list[list]): The batch of conversations to generate responses for.
+            generation_kwargs: Additional generation kwargs.
 
         Returns:
             list[Any]: The generated responses.
-
-        Note:
-            Format of batch messages:
-            [[
-                {"role": "user", "content": [{"type": "text", "text": "<prediction>"}, {"type": "image", "image": <PIL Image>}]},
-                {"role": "assistant", "content": "<reference caption>"},
-            ]]
         """
         images = []
         predictions = []
         references = []
 
-        for messages in batch_messages:
+        for messages in conversations:
             images.append(messages[0]["content"][1]["image"])
             predictions.append(messages[0]["content"][0]["text"])
             references.append(messages[1]["content"])
@@ -192,6 +219,18 @@ class OpenClipServing(BaseServing):
         # no op here, just return the output as is
         return output["score"]
 
+    def parse_output(self, output, custom_id: str | None = None) -> dict:
+        """Parse a single generated output. Returns the output as-is for OpenCLIP.
+
+        Args:
+            output: A single OpenCLIP output dict.
+            custom_id (str, optional): Unused. Defaults to None.
+
+        Returns:
+            dict: The output unchanged.
+        """
+        return output
+
     def cleanup(self) -> None:
         """Cleanup any resources used by the serving class."""
         if not self.is_model_loaded:
@@ -217,7 +256,7 @@ class OpenClipServing(BaseServing):
             np.ndarray: Array of shape (num_images, feature_dim) containing image features
 
         Example:
-            >>> features = extract_all_images(images, preprocess)
+            >>> features = serving.extract_all_images(images)
             >>> print(features.shape)  # (100, 1024) for 100 images
         """
         data = torch.utils.data.DataLoader(
@@ -254,7 +293,7 @@ class OpenClipServing(BaseServing):
                 - candidates (np.ndarray): Normalized candidate text features
 
         Example:
-            >>> scores, features = get_clip_score(images, captions)
+            >>> scores, features = serving.get_clip_score(images, captions)
             >>> print(f"Average CLIPScore: {np.mean(scores):.3f}")
         """
         if isinstance(images, list):
@@ -283,7 +322,7 @@ class OpenClipServing(BaseServing):
 
         Example:
             >>> captions = ["A cat sitting on a table", "A dog running in the park"]
-            >>> features = extract_all_captions(captions)
+            >>> features = serving.extract_all_captions(captions)
             >>> print(features.shape)  # (2, 1024) for 2 captions
         """
         data = torch.utils.data.DataLoader(
@@ -319,7 +358,7 @@ class OpenClipServing(BaseServing):
         Example:
             >>> references = [["A cat on table", "Cat sitting"], ["Dog in park"]]
             >>> candidates = ["A feline on the table", "A canine running"]
-            >>> scores = get_refonlyclipscore(model, references, candidates, 'cuda', tokenizer)
+            >>> scores = serving.get_refonlyclipscore(references, candidates)
             >>> print(f"Reference similarities: {scores}")
 
         Note:

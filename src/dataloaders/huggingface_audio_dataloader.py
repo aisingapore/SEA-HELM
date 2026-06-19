@@ -1,10 +1,5 @@
 import base64
-import functools
 from abc import abstractmethod
-from multiprocessing import Pool
-from typing import Any
-
-from tqdm import tqdm
 
 from src.base_logger import get_logger
 from src.dataloaders.base_dataloader import AbstractDataloader
@@ -44,9 +39,9 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
 
-        self.num_workers = num_workers
         self.dropped_columns = dropped_columns
 
     @abstractmethod
@@ -75,38 +70,6 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
         """
         raise NotImplementedError("Subclasses must implement this method")
 
-    def prepare_conversations_for_inference(
-        self, turn: int, fewshot_as_multiturn: bool = False
-    ) -> list[Any]:
-        """Prepare the conversations for inference by formatting prompts for the given turn.
-
-        The formatted conversations should be in chat format compatible with the
-        `apply_chat_template` method for prompt tokenization.
-
-        Args:
-            turn (int): Which turn to prepare the prompts for (0-indexed).
-            fewshot_as_multiturn (bool, optional): Whether to treat few-shot examples as multi-turn dialogues. Defaults to False.
-
-        Returns:
-            list[Any]: The formatted conversations stored in self.conversations.
-        """
-        logger.info(
-            "Performing inference for task '%s', turn %d with %d examples",
-            self.task_name.upper(),
-            turn,
-            self.fewshot_num_examples,
-        )
-
-        _formatter = self.get_prompt_formatter(turn, fewshot_as_multiturn)
-
-        with Pool(self.num_workers) as p:
-            conversations = list(
-                tqdm(p.imap(_formatter, self.dataset), total=len(self.dataset))
-            )
-        self.conversations = conversations
-
-        return self.conversations
-
     def get_num_turns(self) -> int:
         """Get the number of turns in the dataset.
 
@@ -118,6 +81,7 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
     @staticmethod
     def prompt_formatter(
         row: dict,
+        idx: int,
         *,
         turn: int,
         specific_task_config: dict,
@@ -151,29 +115,6 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
             )
 
         return conversations
-
-    def get_prompt_formatter(
-        self,
-        turn: int,
-        fewshot_as_multiturn: bool = False,
-    ):
-        """Return a picklable formatter callable for multiprocessing Pool.map.
-
-        Args:
-            turn (int): Which turn to prepare the prompts for (0-indexed).
-            fewshot_as_multiturn (bool, optional): Whether to format examples as multi-turn dialogue. Defaults to False.
-
-        Returns:
-            Callable: The prompt formatter for the given turn.
-        """
-        return functools.partial(
-            self.prompt_formatter,
-            turn=turn,
-            specific_task_config=self.specific_task_config,
-            fewshot_as_multiturn=fewshot_as_multiturn,
-            update_conversations_fn=self.update_conversation,
-            generate_formatted_conversation_fn=self.generate_formatted_conversation,
-        )
 
     @staticmethod
     def update_conversation(
@@ -214,13 +155,13 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
         )
         return conversations
 
-    def prepare_inference_df_for_writing(self):
+    def prepare_dataframe_for_writing(self):
         """Prepare the inference DataFrame for writing.
 
         Drops audio columns and replaces audio bytes in conversations with
         placeholder text to reduce file size.
         """
-        self.inference_df = self.inference_df.drop(
+        self.dataframe = self.dataframe.drop(
             columns=self.dropped_columns, errors="ignore"
         )
 
@@ -232,6 +173,6 @@ class HuggingFaceAudioDataloader(AbstractDataloader):
 
             return conversation
 
-        self.inference_df["conversations"] = self.inference_df["conversations"].map(
+        self.dataframe["conversations"] = self.dataframe["conversations"].map(
             use_placeholder_audio_for_conversations,
         )

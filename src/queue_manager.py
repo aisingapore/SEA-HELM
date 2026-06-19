@@ -1,5 +1,5 @@
 import time
-from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool
 
 from src.base_logger import get_logger
 
@@ -63,12 +63,10 @@ class QueueManager:
                 - task_name (str): Name of the evaluation task
                 - lang (str): Language code (e.g., 'en', 'id', 'vi')
             judge_params (tuple | None, optional): Tuple containing judge model parameters
-                with structure: (judge_model_name, judge_model_type, judge_init_args,
-                batch_api_calls) where:
+                with structure: (judge_model_name, judge_model_type, judge_init_args) where:
                 - judge_model_name (str): Name/path of the judge model
                 - judge_model_type (str): Type of judge ('vllm', 'openai', 'anthropic', etc.)
                 - judge_init_args (dict): Initialization arguments for the judge model
-                - batch_api_calls (bool): Whether to batch API calls for the judge
                 Defaults to None (no judge model required).
 
         Example:
@@ -163,7 +161,7 @@ class QueueManager:
         Raises:
             RuntimeError: If the pool is already started (pool is not None).
         """
-        self.pool = Pool(processes=32)
+        self.pool = ThreadPool(processes=32)
 
     def terminate_pool(self):
         """Terminate the multiprocessing pool and clean up resources.

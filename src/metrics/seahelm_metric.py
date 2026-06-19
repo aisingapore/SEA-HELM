@@ -1,4 +1,3 @@
-import logging
 import math
 import re
 import statistics
@@ -22,7 +21,7 @@ class SeaHelmMetric:
         dataloader: AbstractDataloader,
         task_config: TaskConfig,
         response_column: str = "responses",
-        postprocessed_response_column: str = "cleaned_response",
+        postprocessed_response_column: str = "cleaned_responses",
         label_column: str = "label",
     ):
         """Initialize the SeaHelmMetric.
@@ -31,7 +30,7 @@ class SeaHelmMetric:
             dataloader (AbstractDataloader): The dataloader to use.
             task_config (TaskConfig): The task configuration.
             response_column (str, optional): The column name for the responses. Defaults to "responses".
-            postprocessed_response_column (str, optional): The column name for the postprocessed responses. Defaults to "cleaned_response".
+            postprocessed_response_column (str, optional): The column name for the postprocessed responses. Defaults to "cleaned_responses".
             label_column (str, optional): The column name for the labels. Defaults to "label".
         """
         self.task_config = task_config
@@ -42,34 +41,10 @@ class SeaHelmMetric:
         self.postprocessed_response_column = postprocessed_response_column
         self.label_column = label_column
 
-    def get_response(self, row: pd.Series) -> list[str]:
-        """Get the response from the row.
-
-        Args:
-            row (Series): The row to get the response from.
-
-        Returns:
-            list[str]: The response from the row.
-        """
-        return row[self.response_column]
-
-    def get_response_counts(self) -> dict:
-        """Get the response counts from the dataloader.
-
-        Returns:
-            dict: The response counts.
-        """
-        logger.debug("Response Value Counts:")
-        counts = self.dataloader.inference_df.apply(
-            self.get_response, axis=1
-        ).value_counts()
-        logger.debug(counts)
-        return counts.to_json()
-
     def drop_error_responses(self) -> None:
         """Drop the error responses from the dataloader."""
         should_drop = []
-        for response_list in self.dataloader.inference_df[self.response_column]:
+        for response_list in self.dataloader.dataframe[self.response_column]:
             drop = False
             for response in response_list:
                 if response is None:
@@ -77,7 +52,7 @@ class SeaHelmMetric:
                     break
             should_drop.append(drop)
 
-        self.dataloader.inference_df = self.dataloader.inference_df[
+        self.dataloader.dataframe = self.dataloader.dataframe[
             ~pd.Series(should_drop)
         ].copy()
 
@@ -87,12 +62,12 @@ class SeaHelmMetric:
         Args:
             replacement (str, optional): The replacement string. Defaults to "".
         """
-        self.dataloader.inference_df[self.response_column] = (
-            self.dataloader.inference_df[self.response_column].map(
-                lambda response: [
-                    replacement if item is None else item for item in response
-                ]
-            )
+        self.dataloader.dataframe[self.response_column] = self.dataloader.dataframe[
+            self.response_column
+        ].map(
+            lambda response: [
+                replacement if item is None else item for item in response
+            ]
         )
 
     def normalize_answer(self, s: str) -> str:
@@ -177,7 +152,7 @@ class SeaHelmMetric:
             output = re.search(self.regex_string, response[0], flags=flags).group(1)
             assert output is not None
         except Exception:
-            if return_original_response_on_failure:
+            if return_original_response_on_failure and not pd.isna(response[0]):
                 output = response[0]
             else:
                 return None
@@ -207,8 +182,8 @@ class SeaHelmMetric:
         self.postprocess_responses()
         logger.info("Post processing of responses completed!")
 
-        if logger.isEnabledFor(logging.DEBUG):
-            self.get_response_counts()
+        # if logger.isEnabledFor(logging.DEBUG):
+        #     self.get_response_counts()
         logger.info("Calculating metrics...")
         output_json = self.calculate_metrics()
         logger.info("Metrics calculation completed!")
@@ -217,10 +192,8 @@ class SeaHelmMetric:
 
     def postprocess_responses(self) -> None:
         """Postprocess the responses."""
-        self.dataloader.inference_df[self.postprocessed_response_column] = (
-            self.dataloader.inference_df[self.response_column].map(
-                self.extract_response
-            )
+        self.dataloader.dataframe[self.postprocessed_response_column] = (
+            self.dataloader.dataframe[self.response_column].map(self.extract_response)
         )
 
     def normalize_score(

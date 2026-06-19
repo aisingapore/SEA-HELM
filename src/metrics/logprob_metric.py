@@ -4,28 +4,13 @@ import statistics
 import pandas as pd
 
 from src.base_logger import get_logger
-from src.dataloaders.base_dataloader import AbstractDataloader
 from src.metrics.seahelm_metric import SeaHelmMetric
-from src.task_config import TaskConfig
 
 logger = get_logger(__name__)
 
 
 class LogProbMetric(SeaHelmMetric):
     """Metric class for calculating log probability scores."""
-
-    def __init__(
-        self,
-        dataloader: AbstractDataloader,
-        task_config: TaskConfig,
-    ):
-        """Initialize the LogProbMetric.
-
-        Args:
-            dataloader (AbstractDataloader): The dataloader to use.
-            task_config (TaskConfig): The task configuration.
-        """
-        super().__init__(dataloader=dataloader, task_config=task_config)
 
     def postprocess_responses(self) -> None:
         """Postprocess the responses."""
@@ -38,7 +23,7 @@ class LogProbMetric(SeaHelmMetric):
             dict: A dictionary containing the log probability scores.
         """
         cumulative_logprobs = [
-            x[0] for x in self.dataloader.inference_df["cumulative_logprobs"]
+            x[0] for x in self.dataloader.dataframe["cumulative_logprobs"]
         ]
 
         null_count = sum(pd.isna(x) for x in cumulative_logprobs)
@@ -64,9 +49,9 @@ class LogProbMetric(SeaHelmMetric):
             cumulative_probabilities
         )
 
-        self.dataloader.inference_df["individual_scores"] = [
-            {"probabilities_accuracy": x} for x in cumulative_probabilities
-        ]
+        self.dataloader.update_individual_scores(
+            [{"probabilities_accuracy": x} for x in cumulative_probabilities]
+        )
 
         logger.info(
             "Average cumulative logprobs ± stderr: %.2f ± %.2f",
