@@ -13,7 +13,7 @@ immutabledict==4.2.2
 instanttensor==0.1.9
 jieba==0.42.1
 langdetect==1.0.9
-litellm==1.83.7
+litellm==1.89.2
 # mamba-ssm==2.2.5
 math-verify[antlr4_13_2]==0.9.0
 nltk==3.9.4
