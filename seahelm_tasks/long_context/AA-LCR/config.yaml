@@ -1,0 +1,57 @@
+aa-lcr:
+  metadata:
+    version: 1
+  name: aa-lcr
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/AA-LCR/aa_lcr_dataloader.py
+  dataloader_class: AALCRDataloader
+  metric_file: seahelm_tasks/long_context/AA-LCR/aa_lcr_metric.py
+  metric_class: AALCRJudgeMetric
+  metric: accuracy_score
+  use_judges: true
+  judge:
+    judge_model_name: openai/gpt-oss-120b
+    judge_model_type: vllm
+    judge_init_args:
+      tensor_parallel_size: auto
+      async_scheduling: true
+      load_format: instanttensor
+    judge_generation_kwargs:
+      max_tokens: 16384
+      reasoning_effort: high
+    judge_prompts:
+      system_prompt: ""
+      criteria_prompt: |-
+        Assess whether the following CANDIDATE ANSWER is CORRECT or INCORRECT.
+        For the CANDIDATE ANSWER to be correct, it must be consistent with the OFFICIAL ANSWER.
+
+        The question, for reference only: {question}
+        The OFFICIAL ANSWER: {official_answer}
+        CANDIDATE ANSWER TO ASSESS: {candidate_answer}
+
+        Reply only with CORRECT or INCORRECT.
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    en:
+      filepath: ArtificialAnalysis/AA-LCR
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: |-
+          BEGIN INPUT DOCUMENTS
+
+          {documents_text}
+
+          END INPUT DOCUMENTS
+
+          Answer the following question using the input documents provided above.
+
+          START QUESTION
+
+          {question}
+
+          END QUESTION
+        answer_template: ""
+        answer_tag: ""

@@ -1,0 +1,125 @@
+kalahi-judge:
+  metadata:
+    version: 1
+  name: kalahi-judge
+  competency: cultural
+  dataloader_file: src/dataloaders/judges/criteria_dataloader.py
+  dataloader_class: HuggingFaceCriteriaDataloader
+  metric_file: src/metrics/llm_judges/criteria_judge_metric.py
+  metric_class: CriteriaJudgeMetric
+  metric: average_criteria_score
+  use_judges: true
+  judge_file: src/judges/criteria_judge.py
+  judge_class: CriteriaJudge
+  judge:
+    judge_model_name: openai/gpt-oss-120b
+    judge_model_type: vllm
+    judge_init_args:
+      tensor_parallel_size: auto
+      async_scheduling: true
+      load_format: instanttensor
+    judge_generation_kwargs:
+      max_tokens: 16384
+      reasoning_effort: high
+    classifications:
+      CLASS_UNMET: 0
+      CLASS_SLIGHTLY_MET: 0.25
+      CLASS_MODERATELY_MET: 0.5
+      CLASS_MAJORLY_MET: 0.75
+      CLASS_EXACTLY_MET: 1.0
+    judge_prompts:
+      system_prompt: |-
+        You are an expert Filipino culture evaluator that gives precise feedback. Your task is to assess how well a specific criterion is covered by a given text by providing a reflection and a precise classification.
+
+        Focus solely on the provided criterion, the text, and the classification guidelines. Adhere strictly to the XML output format specified in the user prompt. Be brief if possible.
+
+        The criterion is an assertion being made about the <TEXT>. It might be allude to a 'response', which relates to the <TEXT>. It might be phrased in various ways. So some valid variations of a criterion given the text "The lemonade stand was open for 10 hours." might be:
+
+        - "The response should have included opening times and be concise"
+        - "Must include opening times and be concise"
+        - "Should be concise and include opening times"
+        - "Be concise and include opening times"
+        - "Not forget to include opening times and not forget to be concise"
+        - "Concise, w/ opening times"
+
+        (These are all equivalent ways to express the same criterion)
+
+        Here are examples of correct outputs:
+        -----
+        Input: <TEXT>The people in the room were not happy.</TEXT><CRITERION>The people in the room were happy.</CRITERION>
+        Output: <reflection>The text states that the people in the room were NOT happy. However, the criterion is that the people in the room WERE happy, which means the criterion is entirely UNMET.</reflection><classification>CLASS_UNMET</classification>
+        -----
+        Input: <TEXT>We were meant to meet at 7pm.</TEXT><CRITERION>Both the location and time of the meeting should be mentioned.</CRITERION>
+        Output: <reflection>The text states that the meeting time was 7pm. However, the location of the meeting was not mentioned. Thus, the criterion is moderately met.</reflection><classification>CLASS_MODERATELY_MET</classification>
+        ---
+        Input: <TEXT>The population is 8,000,000</TEXT><CRITERION>The population is 8,019,828</CRITERION>
+        Output: <reflection>The number provided in the text is very close to the number in the criterion. Therefore, the criterion is nearly met, i.e. CLASS_MAJORLY_MET.</reflection><classification>CLASS_MAJORLY_MET</classification>
+        -----
+        Input: <TEXT>Handling a situation where a colleague consistently takes credit for your ideas requires a balance of assertiveness, empathy, and strategic communication</TEXT><CRITERION>Mentions empathy</CRITERION>
+        Output: <reflection>The text mentions empathy, which means the criterion is MET precisely.</reflection><classification>CLASS_EXACTLY_MET</classification>
+        -----
+      criteria_prompt: |-
+        You are given a single-turn conversation transcript and a criterion. Evaluate ONLY the content produced by the candidate model (marked as [Assistant (generated)]). Do not give credit for [Assistant (fixed)] turns.
+
+        <TRANSCRIPT>
+        [User]
+        {prompt}
+        </TRANSCRIPT>
+
+        <TEXT>
+        [Assistant (generated)]
+        {response}
+        </TEXT>
+
+        Evaluate how well the generated assistant content satisfies THIS SPECIFIC <CRITERION>.
+        <CRITERION>
+        {keyPointText}
+        </CRITERION>
+
+        Your task is to provide a 'reflection' and a 'classification' based on the guidelines below. Your classification should indicate which class the text falls into, according to the wording of the criterion. The classification labels are ordered from lowest to highest level of fulfillment as follows:
+
+        Classification Guidelines (from the lowest to highest level of fulfillment):
+        - CLASS_UNMET: The criterion is not met.
+        - CLASS_SLIGHTLY_MET: The criterion is slightly met.
+        - CLASS_MODERATELY_MET: The criterion is moderately met.
+        - CLASS_MAJORLY_MET: The criterion is mostly met.
+        - CLASS_EXACTLY_MET: The criterion is fully met.
+
+        Your output MUST strictly follow this XML format:
+        <reflection>Your 1-2 sentence reflection and reasoning for the classification, explaining how well the criterion is met, if at all.</reflection>
+        <classification>ONE of the five class names (e.g., CLASS_MAJORLY_MET)</classification>
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    tl:
+      filepath: aisingapore/Cultural-Evaluation-Kalahi-Judge
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          You are a Filipino culture expert with deep knowledge of Filipino values, social norms, and customs. Your task is to provide responses to culturally-specific situations that Filipino users may face in their daily lives.
+
+          Your responses must be:
+          1. **Helpful**: Provide actionable, practical solutions grounded in Filipino cultural values (e.g., pakikipagkapwa, respeto, hiya)
+          2. **Harmless**: Never suggest actions that are illegal, taboo, or culturally insensitive within Filipino society
+          3. **Culturally appropriate**: Respect Filipino family dynamics, social hierarchies, and communication styles
+          4. **Balanced**: Acknowledge traditional expectations while respecting personal autonomy
+
+          Response guidelines:
+          - Use Filipino terms when culturally relevant (with context)
+          - Consider familial and societal perspectives, not just individual autonomy
+          - Offer multiple options when appropriate
+          - Be concise but thorough
+
+          Avoid:
+          - Judgmental or prescriptive language
+          - Dismissive or overly individualistic advice
+          - Generic advice that ignores Filipino cultural context
+        task_template: |-
+          Provide a helpful, harmless, culturally appropriate, and balanced response to the following situation:
+
+          <SITUATION>
+          {text}
+          </SITUATION>
+        answer_template: ""
+        answer_tag: ""

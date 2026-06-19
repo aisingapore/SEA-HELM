@@ -1,0 +1,2850 @@
+mmlu_redux_high_school_chemistry:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_chemistry
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_chemistry-logprobs:
+  metadata: ${mmlu_redux_high_school_chemistry.metadata}
+  name: mmlu_redux_high_school_chemistry-logprobs
+  competency: ${mmlu_redux_high_school_chemistry.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_chemistry.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_chemistry.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_chemistry.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_chemistry.languages}
+mmlu_redux_us_foreign_policy:
+  metadata:
+    version: 1
+  name: mmlu_redux_us_foreign_policy
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_us_foreign_policy-logprobs:
+  metadata: ${mmlu_redux_us_foreign_policy.metadata}
+  name: mmlu_redux_us_foreign_policy-logprobs
+  competency: ${mmlu_redux_us_foreign_policy.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_us_foreign_policy.dataloader_file}
+  dataloader_class: ${mmlu_redux_us_foreign_policy.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_us_foreign_policy.fewshot_num_examples}
+  languages: ${mmlu_redux_us_foreign_policy.languages}
+mmlu_redux_management:
+  metadata:
+    version: 1
+  name: mmlu_redux_management
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_management-logprobs:
+  metadata: ${mmlu_redux_management.metadata}
+  name: mmlu_redux_management-logprobs
+  competency: ${mmlu_redux_management.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_management.dataloader_file}
+  dataloader_class: ${mmlu_redux_management.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_management.fewshot_num_examples}
+  languages: ${mmlu_redux_management.languages}
+mmlu_redux_college_physics:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_physics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_physics-logprobs:
+  metadata: ${mmlu_redux_college_physics.metadata}
+  name: mmlu_redux_college_physics-logprobs
+  competency: ${mmlu_redux_college_physics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_physics.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_physics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_physics.fewshot_num_examples}
+  languages: ${mmlu_redux_college_physics.languages}
+mmlu_redux_sociology:
+  metadata:
+    version: 1
+  name: mmlu_redux_sociology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_sociology-logprobs:
+  metadata: ${mmlu_redux_sociology.metadata}
+  name: mmlu_redux_sociology-logprobs
+  competency: ${mmlu_redux_sociology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_sociology.dataloader_file}
+  dataloader_class: ${mmlu_redux_sociology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_sociology.fewshot_num_examples}
+  languages: ${mmlu_redux_sociology.languages}
+mmlu_redux_human_aging:
+  metadata:
+    version: 1
+  name: mmlu_redux_human_aging
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_human_aging-logprobs:
+  metadata: ${mmlu_redux_human_aging.metadata}
+  name: mmlu_redux_human_aging-logprobs
+  competency: ${mmlu_redux_human_aging.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_human_aging.dataloader_file}
+  dataloader_class: ${mmlu_redux_human_aging.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_human_aging.fewshot_num_examples}
+  languages: ${mmlu_redux_human_aging.languages}
+mmlu_redux_college_biology:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_biology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_biology-logprobs:
+  metadata: ${mmlu_redux_college_biology.metadata}
+  name: mmlu_redux_college_biology-logprobs
+  competency: ${mmlu_redux_college_biology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_biology.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_biology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_biology.fewshot_num_examples}
+  languages: ${mmlu_redux_college_biology.languages}
+mmlu_redux_miscellaneous:
+  metadata:
+    version: 1
+  name: mmlu_redux_miscellaneous
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_miscellaneous-logprobs:
+  metadata: ${mmlu_redux_miscellaneous.metadata}
+  name: mmlu_redux_miscellaneous-logprobs
+  competency: ${mmlu_redux_miscellaneous.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_miscellaneous.dataloader_file}
+  dataloader_class: ${mmlu_redux_miscellaneous.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_miscellaneous.fewshot_num_examples}
+  languages: ${mmlu_redux_miscellaneous.languages}
+mmlu_redux_college_mathematics:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_mathematics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_mathematics-logprobs:
+  metadata: ${mmlu_redux_college_mathematics.metadata}
+  name: mmlu_redux_college_mathematics-logprobs
+  competency: ${mmlu_redux_college_mathematics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_mathematics.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_mathematics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_mathematics.fewshot_num_examples}
+  languages: ${mmlu_redux_college_mathematics.languages}
+mmlu_redux_econometrics:
+  metadata:
+    version: 1
+  name: mmlu_redux_econometrics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_econometrics-logprobs:
+  metadata: ${mmlu_redux_econometrics.metadata}
+  name: mmlu_redux_econometrics-logprobs
+  competency: ${mmlu_redux_econometrics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_econometrics.dataloader_file}
+  dataloader_class: ${mmlu_redux_econometrics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_econometrics.fewshot_num_examples}
+  languages: ${mmlu_redux_econometrics.languages}
+mmlu_redux_moral_disputes:
+  metadata:
+    version: 1
+  name: mmlu_redux_moral_disputes
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_moral_disputes-logprobs:
+  metadata: ${mmlu_redux_moral_disputes.metadata}
+  name: mmlu_redux_moral_disputes-logprobs
+  competency: ${mmlu_redux_moral_disputes.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_moral_disputes.dataloader_file}
+  dataloader_class: ${mmlu_redux_moral_disputes.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_moral_disputes.fewshot_num_examples}
+  languages: ${mmlu_redux_moral_disputes.languages}
+mmlu_redux_conceptual_physics:
+  metadata:
+    version: 1
+  name: mmlu_redux_conceptual_physics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_conceptual_physics-logprobs:
+  metadata: ${mmlu_redux_conceptual_physics.metadata}
+  name: mmlu_redux_conceptual_physics-logprobs
+  competency: ${mmlu_redux_conceptual_physics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_conceptual_physics.dataloader_file}
+  dataloader_class: ${mmlu_redux_conceptual_physics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_conceptual_physics.fewshot_num_examples}
+  languages: ${mmlu_redux_conceptual_physics.languages}
+mmlu_redux_nutrition:
+  metadata:
+    version: 1
+  name: mmlu_redux_nutrition
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_nutrition-logprobs:
+  metadata: ${mmlu_redux_nutrition.metadata}
+  name: mmlu_redux_nutrition-logprobs
+  competency: ${mmlu_redux_nutrition.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_nutrition.dataloader_file}
+  dataloader_class: ${mmlu_redux_nutrition.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_nutrition.fewshot_num_examples}
+  languages: ${mmlu_redux_nutrition.languages}
+mmlu_redux_formal_logic:
+  metadata:
+    version: 1
+  name: mmlu_redux_formal_logic
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_formal_logic-logprobs:
+  metadata: ${mmlu_redux_formal_logic.metadata}
+  name: mmlu_redux_formal_logic-logprobs
+  competency: ${mmlu_redux_formal_logic.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_formal_logic.dataloader_file}
+  dataloader_class: ${mmlu_redux_formal_logic.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_formal_logic.fewshot_num_examples}
+  languages: ${mmlu_redux_formal_logic.languages}
+mmlu_redux_clinical_knowledge:
+  metadata:
+    version: 1
+  name: mmlu_redux_clinical_knowledge
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_clinical_knowledge-logprobs:
+  metadata: ${mmlu_redux_clinical_knowledge.metadata}
+  name: mmlu_redux_clinical_knowledge-logprobs
+  competency: ${mmlu_redux_clinical_knowledge.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_clinical_knowledge.dataloader_file}
+  dataloader_class: ${mmlu_redux_clinical_knowledge.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_clinical_knowledge.fewshot_num_examples}
+  languages: ${mmlu_redux_clinical_knowledge.languages}
+mmlu_redux_moral_scenarios:
+  metadata:
+    version: 1
+  name: mmlu_redux_moral_scenarios
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_moral_scenarios-logprobs:
+  metadata: ${mmlu_redux_moral_scenarios.metadata}
+  name: mmlu_redux_moral_scenarios-logprobs
+  competency: ${mmlu_redux_moral_scenarios.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_moral_scenarios.dataloader_file}
+  dataloader_class: ${mmlu_redux_moral_scenarios.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_moral_scenarios.fewshot_num_examples}
+  languages: ${mmlu_redux_moral_scenarios.languages}
+mmlu_redux_public_relations:
+  metadata:
+    version: 1
+  name: mmlu_redux_public_relations
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_public_relations-logprobs:
+  metadata: ${mmlu_redux_public_relations.metadata}
+  name: mmlu_redux_public_relations-logprobs
+  competency: ${mmlu_redux_public_relations.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_public_relations.dataloader_file}
+  dataloader_class: ${mmlu_redux_public_relations.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_public_relations.fewshot_num_examples}
+  languages: ${mmlu_redux_public_relations.languages}
+mmlu_redux_business_ethics:
+  metadata:
+    version: 1
+  name: mmlu_redux_business_ethics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_business_ethics-logprobs:
+  metadata: ${mmlu_redux_business_ethics.metadata}
+  name: mmlu_redux_business_ethics-logprobs
+  competency: ${mmlu_redux_business_ethics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_business_ethics.dataloader_file}
+  dataloader_class: ${mmlu_redux_business_ethics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_business_ethics.fewshot_num_examples}
+  languages: ${mmlu_redux_business_ethics.languages}
+mmlu_redux_elementary_mathematics:
+  metadata:
+    version: 1
+  name: mmlu_redux_elementary_mathematics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_elementary_mathematics-logprobs:
+  metadata: ${mmlu_redux_elementary_mathematics.metadata}
+  name: mmlu_redux_elementary_mathematics-logprobs
+  competency: ${mmlu_redux_elementary_mathematics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_elementary_mathematics.dataloader_file}
+  dataloader_class: ${mmlu_redux_elementary_mathematics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_elementary_mathematics.fewshot_num_examples}
+  languages: ${mmlu_redux_elementary_mathematics.languages}
+mmlu_redux_marketing:
+  metadata:
+    version: 1
+  name: mmlu_redux_marketing
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_marketing-logprobs:
+  metadata: ${mmlu_redux_marketing.metadata}
+  name: mmlu_redux_marketing-logprobs
+  competency: ${mmlu_redux_marketing.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_marketing.dataloader_file}
+  dataloader_class: ${mmlu_redux_marketing.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_marketing.fewshot_num_examples}
+  languages: ${mmlu_redux_marketing.languages}
+mmlu_redux_prehistory:
+  metadata:
+    version: 1
+  name: mmlu_redux_prehistory
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_prehistory-logprobs:
+  metadata: ${mmlu_redux_prehistory.metadata}
+  name: mmlu_redux_prehistory-logprobs
+  competency: ${mmlu_redux_prehistory.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_prehistory.dataloader_file}
+  dataloader_class: ${mmlu_redux_prehistory.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_prehistory.fewshot_num_examples}
+  languages: ${mmlu_redux_prehistory.languages}
+mmlu_redux_electrical_engineering:
+  metadata:
+    version: 1
+  name: mmlu_redux_electrical_engineering
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_electrical_engineering-logprobs:
+  metadata: ${mmlu_redux_electrical_engineering.metadata}
+  name: mmlu_redux_electrical_engineering-logprobs
+  competency: ${mmlu_redux_electrical_engineering.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_electrical_engineering.dataloader_file}
+  dataloader_class: ${mmlu_redux_electrical_engineering.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_electrical_engineering.fewshot_num_examples}
+  languages: ${mmlu_redux_electrical_engineering.languages}
+mmlu_redux_machine_learning:
+  metadata:
+    version: 1
+  name: mmlu_redux_machine_learning
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_machine_learning-logprobs:
+  metadata: ${mmlu_redux_machine_learning.metadata}
+  name: mmlu_redux_machine_learning-logprobs
+  competency: ${mmlu_redux_machine_learning.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_machine_learning.dataloader_file}
+  dataloader_class: ${mmlu_redux_machine_learning.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_machine_learning.fewshot_num_examples}
+  languages: ${mmlu_redux_machine_learning.languages}
+mmlu_redux_high_school_mathematics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_mathematics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_mathematics-logprobs:
+  metadata: ${mmlu_redux_high_school_mathematics.metadata}
+  name: mmlu_redux_high_school_mathematics-logprobs
+  competency: ${mmlu_redux_high_school_mathematics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_mathematics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_mathematics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_mathematics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_mathematics.languages}
+mmlu_redux_global_facts:
+  metadata:
+    version: 1
+  name: mmlu_redux_global_facts
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_global_facts-logprobs:
+  metadata: ${mmlu_redux_global_facts.metadata}
+  name: mmlu_redux_global_facts-logprobs
+  competency: ${mmlu_redux_global_facts.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_global_facts.dataloader_file}
+  dataloader_class: ${mmlu_redux_global_facts.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_global_facts.fewshot_num_examples}
+  languages: ${mmlu_redux_global_facts.languages}
+mmlu_redux_high_school_geography:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_geography
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_geography-logprobs:
+  metadata: ${mmlu_redux_high_school_geography.metadata}
+  name: mmlu_redux_high_school_geography-logprobs
+  competency: ${mmlu_redux_high_school_geography.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_geography.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_geography.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_geography.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_geography.languages}
+mmlu_redux_professional_accounting:
+  metadata:
+    version: 1
+  name: mmlu_redux_professional_accounting
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_professional_accounting-logprobs:
+  metadata: ${mmlu_redux_professional_accounting.metadata}
+  name: mmlu_redux_professional_accounting-logprobs
+  competency: ${mmlu_redux_professional_accounting.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_professional_accounting.dataloader_file}
+  dataloader_class: ${mmlu_redux_professional_accounting.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_professional_accounting.fewshot_num_examples}
+  languages: ${mmlu_redux_professional_accounting.languages}
+mmlu_redux_abstract_algebra:
+  metadata:
+    version: 1
+  name: mmlu_redux_abstract_algebra
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_abstract_algebra-logprobs:
+  metadata: ${mmlu_redux_abstract_algebra.metadata}
+  name: mmlu_redux_abstract_algebra-logprobs
+  competency: ${mmlu_redux_abstract_algebra.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_abstract_algebra.dataloader_file}
+  dataloader_class: ${mmlu_redux_abstract_algebra.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_abstract_algebra.fewshot_num_examples}
+  languages: ${mmlu_redux_abstract_algebra.languages}
+mmlu_redux_high_school_us_history:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_us_history
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_us_history-logprobs:
+  metadata: ${mmlu_redux_high_school_us_history.metadata}
+  name: mmlu_redux_high_school_us_history-logprobs
+  competency: ${mmlu_redux_high_school_us_history.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_us_history.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_us_history.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_us_history.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_us_history.languages}
+mmlu_redux_logical_fallacies:
+  metadata:
+    version: 1
+  name: mmlu_redux_logical_fallacies
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_logical_fallacies-logprobs:
+  metadata: ${mmlu_redux_logical_fallacies.metadata}
+  name: mmlu_redux_logical_fallacies-logprobs
+  competency: ${mmlu_redux_logical_fallacies.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_logical_fallacies.dataloader_file}
+  dataloader_class: ${mmlu_redux_logical_fallacies.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_logical_fallacies.fewshot_num_examples}
+  languages: ${mmlu_redux_logical_fallacies.languages}
+mmlu_redux_anatomy:
+  metadata:
+    version: 1
+  name: mmlu_redux_anatomy
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_anatomy-logprobs:
+  metadata: ${mmlu_redux_anatomy.metadata}
+  name: mmlu_redux_anatomy-logprobs
+  competency: ${mmlu_redux_anatomy.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_anatomy.dataloader_file}
+  dataloader_class: ${mmlu_redux_anatomy.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_anatomy.fewshot_num_examples}
+  languages: ${mmlu_redux_anatomy.languages}
+mmlu_redux_high_school_world_history:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_world_history
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_world_history-logprobs:
+  metadata: ${mmlu_redux_high_school_world_history.metadata}
+  name: mmlu_redux_high_school_world_history-logprobs
+  competency: ${mmlu_redux_high_school_world_history.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_world_history.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_world_history.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_world_history.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_world_history.languages}
+mmlu_redux_medical_genetics:
+  metadata:
+    version: 1
+  name: mmlu_redux_medical_genetics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_medical_genetics-logprobs:
+  metadata: ${mmlu_redux_medical_genetics.metadata}
+  name: mmlu_redux_medical_genetics-logprobs
+  competency: ${mmlu_redux_medical_genetics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_medical_genetics.dataloader_file}
+  dataloader_class: ${mmlu_redux_medical_genetics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_medical_genetics.fewshot_num_examples}
+  languages: ${mmlu_redux_medical_genetics.languages}
+mmlu_redux_professional_psychology:
+  metadata:
+    version: 1
+  name: mmlu_redux_professional_psychology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_professional_psychology-logprobs:
+  metadata: ${mmlu_redux_professional_psychology.metadata}
+  name: mmlu_redux_professional_psychology-logprobs
+  competency: ${mmlu_redux_professional_psychology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_professional_psychology.dataloader_file}
+  dataloader_class: ${mmlu_redux_professional_psychology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_professional_psychology.fewshot_num_examples}
+  languages: ${mmlu_redux_professional_psychology.languages}
+mmlu_redux_high_school_government_and_politics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_government_and_politics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_government_and_politics-logprobs:
+  metadata: ${mmlu_redux_high_school_government_and_politics.metadata}
+  name: mmlu_redux_high_school_government_and_politics-logprobs
+  competency: ${mmlu_redux_high_school_government_and_politics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_government_and_politics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_government_and_politics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_government_and_politics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_government_and_politics.languages}
+mmlu_redux_human_sexuality:
+  metadata:
+    version: 1
+  name: mmlu_redux_human_sexuality
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_human_sexuality-logprobs:
+  metadata: ${mmlu_redux_human_sexuality.metadata}
+  name: mmlu_redux_human_sexuality-logprobs
+  competency: ${mmlu_redux_human_sexuality.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_human_sexuality.dataloader_file}
+  dataloader_class: ${mmlu_redux_human_sexuality.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_human_sexuality.fewshot_num_examples}
+  languages: ${mmlu_redux_human_sexuality.languages}
+mmlu_redux_philosophy:
+  metadata:
+    version: 1
+  name: mmlu_redux_philosophy
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_philosophy-logprobs:
+  metadata: ${mmlu_redux_philosophy.metadata}
+  name: mmlu_redux_philosophy-logprobs
+  competency: ${mmlu_redux_philosophy.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_philosophy.dataloader_file}
+  dataloader_class: ${mmlu_redux_philosophy.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_philosophy.fewshot_num_examples}
+  languages: ${mmlu_redux_philosophy.languages}
+mmlu_redux_computer_security:
+  metadata:
+    version: 1
+  name: mmlu_redux_computer_security
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_computer_security-logprobs:
+  metadata: ${mmlu_redux_computer_security.metadata}
+  name: mmlu_redux_computer_security-logprobs
+  competency: ${mmlu_redux_computer_security.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_computer_security.dataloader_file}
+  dataloader_class: ${mmlu_redux_computer_security.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_computer_security.fewshot_num_examples}
+  languages: ${mmlu_redux_computer_security.languages}
+mmlu_redux_high_school_microeconomics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_microeconomics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_microeconomics-logprobs:
+  metadata: ${mmlu_redux_high_school_microeconomics.metadata}
+  name: mmlu_redux_high_school_microeconomics-logprobs
+  competency: ${mmlu_redux_high_school_microeconomics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_microeconomics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_microeconomics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_microeconomics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_microeconomics.languages}
+mmlu_redux_astronomy:
+  metadata:
+    version: 1
+  name: mmlu_redux_astronomy
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_astronomy-logprobs:
+  metadata: ${mmlu_redux_astronomy.metadata}
+  name: mmlu_redux_astronomy-logprobs
+  competency: ${mmlu_redux_astronomy.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_astronomy.dataloader_file}
+  dataloader_class: ${mmlu_redux_astronomy.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_astronomy.fewshot_num_examples}
+  languages: ${mmlu_redux_astronomy.languages}
+mmlu_redux_high_school_biology:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_biology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_biology-logprobs:
+  metadata: ${mmlu_redux_high_school_biology.metadata}
+  name: mmlu_redux_high_school_biology-logprobs
+  competency: ${mmlu_redux_high_school_biology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_biology.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_biology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_biology.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_biology.languages}
+mmlu_redux_college_chemistry:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_chemistry
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_chemistry-logprobs:
+  metadata: ${mmlu_redux_college_chemistry.metadata}
+  name: mmlu_redux_college_chemistry-logprobs
+  competency: ${mmlu_redux_college_chemistry.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_chemistry.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_chemistry.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_chemistry.fewshot_num_examples}
+  languages: ${mmlu_redux_college_chemistry.languages}
+mmlu_redux_jurisprudence:
+  metadata:
+    version: 1
+  name: mmlu_redux_jurisprudence
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_jurisprudence-logprobs:
+  metadata: ${mmlu_redux_jurisprudence.metadata}
+  name: mmlu_redux_jurisprudence-logprobs
+  competency: ${mmlu_redux_jurisprudence.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_jurisprudence.dataloader_file}
+  dataloader_class: ${mmlu_redux_jurisprudence.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_jurisprudence.fewshot_num_examples}
+  languages: ${mmlu_redux_jurisprudence.languages}
+mmlu_redux_high_school_physics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_physics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_physics-logprobs:
+  metadata: ${mmlu_redux_high_school_physics.metadata}
+  name: mmlu_redux_high_school_physics-logprobs
+  competency: ${mmlu_redux_high_school_physics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_physics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_physics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_physics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_physics.languages}
+mmlu_redux_high_school_macroeconomics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_macroeconomics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_macroeconomics-logprobs:
+  metadata: ${mmlu_redux_high_school_macroeconomics.metadata}
+  name: mmlu_redux_high_school_macroeconomics-logprobs
+  competency: ${mmlu_redux_high_school_macroeconomics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_macroeconomics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_macroeconomics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_macroeconomics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_macroeconomics.languages}
+mmlu_redux_college_computer_science:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_computer_science
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_computer_science-logprobs:
+  metadata: ${mmlu_redux_college_computer_science.metadata}
+  name: mmlu_redux_college_computer_science-logprobs
+  competency: ${mmlu_redux_college_computer_science.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_computer_science.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_computer_science.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_computer_science.fewshot_num_examples}
+  languages: ${mmlu_redux_college_computer_science.languages}
+mmlu_redux_professional_law:
+  metadata:
+    version: 1
+  name: mmlu_redux_professional_law
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_professional_law-logprobs:
+  metadata: ${mmlu_redux_professional_law.metadata}
+  name: mmlu_redux_professional_law-logprobs
+  competency: ${mmlu_redux_professional_law.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_professional_law.dataloader_file}
+  dataloader_class: ${mmlu_redux_professional_law.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_professional_law.fewshot_num_examples}
+  languages: ${mmlu_redux_professional_law.languages}
+mmlu_redux_high_school_statistics:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_statistics
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_statistics-logprobs:
+  metadata: ${mmlu_redux_high_school_statistics.metadata}
+  name: mmlu_redux_high_school_statistics-logprobs
+  competency: ${mmlu_redux_high_school_statistics.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_statistics.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_statistics.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_statistics.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_statistics.languages}
+mmlu_redux_college_medicine:
+  metadata:
+    version: 1
+  name: mmlu_redux_college_medicine
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_college_medicine-logprobs:
+  metadata: ${mmlu_redux_college_medicine.metadata}
+  name: mmlu_redux_college_medicine-logprobs
+  competency: ${mmlu_redux_college_medicine.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_college_medicine.dataloader_file}
+  dataloader_class: ${mmlu_redux_college_medicine.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_college_medicine.fewshot_num_examples}
+  languages: ${mmlu_redux_college_medicine.languages}
+mmlu_redux_professional_medicine:
+  metadata:
+    version: 1
+  name: mmlu_redux_professional_medicine
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_professional_medicine-logprobs:
+  metadata: ${mmlu_redux_professional_medicine.metadata}
+  name: mmlu_redux_professional_medicine-logprobs
+  competency: ${mmlu_redux_professional_medicine.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_professional_medicine.dataloader_file}
+  dataloader_class: ${mmlu_redux_professional_medicine.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_professional_medicine.fewshot_num_examples}
+  languages: ${mmlu_redux_professional_medicine.languages}
+mmlu_redux_high_school_computer_science:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_computer_science
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_computer_science-logprobs:
+  metadata: ${mmlu_redux_high_school_computer_science.metadata}
+  name: mmlu_redux_high_school_computer_science-logprobs
+  competency: ${mmlu_redux_high_school_computer_science.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_computer_science.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_computer_science.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_computer_science.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_computer_science.languages}
+mmlu_redux_security_studies:
+  metadata:
+    version: 1
+  name: mmlu_redux_security_studies
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_security_studies-logprobs:
+  metadata: ${mmlu_redux_security_studies.metadata}
+  name: mmlu_redux_security_studies-logprobs
+  competency: ${mmlu_redux_security_studies.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_security_studies.dataloader_file}
+  dataloader_class: ${mmlu_redux_security_studies.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_security_studies.fewshot_num_examples}
+  languages: ${mmlu_redux_security_studies.languages}
+mmlu_redux_virology:
+  metadata:
+    version: 1
+  name: mmlu_redux_virology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_virology-logprobs:
+  metadata: ${mmlu_redux_virology.metadata}
+  name: mmlu_redux_virology-logprobs
+  competency: ${mmlu_redux_virology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_virology.dataloader_file}
+  dataloader_class: ${mmlu_redux_virology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_virology.fewshot_num_examples}
+  languages: ${mmlu_redux_virology.languages}
+mmlu_redux_world_religions:
+  metadata:
+    version: 1
+  name: mmlu_redux_world_religions
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_world_religions-logprobs:
+  metadata: ${mmlu_redux_world_religions.metadata}
+  name: mmlu_redux_world_religions-logprobs
+  competency: ${mmlu_redux_world_religions.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_world_religions.dataloader_file}
+  dataloader_class: ${mmlu_redux_world_religions.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_world_religions.fewshot_num_examples}
+  languages: ${mmlu_redux_world_religions.languages}
+mmlu_redux_high_school_european_history:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_european_history
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_european_history-logprobs:
+  metadata: ${mmlu_redux_high_school_european_history.metadata}
+  name: mmlu_redux_high_school_european_history-logprobs
+  competency: ${mmlu_redux_high_school_european_history.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_european_history.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_european_history.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_european_history.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_european_history.languages}
+mmlu_redux_international_law:
+  metadata:
+    version: 1
+  name: mmlu_redux_international_law
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_international_law-logprobs:
+  metadata: ${mmlu_redux_international_law.metadata}
+  name: mmlu_redux_international_law-logprobs
+  competency: ${mmlu_redux_international_law.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_international_law.dataloader_file}
+  dataloader_class: ${mmlu_redux_international_law.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_international_law.fewshot_num_examples}
+  languages: ${mmlu_redux_international_law.languages}
+mmlu_redux_high_school_psychology:
+  metadata:
+    version: 1
+  name: mmlu_redux_high_school_psychology
+  competency: english_knowledge
+  aggregation_group: mmlu_redux
+  dataloader_file: seahelm_tasks/english_evals/mmlu_redux/mmlu_redux_dataloader.py
+  dataloader_class: MMLUReduxDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: edinburgh-dawg/mmlu-redux-2.0
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Given the following question, choose the best answer out of the provided options.
+
+          Your response should follow the following format:
+          1. Begin by reasoning through the question and/or options step by step.
+          2. Then, identify the best answer using the format:
+          "{answer_tag} ANSWER"
+          where ANSWER is the letter corresponding to the best answer.
+        task_template: |-
+          Question:
+          {question}
+
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ANSWER:"
+mmlu_redux_high_school_psychology-logprobs:
+  metadata: ${mmlu_redux_high_school_psychology.metadata}
+  name: mmlu_redux_high_school_psychology-logprobs
+  competency: ${mmlu_redux_high_school_psychology.competency}
+  aggregation_group: mmlu_redux-logprobs
+  dataloader_file: ${mmlu_redux_high_school_psychology.dataloader_file}
+  dataloader_class: ${mmlu_redux_high_school_psychology.dataloader_class}
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${mmlu_redux_high_school_psychology.fewshot_num_examples}
+  languages: ${mmlu_redux_high_school_psychology.languages}

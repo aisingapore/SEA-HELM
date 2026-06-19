@@ -1,0 +1,189 @@
+path_traversal_0p5k:
+  metadata:
+    version: 1
+  name: "path_traversal_0p5k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/path_traversal/path_traversal.py"
+  metric_class: "PathTraversalMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/path_traversal/data/path_traversal_0.5k_en.jsonl"
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          [TASK]
+          In a completely hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method (bus, train, plane, or ferry). Your task is to provide a route from a city to another city. You should follow the specific instruction provided later and output the route following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - All connections are one-way. If city A is connected to city B, you can travel from A to B, but not the other way around.
+          - Because each city is connected to only one other city, there's only one possible route. To find the route, you can simply start from the starting city, identify the next city it's connected to, and repeat the process until you reach the destination city.
+          - Please follow the exact format specified below when outputting the route.
+
+          [OUTPUT FORMAT]
+          Please mark the route with <Route> and </Route> tags. The route should be in the following format, where one line is one step of the route:
+          <Route>
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          ...
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          </Route>
+
+          [EXAMPLE]
+          In a hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method. The details of the cities are as follows:
+          Fort Worth is a lively city. You can travel from Fort Worth to Manchester by ferry.
+          Leeds is a lively city. You can travel from Leeds to London by bus.
+          Manchester is a lively city. You can travel from Manchester to Indianapolis by plane.
+          Houston is a lively city. You can travel from Houston to London by ferry.
+          Charlotte is a lively city. You can travel from Charlotte to Charlotte by bus.
+          London is a lively city. You can travel from London to San Antonio by train.
+          San Antonio is a lively city. You can travel from San Antonio to Kitchener by train.
+          Seattle is a lively city. You can travel from Seattle to London by train.
+          Indianapolis is a lively city. You can travel from Indianapolis to Houston by ferry.
+
+          Now find the route from Manchester to Kitchener based on the information above.
+          <Route>
+          From Manchester, take a plane to Indianapolis.
+          From Indianapolis, take a ferry to Houston.
+          From Houston, take a ferry to London.
+          From London, take a train to San Antonio.
+          From San Antonio, take a train to Kitchener.
+          </Route>
+
+          [REMINDERS]
+          - All connections are one-way. You can solve the problem by iteratively finding the next city to travel to until you reach the destination city.
+          - Follow the specific format for the route output. Mark the route with <Route> and </Route> tags.
+        task_template: |-
+          [PROBLEM]
+          {city_context}
+
+          Now find the route from {src_city} to {dst_city} based on the information above.
+        answer_template:
+        answer_tag:
+path_traversal_2k:
+  metadata:
+    version: 1
+  name: "path_traversal_2k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/path_traversal/path_traversal.py"
+  metric_class: "PathTraversalMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/path_traversal/data/path_traversal_2k_en.jsonl"
+      example_filepath:
+      max_tokens: 3072
+      prompt_template:
+        preamble: |-
+          [TASK]
+          In a completely hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method (bus, train, plane, or ferry). Your task is to provide a route from a city to another city. You should follow the specific instruction provided later and output the route following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - All connections are one-way. If city A is connected to city B, you can travel from A to B, but not the other way around.
+          - Because each city is connected to only one other city, there's only one possible route. To find the route, you can simply start from the starting city, identify the next city it's connected to, and repeat the process until you reach the destination city.
+          - Please follow the exact format specified below when outputting the route.
+
+          [OUTPUT FORMAT]
+          Please mark the route with <Route> and </Route> tags. The route should be in the following format, where one line is one step of the route:
+          <Route>
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          ...
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          </Route>
+
+          [EXAMPLE]
+          In a hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method. The details of the cities are as follows:
+          Fort Worth is a lively city. You can travel from Fort Worth to Manchester by ferry.
+          Leeds is a lively city. You can travel from Leeds to London by bus.
+          Manchester is a lively city. You can travel from Manchester to Indianapolis by plane.
+          Houston is a lively city. You can travel from Houston to London by ferry.
+          Charlotte is a lively city. You can travel from Charlotte to Charlotte by bus.
+          London is a lively city. You can travel from London to San Antonio by train.
+          San Antonio is a lively city. You can travel from San Antonio to Kitchener by train.
+          Seattle is a lively city. You can travel from Seattle to London by train.
+          Indianapolis is a lively city. You can travel from Indianapolis to Houston by ferry.
+
+          Now find the route from Manchester to Kitchener based on the information above.
+          <Route>
+          From Manchester, take a plane to Indianapolis.
+          From Indianapolis, take a ferry to Houston.
+          From Houston, take a ferry to London.
+          From London, take a train to San Antonio.
+          From San Antonio, take a train to Kitchener.
+          </Route>
+
+          [REMINDERS]
+          - All connections are one-way. You can solve the problem by iteratively finding the next city to travel to until you reach the destination city.
+          - Follow the specific format for the route output. Mark the route with <Route> and </Route> tags.
+        task_template: |-
+          [PROBLEM]
+          {city_context}
+
+          Now find the route from {src_city} to {dst_city} based on the information above.
+        answer_template:
+        answer_tag:
+path_traversal_8k:
+  metadata:
+    version: 1
+  name: "path_traversal_8k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/path_traversal/path_traversal.py"
+  metric_class: "PathTraversalMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/path_traversal/data/path_traversal_8k_en.jsonl"
+      example_filepath:
+      max_tokens: 9216
+      prompt_template:
+        preamble: |-
+          [TASK]
+          In a completely hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method (bus, train, plane, or ferry). Your task is to provide a route from a city to another city. You should follow the specific instruction provided later and output the route following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - All connections are one-way. If city A is connected to city B, you can travel from A to B, but not the other way around.
+          - Because each city is connected to only one other city, there's only one possible route. To find the route, you can simply start from the starting city, identify the next city it's connected to, and repeat the process until you reach the destination city.
+          - Please follow the exact format specified below when outputting the route.
+
+          [OUTPUT FORMAT]
+          Please mark the route with <Route> and </Route> tags. The route should be in the following format, where one line is one step of the route:
+          <Route>
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          ...
+          From <CITY_NAME>, take a <TRANSIT_METHOD> to <CITY_NAME>.
+          </Route>
+
+          [EXAMPLE]
+          In a hypothetical world, there are a number of cities. Each city has a one-way connection to only one other city via a specific transit method. The details of the cities are as follows:
+          Fort Worth is a lively city. You can travel from Fort Worth to Manchester by ferry.
+          Leeds is a lively city. You can travel from Leeds to London by bus.
+          Manchester is a lively city. You can travel from Manchester to Indianapolis by plane.
+          Houston is a lively city. You can travel from Houston to London by ferry.
+          Charlotte is a lively city. You can travel from Charlotte to Charlotte by bus.
+          London is a lively city. You can travel from London to San Antonio by train.
+          San Antonio is a lively city. You can travel from San Antonio to Kitchener by train.
+          Seattle is a lively city. You can travel from Seattle to London by train.
+          Indianapolis is a lively city. You can travel from Indianapolis to Houston by ferry.
+
+          Now find the route from Manchester to Kitchener based on the information above.
+          <Route>
+          From Manchester, take a plane to Indianapolis.
+          From Indianapolis, take a ferry to Houston.
+          From Houston, take a ferry to London.
+          From London, take a train to San Antonio.
+          From San Antonio, take a train to Kitchener.
+          </Route>
+
+          [REMINDERS]
+          - All connections are one-way. You can solve the problem by iteratively finding the next city to travel to until you reach the destination city.
+          - Follow the specific format for the route output. Mark the route with <Route> and </Route> tags.
+        task_template: |-
+          [PROBLEM]
+          {city_context}
+
+          Now find the route from {src_city} to {dst_city} based on the information above.
+        answer_template:
+        answer_tag:

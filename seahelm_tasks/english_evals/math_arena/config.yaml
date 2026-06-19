@@ -1,0 +1,447 @@
+aime_2024:
+  metadata:
+    version: 1.0
+  name: aime_2024
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: HuggingFaceH4/aime_2024
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+aime_2025:
+  metadata:
+    version: 1.0
+  name: aime_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/aime_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+aime_2026:
+  metadata:
+    version: 1.0
+  name: aime_2026
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/aime_2026
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+smt_2025:
+  metadata:
+    version: 1.0
+  name: smt_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/smt_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+hmmt_feb_2023:
+  metadata:
+    version: 1.0
+  name: hmmt_feb_2023
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/hmmt_feb_2023
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+hmmt_feb_2024:
+  metadata:
+    version: 1.0
+  name: hmmt_feb_2024
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/hmmt_feb_2024
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+hmmt_feb_2025:
+  metadata:
+    version: 1.0
+  name: hmmt_feb_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/hmmt_feb_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+hmmt_nov_2025:
+  metadata:
+    version: 1.0
+  name: hmmt_nov_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/hmmt_nov_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+hmmt_feb_2026:
+  metadata:
+    version: 1.0
+  name: hmmt_feb_2026
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/hmmt_feb_2026
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+cmimc_2025:
+  metadata:
+    version: 1.0
+  name: cmimc_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/cmimc_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+brumo_2025:
+  metadata:
+    version: 1.0
+  name: brumo_2025
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/brumo_2025
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+arxivmath-1225:
+  metadata:
+    version: 1.0
+  name: arxivmath-1225
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/arxivmath-1225
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+arxivmath-0126:
+  metadata:
+    version: 1.0
+  name: arxivmath-0126
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/arxivmath-0126
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{
+
+arxivmath-0226:
+  metadata:
+    version: 1.0
+  name: arxivmath-0226
+  competency: english_math
+  dataloader_file: seahelm_tasks/english_evals/math_arena/math_arena_dataloader.py
+  dataloader_class: MathArenaDataloader
+  metric_file: src/metrics/math_metric.py
+  metric_class: MathMetric
+  aggregation_group: MathArena
+  metric: normalized_math_verify_score
+  languages:
+    en:
+      filepath: MathArena/arxivmath-0226
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Solve the following math problem clearly and efficiently.
+
+          You are to list out all the steps used to solve the math problem. Provide a brief explanation and all calculations used for each step.
+
+          Always provide the solution using the format "$\boxed{{{{ANSWER}}}}$" where {{ANSWER}} is the number or expression that solves the problem.
+        task_template: |-
+          Problem:
+          ```
+          {problem}
+          ```
+        answer_template: |-
+          {label}
+        answer_tag: boxed{

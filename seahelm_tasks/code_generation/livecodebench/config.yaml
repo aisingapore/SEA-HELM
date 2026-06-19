@@ -1,0 +1,100 @@
+livecodebench_v6:
+  metadata:
+    version: 1
+  name: livecodebench_v6
+  competency: code_generation
+  dataloader_file: seahelm_tasks/code_generation/livecodebench/livecodebench_dataloader.py
+  dataloader_class: LiveCodeBenchDataloader
+  metric_file: seahelm_tasks/code_generation/livecodebench/livecodebench_metric.py
+  metric_class: LiveCodeBenchMetric
+  metric: pass@1
+  use_judges: false
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    en:
+      filepath: livecodebench/code_generation_lite
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: |-
+          ### Question:
+          {question}
+
+          {format_prompt}
+
+          ### Answer: (use the provided format with backticks)
+        answer_template: ""
+        answer_tag: ""
+
+livecodebench_v5:
+  metadata:
+    version: 1
+  name: livecodebench_v5
+  competency: ${livecodebench_v6.competency}
+  dataloader_file: ${livecodebench_v6.dataloader_file}
+  dataloader_class: ${livecodebench_v6.dataloader_class}
+  metric_file: ${livecodebench_v6.metric_file}
+  metric_class: ${livecodebench_v6.metric_class}
+  metric: ${livecodebench_v6.metric}
+  use_judges: ${livecodebench_v6.use_judges}
+  fewshot_num_examples: ${livecodebench_v6.fewshot_num_examples}
+  languages: ${livecodebench_v6.languages}
+
+livecodebench_v4:
+  metadata:
+    version: 1
+  name: livecodebench_v4
+  competency: ${livecodebench_v6.competency}
+  dataloader_file: ${livecodebench_v6.dataloader_file}
+  dataloader_class: ${livecodebench_v6.dataloader_class}
+  metric_file: ${livecodebench_v6.metric_file}
+  metric_class: ${livecodebench_v6.metric_class}
+  metric: ${livecodebench_v6.metric}
+  use_judges: ${livecodebench_v6.use_judges}
+  fewshot_num_examples: ${livecodebench_v6.fewshot_num_examples}
+  languages: ${livecodebench_v6.languages}
+
+livecodebench_v3:
+  metadata:
+    version: 1
+  name: livecodebench_v3
+  competency: ${livecodebench_v6.competency}
+  dataloader_file: ${livecodebench_v6.dataloader_file}
+  dataloader_class: ${livecodebench_v6.dataloader_class}
+  metric_file: ${livecodebench_v6.metric_file}
+  metric_class: ${livecodebench_v6.metric_class}
+  metric: ${livecodebench_v6.metric}
+  use_judges: ${livecodebench_v6.use_judges}
+  fewshot_num_examples: ${livecodebench_v6.fewshot_num_examples}
+  languages: ${livecodebench_v6.languages}
+
+livecodebench_v2:
+  metadata:
+    version: 1
+  name: livecodebench_v2
+  competency: ${livecodebench_v6.competency}
+  dataloader_file: ${livecodebench_v6.dataloader_file}
+  dataloader_class: ${livecodebench_v6.dataloader_class}
+  metric_file: ${livecodebench_v6.metric_file}
+  metric_class: ${livecodebench_v6.metric_class}
+  metric: ${livecodebench_v6.metric}
+  use_judges: ${livecodebench_v6.use_judges}
+  fewshot_num_examples: ${livecodebench_v6.fewshot_num_examples}
+  languages: ${livecodebench_v6.languages}
+
+livecodebench_v1:
+  metadata:
+    version: 1
+  name: livecodebench_v1
+  competency: ${livecodebench_v6.competency}
+  dataloader_file: ${livecodebench_v6.dataloader_file}
+  dataloader_class: ${livecodebench_v6.dataloader_class}
+  metric_file: ${livecodebench_v6.metric_file}
+  metric_class: ${livecodebench_v6.metric_class}
+  metric: ${livecodebench_v6.metric}
+  use_judges: ${livecodebench_v6.use_judges}
+  fewshot_num_examples: ${livecodebench_v6.fewshot_num_examples}
+  languages: ${livecodebench_v6.languages}

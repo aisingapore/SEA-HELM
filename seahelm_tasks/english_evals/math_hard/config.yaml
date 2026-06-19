@@ -2,7 +2,7 @@ math_hard_algebra:
   metadata:
     version: 1.0
   name: math_hard_algebra
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -36,7 +36,7 @@ math_hard_counting_and_probability:
   metadata:
     version: 1.0
   name: math_hard_counting_and_probability
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -70,7 +70,7 @@ math_hard_geometry:
   metadata:
     version: 1.0
   name: math_hard_geometry
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -104,7 +104,7 @@ math_hard_intermediate_algebra:
   metadata:
     version: 1.0
   name: math_hard_intermediate_algebra
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -138,7 +138,7 @@ math_hard_number_theory:
   metadata:
     version: 1.0
   name: math_hard_number_theory
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -172,7 +172,7 @@ math_hard_prealgebra:
   metadata:
     version: 1.0
   name: math_hard_prealgebra
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader
@@ -206,7 +206,7 @@ math_hard_precalculus:
   metadata:
     version: 1.0
   name: math_hard_precalculus
-  competency: english_evals
+  competency: english_math
   aggregation_group: math_hard
   dataloader_file: seahelm_tasks/english_evals/math_hard/math_hard_dataloader.py
   dataloader_class: MathHardDataloader

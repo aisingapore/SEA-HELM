@@ -1,0 +1,306 @@
+tom_tracking_0p5k:
+  metadata:
+    version: 1
+  name: "tom_tracking_0p5k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/tom_tracking/tom_tracking.py"
+  metric_class: "ToMTrackingMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/tom_tracking/data/tom_tracking_0.5k_en.jsonl"
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You'll see a story about object placement. Each story involves four components: Agents, Objects, Rooms, and Containers. Given a question about an (agent, object) pair, your task is to track the locations and beliefs in stories about object placement asked in the question.
+
+          [APPROACH]
+          You will solve the problem by tracking the location of the agent, location of the object, and the agent's belief of the object.
+          1. Initial Setup: set up agent's starting location, object's starting location, agent's initial belief on the object's location. Note that if an agent does not see an object at the start, their belief on the object is None.
+          2. Then, track step-by-step:
+          * If a step involves that the agent moves to another room, leaves a room, or enters a room, you should update the agent's location. Note that if the agent leaves the current room but hasn't entered another room, the agent's location is None.
+          * If a step involves the object of interest moving, you should update the object's location.
+          * To keep track of the agent's belief on the object: If the agent and the object are in the same room, the agent can see the object, so the agent's belief will reflect the true location of the object. If the agent cannot see the object (the agent is in a different room or not in any rooms), the agent's belief will remain unchanged until the agent sees the object again.
+          3. Format your output exactly as shown in example answers below.
+
+          [EXAMPLE STORY1]
+          Step 0: Catherine is in the patio; Kristin is in the patio; the pencil sharpener is on the sauna's table; the thread spool is on the sauna's table.
+          Step 1: Catherine moves to the sauna.
+          Step 2: Catherine moves to the patio.
+          Step 3: Catherine moves to the sauna.
+          Step 4: Catherine moves the pencil sharpener to the sauna's nightstand.
+          Step 5: Catherine moves to the patio.
+          Step 6: Kristin moves to the sauna.
+          Step 7: Catherine moves to the sauna.
+          Step 8: Kristin leaves the room he was in.
+          Step 9: Catherine moves the thread spool to the sauna's nightstand.
+          Step 10: Kristin enters the patio.
+
+          [EXAMPLE QUESTION1]
+          Where does Catherine believe the thread spool is?
+
+          [EXAMPLE ANSWER1]
+          Catherine's belief on the thread spool:
+          - Step 0: (initial state) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: None}}
+          - Step 1: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 2: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 3: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 4: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 5: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 6: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 7: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 8: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 9: (Catherine location unchanged; thread spool location changed) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          - Step 10: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          Final Answer: the sauna's nightstand
+
+          [EXAMPLE STORY2]
+          Step 0: Kathryn is in the storage room; Mitchell is in the storage room; the rubber band is on the patio's coffee table; the fuse is on the patio's coffee table.
+          Step 1: Kathryn moves to the patio.
+          Step 2: Kathryn moves to the storage room, and moves the fuse to the storage room's ledge.
+          Step 3: Kathryn moves the fuse to the storage room's coffee table.
+          Step 4: Mitchell leaves the room he was in.
+          Step 5: Kathryn moves the fuse to the storage room's ledge.
+          Step 6: Mitchell enters the storage room.
+          Step 7: Kathryn moves to the patio, and moves the fuse to the patio's ledge.
+          Step 8: Kathryn moves the rubber band to the patio's ledge.
+          Step 9: Kathryn moves to the storage room, and moves the rubber band to the storage room's ledge.
+          Step 10: Mitchell moves the rubber band to the storage room's coffee table.
+
+          [EXAMPLE QUESTION2]
+          Where does Kathryn believe the fuse is?
+
+          [EXAMPLE ANSWER2]
+          Kathryn's belief on the fuse:
+          - Step 0: (initial state) {{Kathryn location: storage room; fuse location: patio's coffee table; Kathryn sees fuse: False; Kathryn's belief on fuse: None}}
+          - Step 1: (Kathryn location changed; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's coffee table}}
+          - Step 2: (Kathryn location changed; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 3: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 4: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 5: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 6: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 7: (Kathryn location changed; fuse location changed) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 8: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 9: (Kathryn location changed; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          - Step 10: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          Final Answer: the patio's ledge
+
+          [PROBLEM]
+          Read the following story and answer the question. Please carefully follow the approach and examples provided above when solving the problem. Remember that the output format should follow the examples.
+        task_template: |-
+          [STORY]
+          {story}
+
+          [QUESTION]
+          {question}
+
+          [YOUR ANSWER]
+        answer_template:
+        answer_tag:
+tom_tracking_2k:
+  metadata:
+    version: 1
+  name: "tom_tracking_2k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/tom_tracking/tom_tracking.py"
+  metric_class: "ToMTrackingMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/tom_tracking/data/tom_tracking_2k_en.jsonl"
+      example_filepath:
+      max_tokens: 3072
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You'll see a story about object placement. Each story involves four components: Agents, Objects, Rooms, and Containers. Given a question about an (agent, object) pair, your task is to track the locations and beliefs in stories about object placement asked in the question.
+
+          [APPROACH]
+          You will solve the problem by tracking the location of the agent, location of the object, and the agent's belief of the object.
+          1. Initial Setup: set up agent's starting location, object's starting location, agent's initial belief on the object's location. Note that if an agent does not see an object at the start, their belief on the object is None.
+          2. Then, track step-by-step:
+          * If a step involves that the agent moves to another room, leaves a room, or enters a room, you should update the agent's location. Note that if the agent leaves the current room but hasn't entered another room, the agent's location is None.
+          * If a step involves the object of interest moving, you should update the object's location.
+          * To keep track of the agent's belief on the object: If the agent and the object are in the same room, the agent can see the object, so the agent's belief will reflect the true location of the object. If the agent cannot see the object (the agent is in a different room or not in any rooms), the agent's belief will remain unchanged until the agent sees the object again.
+          3. Format your output exactly as shown in example answers below.
+
+          [EXAMPLE STORY1]
+          Step 0: Catherine is in the patio; Kristin is in the patio; the pencil sharpener is on the sauna's table; the thread spool is on the sauna's table.
+          Step 1: Catherine moves to the sauna.
+          Step 2: Catherine moves to the patio.
+          Step 3: Catherine moves to the sauna.
+          Step 4: Catherine moves the pencil sharpener to the sauna's nightstand.
+          Step 5: Catherine moves to the patio.
+          Step 6: Kristin moves to the sauna.
+          Step 7: Catherine moves to the sauna.
+          Step 8: Kristin leaves the room he was in.
+          Step 9: Catherine moves the thread spool to the sauna's nightstand.
+          Step 10: Kristin enters the patio.
+
+          [EXAMPLE QUESTION1]
+          Where does Catherine believe the thread spool is?
+
+          [EXAMPLE ANSWER1]
+          Catherine's belief on the thread spool:
+          - Step 0: (initial state) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: None}}
+          - Step 1: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 2: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 3: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 4: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 5: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 6: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 7: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 8: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 9: (Catherine location unchanged; thread spool location changed) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          - Step 10: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          Final Answer: the sauna's nightstand
+
+          [EXAMPLE STORY2]
+          Step 0: Kathryn is in the storage room; Mitchell is in the storage room; the rubber band is on the patio's coffee table; the fuse is on the patio's coffee table.
+          Step 1: Kathryn moves to the patio.
+          Step 2: Kathryn moves to the storage room, and moves the fuse to the storage room's ledge.
+          Step 3: Kathryn moves the fuse to the storage room's coffee table.
+          Step 4: Mitchell leaves the room he was in.
+          Step 5: Kathryn moves the fuse to the storage room's ledge.
+          Step 6: Mitchell enters the storage room.
+          Step 7: Kathryn moves to the patio, and moves the fuse to the patio's ledge.
+          Step 8: Kathryn moves the rubber band to the patio's ledge.
+          Step 9: Kathryn moves to the storage room, and moves the rubber band to the storage room's ledge.
+          Step 10: Mitchell moves the rubber band to the storage room's coffee table.
+
+          [EXAMPLE QUESTION2]
+          Where does Kathryn believe the fuse is?
+
+          [EXAMPLE ANSWER2]
+          Kathryn's belief on the fuse:
+          - Step 0: (initial state) {{Kathryn location: storage room; fuse location: patio's coffee table; Kathryn sees fuse: False; Kathryn's belief on fuse: None}}
+          - Step 1: (Kathryn location changed; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's coffee table}}
+          - Step 2: (Kathryn location changed; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 3: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 4: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 5: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 6: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 7: (Kathryn location changed; fuse location changed) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 8: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 9: (Kathryn location changed; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          - Step 10: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          Final Answer: the patio's ledge
+
+          [PROBLEM]
+          Read the following story and answer the question. Please carefully follow the approach and examples provided above when solving the problem. Remember that the output format should follow the examples.
+        task_template: |-
+          [STORY]
+          {story}
+
+          [QUESTION]
+          {question}
+
+          [YOUR ANSWER]
+        answer_template:
+        answer_tag:
+tom_tracking_8k:
+  metadata:
+    version: 1
+  name: "tom_tracking_8k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/tom_tracking/tom_tracking.py"
+  metric_class: "ToMTrackingMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/tom_tracking/data/tom_tracking_8k_en.jsonl"
+      example_filepath:
+      max_tokens: 9216
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You'll see a story about object placement. Each story involves four components: Agents, Objects, Rooms, and Containers. Given a question about an (agent, object) pair, your task is to track the locations and beliefs in stories about object placement asked in the question.
+
+          [APPROACH]
+          You will solve the problem by tracking the location of the agent, location of the object, and the agent's belief of the object.
+          1. Initial Setup: set up agent's starting location, object's starting location, agent's initial belief on the object's location. Note that if an agent does not see an object at the start, their belief on the object is None.
+          2. Then, track step-by-step:
+          * If a step involves that the agent moves to another room, leaves a room, or enters a room, you should update the agent's location. Note that if the agent leaves the current room but hasn't entered another room, the agent's location is None.
+          * If a step involves the object of interest moving, you should update the object's location.
+          * To keep track of the agent's belief on the object: If the agent and the object are in the same room, the agent can see the object, so the agent's belief will reflect the true location of the object. If the agent cannot see the object (the agent is in a different room or not in any rooms), the agent's belief will remain unchanged until the agent sees the object again.
+          3. Format your output exactly as shown in example answers below.
+
+          [EXAMPLE STORY1]
+          Step 0: Catherine is in the patio; Kristin is in the patio; the pencil sharpener is on the sauna's table; the thread spool is on the sauna's table.
+          Step 1: Catherine moves to the sauna.
+          Step 2: Catherine moves to the patio.
+          Step 3: Catherine moves to the sauna.
+          Step 4: Catherine moves the pencil sharpener to the sauna's nightstand.
+          Step 5: Catherine moves to the patio.
+          Step 6: Kristin moves to the sauna.
+          Step 7: Catherine moves to the sauna.
+          Step 8: Kristin leaves the room he was in.
+          Step 9: Catherine moves the thread spool to the sauna's nightstand.
+          Step 10: Kristin enters the patio.
+
+          [EXAMPLE QUESTION1]
+          Where does Catherine believe the thread spool is?
+
+          [EXAMPLE ANSWER1]
+          Catherine's belief on the thread spool:
+          - Step 0: (initial state) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: None}}
+          - Step 1: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 2: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 3: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 4: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 5: (Catherine location changed; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 6: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: patio; thread spool location: sauna's table; Catherine sees thread spool: False; Catherine's belief on thread spool: sauna's table}}
+          - Step 7: (Catherine location changed; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 8: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's table; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's table}}
+          - Step 9: (Catherine location unchanged; thread spool location changed) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          - Step 10: (Catherine location unchanged; thread spool location unchanged) {{Catherine location: sauna; thread spool location: sauna's nightstand; Catherine sees thread spool: True; Catherine's belief on thread spool: sauna's nightstand}}
+          Final Answer: the sauna's nightstand
+
+          [EXAMPLE STORY2]
+          Step 0: Kathryn is in the storage room; Mitchell is in the storage room; the rubber band is on the patio's coffee table; the fuse is on the patio's coffee table.
+          Step 1: Kathryn moves to the patio.
+          Step 2: Kathryn moves to the storage room, and moves the fuse to the storage room's ledge.
+          Step 3: Kathryn moves the fuse to the storage room's coffee table.
+          Step 4: Mitchell leaves the room he was in.
+          Step 5: Kathryn moves the fuse to the storage room's ledge.
+          Step 6: Mitchell enters the storage room.
+          Step 7: Kathryn moves to the patio, and moves the fuse to the patio's ledge.
+          Step 8: Kathryn moves the rubber band to the patio's ledge.
+          Step 9: Kathryn moves to the storage room, and moves the rubber band to the storage room's ledge.
+          Step 10: Mitchell moves the rubber band to the storage room's coffee table.
+
+          [EXAMPLE QUESTION2]
+          Where does Kathryn believe the fuse is?
+
+          [EXAMPLE ANSWER2]
+          Kathryn's belief on the fuse:
+          - Step 0: (initial state) {{Kathryn location: storage room; fuse location: patio's coffee table; Kathryn sees fuse: False; Kathryn's belief on fuse: None}}
+          - Step 1: (Kathryn location changed; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's coffee table}}
+          - Step 2: (Kathryn location changed; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 3: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 4: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's coffee table; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's coffee table}}
+          - Step 5: (Kathryn location unchanged; fuse location changed) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 6: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: storage room's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: storage room's ledge}}
+          - Step 7: (Kathryn location changed; fuse location changed) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 8: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: patio; fuse location: patio's ledge; Kathryn sees fuse: True; Kathryn's belief on fuse: patio's ledge}}
+          - Step 9: (Kathryn location changed; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          - Step 10: (Kathryn location unchanged; fuse location unchanged) {{Kathryn location: storage room; fuse location: patio's ledge; Kathryn sees fuse: False; Kathryn's belief on fuse: patio's ledge}}
+          Final Answer: the patio's ledge
+
+          [PROBLEM]
+          Read the following story and answer the question. Please carefully follow the approach and examples provided above when solving the problem. Remember that the output format should follow the examples.
+        task_template: |-
+          [STORY]
+          {story}
+
+          [QUESTION]
+          {question}
+
+          [YOUR ANSWER]
+        answer_template:
+        answer_tag:

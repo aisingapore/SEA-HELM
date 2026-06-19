@@ -4,7 +4,7 @@ gpqa_main:
   changes:
     v1.1: Use the original GPQA dataset from HuggingFace
   name: gpqa_main
-  competency: english_evals
+  competency: english_knowledge
   dataloader_file: seahelm_tasks/english_evals/gpqa/gpqa_dataloader.py
   dataloader_class: GPQADataloader
   metric_file: src/metrics/f1_acc_metric.py
@@ -56,7 +56,7 @@ gpqa_diamond:
   metadata:
     version: 1.0
   name: gpqa_diamond
-  competency: english_evals
+  competency: english_knowledge
   dataloader_file: seahelm_tasks/english_evals/gpqa/gpqa_dataloader.py
   dataloader_class: GPQADataloader
   metric_file: src/metrics/f1_acc_metric.py
