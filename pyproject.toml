@@ -1,6 +1,6 @@
 [project]
 name = "seahelm"
-version = "1.0.0"
+version = "1.2.0"
 description = "SouthEast Asian Holistic Evaluation of Language Models"
 authors = [
     {name = "AI Singapore", email = "sealion@aisingapore.org"}
@@ -20,36 +20,44 @@ classifiers = [
 ]
 
 dependencies = [
-    "anthropic==0.71.0",
-    "datasets[audio,vision]==4.5.0",
+    "datasets[audio,vision]==4.7.0",
     "fast-langdetect==0.3.2",
     "fsspec==2025.10.0",
+    "flashinfer-python==0.6.12",
+    "flashinfer-cubin==0.6.12",
+    "flashinfer-jit-cache==0.6.12+cu129",
     "gcsfs==2025.10.0",
     "google-cloud-storage==3.8.0",
-    "google-genai==1.60.0",
+    "google-genai==1.64.0",
     "immutabledict==4.2.2",
+    "instanttensor==0.1.9",
     "jieba==0.42.1",
     "langdetect==1.0.9",
-    "litellm==1.81.1",
+    "litellm==1.89.2",
     "math-verify[antlr4_13_2]==0.9.0",
-    "nltk==3.9.3",
+    "nltk==3.9.4",
     "omegaconf==2.4.0.dev3",
-    "open-clip-torch==3.2.0",
-    "openai==2.15.0",
-    "opencc==1.1.9",
+    "open-clip-torch==3.3.0",
+    "opencc==1.2.0",
     "pre-commit==4.5.1",
     "pyonmttok==1.38.1",
     "pythainlp==5.2.0",
-    "ruff==0.14.10",
+    "ruff==0.15.6",
     "sacrebleu==2.6.0",
     "scikit-learn==1.8.0",
+    # "sglang==0.5.9",
     "sympy==1.14.0",
-    "tenacity==9.1.2",
-    "tiktoken==0.12.0",
+    "tenacity==9.1.4",
+    "torch",
+    "torchaudio",
+    "torchcodec",
+    "torchvision",
+    "transformers==5.12.0",
     "tree-sitter-java==0.21.0",
     "tree-sitter-javascript==0.21.4",
     "tree_sitter==0.21.3",
-    "vllm[audio]==0.15.0",
+    "ujson==5.12.1",
+    "vllm", # actual version specified under tool.uv.sources
     "wonderwords==3.0.1",
 ]
 
@@ -96,3 +104,29 @@ known-first-party = ["src", "seahelm_tasks"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+# override dependencies for conflicts with sglang and other packages
+# [tool.uv]
+# override-dependencies = [
+#     "openai==2.6.1",
+#     "timm==1.0.17",
+# ]
+
+[tool.uv.sources]
+vllm = { url = "https://github.com/vllm-project/vllm/releases/download/v0.23.0/vllm-0.23.0+cu129-cp38-abi3-manylinux_2_28_x86_64.whl" }
+torch = { index = "pytorch" }
+torchaudio = { index = "pytorch" }
+torchvision = { index = "pytorch" }
+torchcodec = { index = "pytorch" }
+flashinfer-jit-cache = { index = "flashinfer-cache" }
+
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true
+
+[[tool.uv.index]]
+name = "flashinfer-cache"
+url = "https://flashinfer.ai/whl/cu129"
+explicit = true

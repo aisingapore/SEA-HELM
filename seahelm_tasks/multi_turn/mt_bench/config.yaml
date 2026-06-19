@@ -3,18 +3,15 @@ mt-bench:
     version: 1.0
   name: mt-bench
   competency: multi-turn
-  dataloader_file: src/dataloaders/huggingface_dataloader.py
-  dataloader_class: HuggingFaceDataloader
+  dataloader_file: src/dataloaders/judges/pairwise_dataloader.py
+  dataloader_class: HuggingFacePairwiseDataloader
   metric_file: src/metrics/llm_judges/pairwise_llm_judge_metric.py
   metric_class: PairwiseLLMJudgeMetric
   metric: weighted_win_rate
   use_judges: true
-  judge_file: src/judges/pairwise_judge.py
-  judge_class: PairwiseJudge
   judge:
     judge_model_name: gpt-4.1-2025-04-14
     judge_model_type: OpenAI
-    batch_api_calls: true
     judge_generation_kwargs:
       temperature: 0.6
       max_tokens: 2048
@@ -261,18 +258,15 @@ mt-bench-increased-tokens:
     version: 1.0
   name: mt-bench-increased-tokens
   competency: multi-turn
-  dataloader_file: src/dataloaders/huggingface_dataloader.py
-  dataloader_class: HuggingFaceDataloader
+  dataloader_file: src/dataloaders/judges/pairwise_dataloader.py
+  dataloader_class: HuggingFacePairwiseDataloader
   metric_file: src/metrics/llm_judges/pairwise_llm_judge_metric.py
   metric_class: PairwiseLLMJudgeMetric
   metric: weighted_win_rate
   use_judges: true
-  judge_file: src/judges/pairwise_judge.py
-  judge_class: PairwiseJudge
   judge:
     judge_model_name: gpt-4.1-2025-04-14
     judge_model_type: OpenAI
-    batch_api_calls: true
     judge_generation_kwargs:
       temperature: 0.6
       max_tokens: 8192

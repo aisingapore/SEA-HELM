@@ -2,7 +2,7 @@ musr_murder_mysteries:
   metadata:
     version: 1.0
   name: musr_murder_mysteries
-  competency: english_evals
+  competency: english_reasoning
   aggregation_group: musr
   dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
   dataloader_class: MuSRDataloader
@@ -65,7 +65,7 @@ musr_object_placements:
   metadata:
     version: 1.0
   name: musr_object_placements
-  competency: english_evals
+  competency: english_reasoning
   aggregation_group: musr
   dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
   dataloader_class: MuSRDataloader
@@ -126,7 +126,7 @@ musr_team_allocation:
   metadata:
     version: 1.0
   name: musr_team_allocation
-  competency: english_evals
+  competency: english_reasoning
   aggregation_group: musr
   dataloader_file: seahelm_tasks/english_evals/musr/musr_dataloader.py
   dataloader_class: MuSRDataloader

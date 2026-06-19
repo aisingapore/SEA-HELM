@@ -10,7 +10,7 @@ IS_REASONING_MODEL="false"
 RERUN_CACHED_RESULTS="false"
 TASKS="seahelm"
 MODEL_TYPE="vllm"
-MODEL_ARGS="enable_prefix_caching=True,tensor_parallel_size=auto" 
+MODEL_ARGS="load_format=instanttensor,enable_prefix_caching=True,tensor_parallel_size=auto=" 
 
 # Function to display usage
 usage() {
@@ -133,7 +133,7 @@ echo "Visible devices: $VISIBLE_DEVICES_STR"
 export CUDA_VISIBLE_DEVICES=$VISIBLE_DEVICES_STR
 
 # Set other environment variables for evaluation
-export HF_HOME="/cache/huggingface"
+# export HF_HOME="/cache/huggingface"
 PYTHON_SCRIPT="src/seahelm_evaluation.py"
 
 if [[ "$(echo "$IS_BASE_MODEL" | tr '[:upper:]' '[:lower:]')" == "true" ]]; then

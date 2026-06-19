@@ -1,0 +1,375 @@
+niah_multikey_8k:
+  metadata:
+    version: 1
+  name: niah_multikey_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 1
+  num_queries:
+  context_size: 8000
+  languages:
+    en:
+      filepath:
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Please read and memorize the text below. I will ask you about it later.
+        task_template: |-
+          <text>
+          {text}
+          </text>
+
+          <Question>What special magic numbers associated with {needle_text} are mentioned in the provided text? Please list all that apply. If no such words exist, please answer "None".</Question>
+
+          Please provide your answer in the following format:
+          <Answer>List all numbers here</Answer>
+        answer_template:
+        answer_tag: <Answer>
+    zh:
+      filepath:
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          请阅读并记住下面的文字。我一会儿会问你和它相关的问题。
+        task_template: |-
+          <文本>
+          {text}
+          </文本>
+
+          <问题>在所提供的文本中，与{needle_text}有关的魔法数字有哪些？请列出所有相关数字。若这样的词语不存在，请回答“None”。</问题>
+
+          请按照以下格式提供您的答案：
+          <答案>在此处列出所有数字</答案>
+        answer_template:
+        answer_tag: <答案>
+    ta:
+      filepath:
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          கீழ்கண்ட உரையை படித்து நினைவில் கொள்ளவும். பிறகு அதை பற்றி நான் உன்னிடம் கேட்பேன்.
+        task_template: |-
+          <உரை>
+          {text}
+          </உரை>
+
+          <கேள்வி>{needle_text} உடன் தொடர்புடைய சிறப்பு மந்திர எண்கள் யாவை கொடுக்கப்பட்டுள்ள உரையில் இடம் பெற்றுள்ளன? பொருந்தும் அனைத்தையும் பட்டியலிடவும். அத்தகைய சொற்கள் எதுவும் இல்லை என்றால், "None" என்று விடையளிக்கவும்.</கேள்வி>
+
+          பின்வரும் வடிவத்தில் தங்கள் விடையை அளிக்கவும்:
+          <விடை>எண்கள் அனைத்தையும் இங்கு பட்டியலிடுக</விடை>
+        answer_template:
+        answer_tag: <விடை>
+    vi:
+      filepath:
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          Hãy đọc và ghi nhớ văn bản bên dưới. Tôi sẽ hỏi bạn sau đó.
+        task_template: |-
+          <Văn bản>
+          {text}
+          </Văn bản>
+
+          <Câu hỏi>Những con số ma thuật đặc biệt nào liên quan đến {needle_text} được đề cập trong văn bản được cung cấp? Vui lòng liệt kê tất cả những con số áp dụng. Nếu không có từ nào như vậy, hãy trả lời "None".</Câu hỏi>
+
+          Hãy cho câu trả lời theo hình thức như sau:
+          <Câu trả lời>Liệt kê tất cả các số ở đây</Câu trả lời>
+        answer_template:
+        answer_tag: <Câu trả lời>
+
+niah_multikey_32k:
+  metadata:
+    version: 1
+  name: niah_multikey_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 1
+  num_queries:
+  context_size: 32000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multikey_64k:
+  metadata:
+    version: 1
+  name: niah_multikey_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 1
+  num_queries:
+  context_size: 64000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multikey_128k:
+  metadata:
+    version: 1
+  name: niah_multikey_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 1
+  num_queries:
+  context_size: 128000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multiquery_8k:
+  metadata:
+    version: 1
+  name: niah_multiquery_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values:
+  num_queries: 2
+  context_size: 8000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multiquery_32k:
+  metadata:
+    version: 1
+  name: niah_multiquery_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values:
+  num_queries: 2
+  context_size: 32000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multiquery_64k:
+  metadata:
+    version: 1
+  name: niah_multiquery_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values:
+  num_queries: 2
+  context_size: 64000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multiquery_128k:
+  metadata:
+    version: 1
+  name: niah_multiquery_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values:
+  num_queries: 2
+  context_size: 128000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multivalue_8k:
+  metadata:
+    version: 1
+  name: niah_multivalue_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 4
+  num_queries:
+  context_size: 8000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multivalue_32k:
+  metadata:
+    version: 1
+  name: niah_multivalue_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 4
+  num_queries:
+  context_size: 32000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multivalue_64k:
+  metadata:
+    version: 1
+  name: niah_multivalue_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 4
+  num_queries:
+  context_size: 64000
+  languages: ${niah_multikey_8k.languages}
+
+niah_multivalue_128k:
+  metadata:
+    version: 1
+  name: niah_multivalue_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 4
+  num_queries:
+  context_size: 128000
+  languages: ${niah_multikey_8k.languages}
+
+niah_none_8k:
+  metadata:
+    version: 1
+  name: niah_none_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 0
+  num_queries:
+  context_size: 8000
+  languages: ${niah_multikey_8k.languages}
+
+niah_none_32k:
+  metadata:
+    version: 1
+  name: niah_none_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 0
+  num_queries:
+  context_size: 32000
+  languages: ${niah_multikey_8k.languages}
+
+niah_none_64k:
+  metadata:
+    version: 1
+  name: niah_none_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 0
+  num_queries:
+  context_size: 64000
+  languages: ${niah_multikey_8k.languages}
+
+niah_none_128k:
+  metadata:
+    version: 1
+  name: niah_none_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/niah/niah_dataloader.py
+  dataloader_class: NIAHDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/niah/niah_metric.py
+  metric_class: NIAHMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  num_samples: 200
+  min_num_keys: 4
+  num_values: 0
+  num_queries:
+  context_size: 128000
+  languages: ${niah_multikey_8k.languages}

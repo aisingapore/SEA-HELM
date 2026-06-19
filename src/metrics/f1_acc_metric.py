@@ -22,6 +22,9 @@ class F1AccMetric(SeaHelmMetric):
         self,
         dataloader: AbstractDataloader,
         task_config: TaskConfig,
+        response_column: str = "responses",
+        postprocessed_response_column: str = "cleaned_responses",
+        label_column: str = "label",
         null_label: str = "null",
     ):
         """Initialize the F1AccMetric.
@@ -29,21 +32,21 @@ class F1AccMetric(SeaHelmMetric):
         Args:
             dataloader (AbstractDataloader): The dataloader to use.
             task_config (TaskConfig): The task configuration.
+            response_column (str, optional): The column name for model responses. Defaults to "responses".
+            postprocessed_response_column (str, optional): The column name for postprocessed model responses. Defaults to "cleaned_responses".
+            label_column (str, optional): The column name for labels. Defaults to "label".
             null_label (str, optional): The null label. Defaults to "null".
         """
-        super().__init__(dataloader=dataloader, task_config=task_config)
+        super().__init__(
+            dataloader=dataloader,
+            task_config=task_config,
+            response_column=response_column,
+            postprocessed_response_column=postprocessed_response_column,
+            label_column=label_column,
+        )
         self.null_label = null_label
 
-        if "global_mmlu_lite" in self.task:
-            # HACK to handle tasks with too few labels in global_mmlu_lite
-            if self.lang == "my":
-                unique_labels = {"က", "ခ", "ဂ", "ဃ"}
-            else:
-                unique_labels = {"A", "B", "C", "D"}
-        else:
-            unique_labels = set(
-                self.dataloader.inference_df[self.label_column].to_list()
-            )
+        unique_labels = set(self.dataloader.dataframe[self.label_column].to_list())
 
         # use map to convert all labels to string
         label_string = "|".join(map(str, unique_labels))
@@ -88,8 +91,8 @@ class F1AccMetric(SeaHelmMetric):
         Returns:
             dict: A dictionary containing the F1 and accuracy scores.
         """
-        predictions = self.dataloader.inference_df[self.postprocessed_response_column]
-        references = self.dataloader.inference_df[self.label_column]
+        predictions = self.dataloader.dataframe[self.postprocessed_response_column]
+        references = self.dataloader.dataframe[self.label_column]
 
         labels = list(set(references))
         null_count = sum(predictions == self.null_label)
@@ -99,9 +102,9 @@ class F1AccMetric(SeaHelmMetric):
             y_pred=predictions,
         )
         individual_scores = predictions.eq(references, axis=0).astype(int)
-        self.dataloader.inference_df["individual_scores"] = [
-            {"normalized_accuracy": x} for x in individual_scores
-        ]
+        self.dataloader.update_individual_scores(
+            [{"normalized_accuracy": x} for x in individual_scores]
+        )
 
         avg_f1 = f1_score(
             y_true=references,
@@ -119,7 +122,10 @@ class F1AccMetric(SeaHelmMetric):
         conf_matrix = confusion_matrix(y_true=references, y_pred=predictions)
         class_report = classification_report(y_true=references, y_pred=predictions)
         logger.info(
-            f"Balanced Acc = {accuracy * 100:.2f} | Macro-F1 = {macro_f1 * 100:.2f} | Null-Weighted-F1 = {null_weighted_f1 * 100:.2f}"
+            "Balanced Acc = %.2f | Macro-F1 = %.2f | Null-Weighted-F1 = %.2f",
+            accuracy * 100,
+            macro_f1 * 100,
+            null_weighted_f1 * 100,
         )
         logger.info("Confusion matrix:\n%s", conf_matrix)
         logger.info("Classification report:\n%s", class_report)

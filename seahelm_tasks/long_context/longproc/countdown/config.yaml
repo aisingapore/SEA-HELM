@@ -1,0 +1,780 @@
+countdown_0p5k:
+  metadata:
+    version: 1
+  name: "countdown_0p5k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/countdown/countdown.py"
+  metric_class: "CountdownMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/countdown/data/countdown_0.5k_en.jsonl"
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You will be given four numbers and a target number, your task is to find a way to use all four numbers exactly once, along with the basic operations (+, -, *, /), to reach the target number.
+
+          [RULES]
+          - You can use each number exactly once.
+          - You can use the four basic operations (+, -, *, /).
+          - The intermediate results must be integers (no decimals allowed).
+          - The intermediate results must be positive.
+          - The intermediate results will not exceed 2000.
+
+          [APPROACH]
+          We will solve the problem by searching. Starting from a given set of four numbers, we will follow this search process:
+          - At each state, we will consider all possible number pairs (in order) from the current number set. Choose one pair and apply one of the four basic operations to them to obtain a new number.
+            * If there are still numbers left, we will add the new number to the number set and continue the search.
+            * If we have used all numbers, we will check if the new number is equal to the target number. If it is, we have found the solution. Otherwise, we will backtrack.
+          - Suppose the two numbers we choose are a and b (where a >= b). We will try the four options (a + b), (a - b), (a * b), (a / b) to obtain the new number. Remember to always use the larger number as the first operand.
+          - If the new number is a decimal, or exceeds the maximum intermediate result, we will discard this branch and backtrack.
+          - We will continue this process until we reach the target number with four numbers used or exhaust all possible combinations.
+
+          [EXAMPLES]
+          # Example
+          Numbers: [40, 19, 23, 7]
+          Target: 29
+
+          # Search Procedure
+          Initial number set: [40, 19, 23, 7], target: 29. Options for choosing two numbers: [(40, 19), (40, 23), (40, 7), (19, 23), (19, 7), (23, 7)].
+          |- Pick two numbers (40, 19) (numbers left: [23, 7]). Try possible operations.
+           |- Try 40 + 19 = 59. Add 59 to the number set. Current number set: [59, 23, 7], target: 29. Options for choosing two numbers: [(59, 23), (59, 7), (23, 7)].
+           |- Pick two numbers (59, 23) (numbers left: [7]). Try possible operations.
+            |- Try 59 + 23 = 82. Add 82 to the number set. Current number set: [82, 7], target: 29, just two numbers left.
+            |- Try 82 + 7 = 89. Evaluate 89 != 29, drop this branch.
+            |- Try 82 - 7 = 75. Evaluate 75 != 29, drop this branch.
+            |- Try 82 * 7 = 574. Evaluate 574 != 29, drop this branch.
+            |- Try 82 / 7 = 11.7. 11.7 is a decimal, drop this branch.
+            |- Try 59 - 23 = 36. Add 36 to the number set. Current number set: [36, 7], target: 29, just two numbers left.
+            |- Try 36 + 7 = 43. Evaluate 43 != 29, drop this branch.
+            |- Try 36 - 7 = 29. Evaluate 29 == 29, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 36 - 7 = 29
+          The step before: 59 - 23 = 36
+          The first step: 40 + 19 = 59
+
+          Output the solution in the required format:
+          <Solution>
+          40 + 19 = 59
+          59 - 23 = 36
+          36 - 7 = 29
+          </Solution>
+
+
+          # Example
+          Numbers: [9, 16, 6, 18]
+          Target: 12
+
+          # Search Procedure
+          Initial number set: [9, 16, 6, 18], target: 12. Options for choosing two numbers: [(9, 16), (9, 6), (9, 18), (16, 6), (16, 18), (6, 18)].
+          |- Pick two numbers (9, 16) (numbers left: [6, 18]). Try possible operations.
+           |- Try 16 + 9 = 25. Add 25 to the number set. Current number set: [25, 6, 18], target: 12. Options for choosing two numbers: [(25, 6), (25, 18), (6, 18)].
+           |- Pick two numbers (25, 6) (numbers left: [18]). Try possible operations.
+            |- Try 25 + 6 = 31. Add 31 to the number set. Current number set: [31, 18], target: 12, just two numbers left.
+            |- Try 31 + 18 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 31 - 18 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 31 * 18 = 558. Evaluate 558 != 12, drop this branch.
+            |- Try 31 / 18 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 25 - 6 = 19. Add 19 to the number set. Current number set: [19, 18], target: 12, just two numbers left.
+            |- Try 19 + 18 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 19 - 18 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 19 * 18 = 342. Evaluate 342 != 12, drop this branch.
+            |- Try 19 / 18 = 1.1. 1.1 is a decimal, drop this branch.
+            |- Try 25 * 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+           |- Pick two numbers (25, 18) (numbers left: [6]). Try possible operations.
+            |- Try 25 + 18 = 43. Add 43 to the number set. Current number set: [43, 6], target: 12, just two numbers left.
+            |- Try 43 + 6 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 43 - 6 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 43 * 6 = 258. Evaluate 258 != 12, drop this branch.
+            |- Try 43 / 6 = 7.2. 7.2 is a decimal, drop this branch.
+            |- Try 25 - 18 = 7. Add 7 to the number set. Current number set: [7, 6], target: 12, just two numbers left.
+            |- Try 7 + 6 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 7 - 6 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+            |- Try 25 * 18 = 450. Add 450 to the number set. Current number set: [450, 6], target: 12, just two numbers left.
+            |- Try 450 + 6 = 456. Evaluate 456 != 12, drop this branch.
+            |- Try 450 - 6 = 444. Evaluate 444 != 12, drop this branch.
+            |- Try 450 * 6 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 450 / 6 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 18 = 1.4. 1.4 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [25]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 25], target: 12, just two numbers left.
+            |- Try 25 + 24 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 25 - 24 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 25 * 24 = 600. Evaluate 600 != 12, drop this branch.
+            |- Try 25 / 24 = 1.0. 1.0 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 25], target: 12, just two numbers left.
+            |- Try 25 + 12 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 25 - 12 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 25 * 12 = 300. Evaluate 300 != 12, drop this branch.
+            |- Try 25 / 12 = 2.1. 2.1 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 25], target: 12, just two numbers left.
+            |- Try 108 + 25 = 133. Evaluate 133 != 12, drop this branch.
+            |- Try 108 - 25 = 83. Evaluate 83 != 12, drop this branch.
+            |- Try 108 * 25 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 108 / 25 = 4.3. 4.3 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 25], target: 12, just two numbers left.
+            |- Try 25 + 3 = 28. Evaluate 28 != 12, drop this branch.
+            |- Try 25 - 3 = 22. Evaluate 22 != 12, drop this branch.
+            |- Try 25 * 3 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 3 = 8.3. 8.3 is a decimal, drop this branch.
+           |- Try 16 - 9 = 7. Add 7 to the number set. Current number set: [7, 6, 18], target: 12. Options for choosing two numbers: [(7, 6), (7, 18), (6, 18)].
+           |- Pick two numbers (7, 6) (numbers left: [18]). Try possible operations.
+            |- Try 7 + 6 = 13. Add 13 to the number set. Current number set: [13, 18], target: 12, just two numbers left.
+            |- Try 18 + 13 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 18 - 13 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 18 * 13 = 234. Evaluate 234 != 12, drop this branch.
+            |- Try 18 / 13 = 1.4. 1.4 is a decimal, drop this branch.
+            |- Try 7 - 6 = 1. Add 1 to the number set. Current number set: [1, 18], target: 12, just two numbers left.
+            |- Try 18 + 1 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 18 - 1 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 18 * 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 18 / 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Add 42 to the number set. Current number set: [42, 18], target: 12, just two numbers left.
+            |- Try 42 + 18 = 60. Evaluate 60 != 12, drop this branch.
+            |- Try 42 - 18 = 24. Evaluate 24 != 12, drop this branch.
+            |- Try 42 * 18 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 42 / 18 = 2.3. 2.3 is a decimal, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+           |- Pick two numbers (7, 18) (numbers left: [6]). Try possible operations.
+            |- Try 18 + 7 = 25. Add 25 to the number set. Current number set: [25, 6], target: 12, just two numbers left.
+            |- Try 25 + 6 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 25 - 6 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 25 * 6 = 150. Evaluate 150 != 12, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+            |- Try 18 - 7 = 11. Add 11 to the number set. Current number set: [11, 6], target: 12, just two numbers left.
+            |- Try 11 + 6 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 11 - 6 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 11 * 6 = 66. Evaluate 66 != 12, drop this branch.
+            |- Try 11 / 6 = 1.8. 1.8 is a decimal, drop this branch.
+            |- Try 18 * 7 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 18 / 7 = 2.6. 2.6 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [7]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 7], target: 12, just two numbers left.
+            |- Try 24 + 7 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 24 - 7 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 24 * 7 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 24 / 7 = 3.4. 3.4 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 7], target: 12, just two numbers left.
+            |- Try 12 + 7 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 12 - 7 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 12 * 7 = 84. Evaluate 84 != 12, drop this branch.
+            |- Try 12 / 7 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 7], target: 12, just two numbers left.
+            |- Try 108 + 7 = 115. Evaluate 115 != 12, drop this branch.
+            |- Try 108 - 7 = 101. Evaluate 101 != 12, drop this branch.
+            |- Try 108 * 7 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 108 / 7 = 15.4. 15.4 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 7], target: 12, just two numbers left.
+            |- Try 7 + 3 = 10. Evaluate 10 != 12, drop this branch.
+            |- Try 7 - 3 = 4. Evaluate 4 != 12, drop this branch.
+            |- Try 7 * 3 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 7 / 3 = 2.3. 2.3 is a decimal, drop this branch.
+           |- Try 16 * 9 = 144. Add 144 to the number set. Current number set: [144, 6, 18], target: 12. Options for choosing two numbers: [(144, 6), (144, 18), (6, 18)].
+           |- Pick two numbers (144, 6) (numbers left: [18]). Try possible operations.
+            |- Try 144 + 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 144 - 6 = 138. Add 138 to the number set. Current number set: [138, 18], target: 12, just two numbers left.
+            |- Try 138 + 18 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 138 - 18 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 138 * 18 = 2484. 2484 exceeds the maximum intermediate result, drop this branch.
+            |- Try 138 / 18 = 7.7. 7.7 is a decimal, drop this branch.
+            |- Try 144 * 6 = 864. Add 864 to the number set. Current number set: [864, 18], target: 12, just two numbers left.
+            |- Try 864 + 18 = 882. Evaluate 882 != 12, drop this branch.
+            |- Try 864 - 18 = 846. Evaluate 846 != 12, drop this branch.
+            |- Try 864 * 18 = 15552. 15552 exceeds the maximum intermediate result, drop this branch.
+            |- Try 864 / 18 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 144 / 6 = 24. Add 24 to the number set. Current number set: [24, 18], target: 12, just two numbers left.
+            |- Try 24 + 18 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 24 - 18 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 24 * 18 = 432. Evaluate 432 != 12, drop this branch.
+            |- Try 24 / 18 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (144, 18) (numbers left: [6]). Try possible operations.
+            |- Try 144 + 18 = 162. Add 162 to the number set. Current number set: [162, 6], target: 12, just two numbers left.
+            |- Try 162 + 6 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 162 - 6 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 162 * 6 = 972. Evaluate 972 != 12, drop this branch.
+            |- Try 162 / 6 = 27. Evaluate 27 != 12, drop this branch.
+            |- Try 144 - 18 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 144 * 18 = 2592. 2592 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 18 = 8. Add 8 to the number set. Current number set: [8, 6], target: 12, just two numbers left.
+            |- Try 8 + 6 = 14. Evaluate 14 != 12, drop this branch.
+            |- Try 8 - 6 = 2. Evaluate 2 != 12, drop this branch.
+            |- Try 8 * 6 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 8 / 6 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [144]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 144], target: 12, just two numbers left.
+            |- Try 144 + 24 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 144 - 24 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 144 * 24 = 3456. 3456 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 24 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 144], target: 12, just two numbers left.
+            |- Try 144 + 12 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 144 - 12 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 144 * 12 = 1728. Evaluate 1728 != 12, drop this branch.
+            |- Try 144 / 12 = 12. Evaluate 12 == 12, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 144 / 12 = 12
+          The step before: 18 - 6 = 12
+          The first step: 16 * 9 = 144
+
+          Output the solution in the required format:
+          <Solution>
+          16 * 9 = 144
+          18 - 6 = 12
+          144 / 12 = 12
+          </Solution>
+
+
+          [Problem]
+          Now, solve the following problem. Note that:
+          - Please carefully read the approach and examples provided above, and follow them to solve the problem.
+          - Please ALWAYS include your search procedure (after # Search Procedure). The search procedure should follow the format of the examples provided above.
+          - Please mark your answer with <Solution> and </Solution> tags. The solution should be a sequence of three equations exactly following the format of the examples above, with no additional text in between.
+        task_template: |-
+          Numbers: {nums}
+          Target: {target}
+        answer_template:
+        answer_tag:
+countdown_2k:
+  metadata:
+    version: 1
+  name: "countdown_2k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/countdown/countdown.py"
+  metric_class: "CountdownMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/countdown/data/countdown_2k_en.jsonl"
+      example_filepath:
+      max_tokens: 3072
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You will be given four numbers and a target number, your task is to find a way to use all four numbers exactly once, along with the basic operations (+, -, *, /), to reach the target number.
+
+          [RULES]
+          - You can use each number exactly once.
+          - You can use the four basic operations (+, -, *, /).
+          - The intermediate results must be integers (no decimals allowed).
+          - The intermediate results must be positive.
+          - The intermediate results will not exceed 2000.
+
+          [APPROACH]
+          We will solve the problem by searching. Starting from a given set of four numbers, we will follow this search process:
+          - At each state, we will consider all possible number pairs (in order) from the current number set. Choose one pair and apply one of the four basic operations to them to obtain a new number.
+            * If there are still numbers left, we will add the new number to the number set and continue the search.
+            * If we have used all numbers, we will check if the new number is equal to the target number. If it is, we have found the solution. Otherwise, we will backtrack.
+          - Suppose the two numbers we choose are a and b (where a >= b). We will try the four options (a + b), (a - b), (a * b), (a / b) to obtain the new number. Remember to always use the larger number as the first operand.
+          - If the new number is a decimal, or exceeds the maximum intermediate result, we will discard this branch and backtrack.
+          - We will continue this process until we reach the target number with four numbers used or exhaust all possible combinations.
+
+          [EXAMPLES]
+          # Example
+          Numbers: [40, 19, 23, 7]
+          Target: 29
+
+          # Search Procedure
+          Initial number set: [40, 19, 23, 7], target: 29. Options for choosing two numbers: [(40, 19), (40, 23), (40, 7), (19, 23), (19, 7), (23, 7)].
+          |- Pick two numbers (40, 19) (numbers left: [23, 7]). Try possible operations.
+           |- Try 40 + 19 = 59. Add 59 to the number set. Current number set: [59, 23, 7], target: 29. Options for choosing two numbers: [(59, 23), (59, 7), (23, 7)].
+           |- Pick two numbers (59, 23) (numbers left: [7]). Try possible operations.
+            |- Try 59 + 23 = 82. Add 82 to the number set. Current number set: [82, 7], target: 29, just two numbers left.
+            |- Try 82 + 7 = 89. Evaluate 89 != 29, drop this branch.
+            |- Try 82 - 7 = 75. Evaluate 75 != 29, drop this branch.
+            |- Try 82 * 7 = 574. Evaluate 574 != 29, drop this branch.
+            |- Try 82 / 7 = 11.7. 11.7 is a decimal, drop this branch.
+            |- Try 59 - 23 = 36. Add 36 to the number set. Current number set: [36, 7], target: 29, just two numbers left.
+            |- Try 36 + 7 = 43. Evaluate 43 != 29, drop this branch.
+            |- Try 36 - 7 = 29. Evaluate 29 == 29, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 36 - 7 = 29
+          The step before: 59 - 23 = 36
+          The first step: 40 + 19 = 59
+
+          Output the solution in the required format:
+          <Solution>
+          40 + 19 = 59
+          59 - 23 = 36
+          36 - 7 = 29
+          </Solution>
+
+
+          # Example
+          Numbers: [9, 16, 6, 18]
+          Target: 12
+
+          # Search Procedure
+          Initial number set: [9, 16, 6, 18], target: 12. Options for choosing two numbers: [(9, 16), (9, 6), (9, 18), (16, 6), (16, 18), (6, 18)].
+          |- Pick two numbers (9, 16) (numbers left: [6, 18]). Try possible operations.
+           |- Try 16 + 9 = 25. Add 25 to the number set. Current number set: [25, 6, 18], target: 12. Options for choosing two numbers: [(25, 6), (25, 18), (6, 18)].
+           |- Pick two numbers (25, 6) (numbers left: [18]). Try possible operations.
+            |- Try 25 + 6 = 31. Add 31 to the number set. Current number set: [31, 18], target: 12, just two numbers left.
+            |- Try 31 + 18 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 31 - 18 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 31 * 18 = 558. Evaluate 558 != 12, drop this branch.
+            |- Try 31 / 18 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 25 - 6 = 19. Add 19 to the number set. Current number set: [19, 18], target: 12, just two numbers left.
+            |- Try 19 + 18 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 19 - 18 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 19 * 18 = 342. Evaluate 342 != 12, drop this branch.
+            |- Try 19 / 18 = 1.1. 1.1 is a decimal, drop this branch.
+            |- Try 25 * 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+           |- Pick two numbers (25, 18) (numbers left: [6]). Try possible operations.
+            |- Try 25 + 18 = 43. Add 43 to the number set. Current number set: [43, 6], target: 12, just two numbers left.
+            |- Try 43 + 6 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 43 - 6 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 43 * 6 = 258. Evaluate 258 != 12, drop this branch.
+            |- Try 43 / 6 = 7.2. 7.2 is a decimal, drop this branch.
+            |- Try 25 - 18 = 7. Add 7 to the number set. Current number set: [7, 6], target: 12, just two numbers left.
+            |- Try 7 + 6 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 7 - 6 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+            |- Try 25 * 18 = 450. Add 450 to the number set. Current number set: [450, 6], target: 12, just two numbers left.
+            |- Try 450 + 6 = 456. Evaluate 456 != 12, drop this branch.
+            |- Try 450 - 6 = 444. Evaluate 444 != 12, drop this branch.
+            |- Try 450 * 6 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 450 / 6 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 18 = 1.4. 1.4 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [25]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 25], target: 12, just two numbers left.
+            |- Try 25 + 24 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 25 - 24 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 25 * 24 = 600. Evaluate 600 != 12, drop this branch.
+            |- Try 25 / 24 = 1.0. 1.0 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 25], target: 12, just two numbers left.
+            |- Try 25 + 12 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 25 - 12 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 25 * 12 = 300. Evaluate 300 != 12, drop this branch.
+            |- Try 25 / 12 = 2.1. 2.1 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 25], target: 12, just two numbers left.
+            |- Try 108 + 25 = 133. Evaluate 133 != 12, drop this branch.
+            |- Try 108 - 25 = 83. Evaluate 83 != 12, drop this branch.
+            |- Try 108 * 25 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 108 / 25 = 4.3. 4.3 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 25], target: 12, just two numbers left.
+            |- Try 25 + 3 = 28. Evaluate 28 != 12, drop this branch.
+            |- Try 25 - 3 = 22. Evaluate 22 != 12, drop this branch.
+            |- Try 25 * 3 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 3 = 8.3. 8.3 is a decimal, drop this branch.
+           |- Try 16 - 9 = 7. Add 7 to the number set. Current number set: [7, 6, 18], target: 12. Options for choosing two numbers: [(7, 6), (7, 18), (6, 18)].
+           |- Pick two numbers (7, 6) (numbers left: [18]). Try possible operations.
+            |- Try 7 + 6 = 13. Add 13 to the number set. Current number set: [13, 18], target: 12, just two numbers left.
+            |- Try 18 + 13 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 18 - 13 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 18 * 13 = 234. Evaluate 234 != 12, drop this branch.
+            |- Try 18 / 13 = 1.4. 1.4 is a decimal, drop this branch.
+            |- Try 7 - 6 = 1. Add 1 to the number set. Current number set: [1, 18], target: 12, just two numbers left.
+            |- Try 18 + 1 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 18 - 1 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 18 * 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 18 / 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Add 42 to the number set. Current number set: [42, 18], target: 12, just two numbers left.
+            |- Try 42 + 18 = 60. Evaluate 60 != 12, drop this branch.
+            |- Try 42 - 18 = 24. Evaluate 24 != 12, drop this branch.
+            |- Try 42 * 18 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 42 / 18 = 2.3. 2.3 is a decimal, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+           |- Pick two numbers (7, 18) (numbers left: [6]). Try possible operations.
+            |- Try 18 + 7 = 25. Add 25 to the number set. Current number set: [25, 6], target: 12, just two numbers left.
+            |- Try 25 + 6 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 25 - 6 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 25 * 6 = 150. Evaluate 150 != 12, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+            |- Try 18 - 7 = 11. Add 11 to the number set. Current number set: [11, 6], target: 12, just two numbers left.
+            |- Try 11 + 6 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 11 - 6 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 11 * 6 = 66. Evaluate 66 != 12, drop this branch.
+            |- Try 11 / 6 = 1.8. 1.8 is a decimal, drop this branch.
+            |- Try 18 * 7 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 18 / 7 = 2.6. 2.6 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [7]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 7], target: 12, just two numbers left.
+            |- Try 24 + 7 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 24 - 7 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 24 * 7 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 24 / 7 = 3.4. 3.4 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 7], target: 12, just two numbers left.
+            |- Try 12 + 7 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 12 - 7 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 12 * 7 = 84. Evaluate 84 != 12, drop this branch.
+            |- Try 12 / 7 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 7], target: 12, just two numbers left.
+            |- Try 108 + 7 = 115. Evaluate 115 != 12, drop this branch.
+            |- Try 108 - 7 = 101. Evaluate 101 != 12, drop this branch.
+            |- Try 108 * 7 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 108 / 7 = 15.4. 15.4 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 7], target: 12, just two numbers left.
+            |- Try 7 + 3 = 10. Evaluate 10 != 12, drop this branch.
+            |- Try 7 - 3 = 4. Evaluate 4 != 12, drop this branch.
+            |- Try 7 * 3 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 7 / 3 = 2.3. 2.3 is a decimal, drop this branch.
+           |- Try 16 * 9 = 144. Add 144 to the number set. Current number set: [144, 6, 18], target: 12. Options for choosing two numbers: [(144, 6), (144, 18), (6, 18)].
+           |- Pick two numbers (144, 6) (numbers left: [18]). Try possible operations.
+            |- Try 144 + 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 144 - 6 = 138. Add 138 to the number set. Current number set: [138, 18], target: 12, just two numbers left.
+            |- Try 138 + 18 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 138 - 18 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 138 * 18 = 2484. 2484 exceeds the maximum intermediate result, drop this branch.
+            |- Try 138 / 18 = 7.7. 7.7 is a decimal, drop this branch.
+            |- Try 144 * 6 = 864. Add 864 to the number set. Current number set: [864, 18], target: 12, just two numbers left.
+            |- Try 864 + 18 = 882. Evaluate 882 != 12, drop this branch.
+            |- Try 864 - 18 = 846. Evaluate 846 != 12, drop this branch.
+            |- Try 864 * 18 = 15552. 15552 exceeds the maximum intermediate result, drop this branch.
+            |- Try 864 / 18 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 144 / 6 = 24. Add 24 to the number set. Current number set: [24, 18], target: 12, just two numbers left.
+            |- Try 24 + 18 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 24 - 18 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 24 * 18 = 432. Evaluate 432 != 12, drop this branch.
+            |- Try 24 / 18 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (144, 18) (numbers left: [6]). Try possible operations.
+            |- Try 144 + 18 = 162. Add 162 to the number set. Current number set: [162, 6], target: 12, just two numbers left.
+            |- Try 162 + 6 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 162 - 6 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 162 * 6 = 972. Evaluate 972 != 12, drop this branch.
+            |- Try 162 / 6 = 27. Evaluate 27 != 12, drop this branch.
+            |- Try 144 - 18 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 144 * 18 = 2592. 2592 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 18 = 8. Add 8 to the number set. Current number set: [8, 6], target: 12, just two numbers left.
+            |- Try 8 + 6 = 14. Evaluate 14 != 12, drop this branch.
+            |- Try 8 - 6 = 2. Evaluate 2 != 12, drop this branch.
+            |- Try 8 * 6 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 8 / 6 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [144]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 144], target: 12, just two numbers left.
+            |- Try 144 + 24 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 144 - 24 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 144 * 24 = 3456. 3456 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 24 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 144], target: 12, just two numbers left.
+            |- Try 144 + 12 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 144 - 12 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 144 * 12 = 1728. Evaluate 1728 != 12, drop this branch.
+            |- Try 144 / 12 = 12. Evaluate 12 == 12, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 144 / 12 = 12
+          The step before: 18 - 6 = 12
+          The first step: 16 * 9 = 144
+
+          Output the solution in the required format:
+          <Solution>
+          16 * 9 = 144
+          18 - 6 = 12
+          144 / 12 = 12
+          </Solution>
+
+
+          [Problem]
+          Now, solve the following problem. Note that:
+          - Please carefully read the approach and examples provided above, and follow them to solve the problem.
+          - Please ALWAYS include your search procedure (after # Search Procedure). The search procedure should follow the format of the examples provided above.
+          - Please mark your answer with <Solution> and </Solution> tags. The solution should be a sequence of three equations exactly following the format of the examples above, with no additional text in between.
+        task_template: |-
+          Numbers: {nums}
+          Target: {target}
+        answer_template:
+        answer_tag:
+countdown_8k:
+  metadata:
+    version: 1
+  name: "countdown_8k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/countdown/countdown.py"
+  metric_class: "CountdownMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/countdown/data/countdown_8k_en.jsonl"
+      example_filepath:
+      max_tokens: 9316
+      prompt_template:
+        preamble: |-
+          [TASK]
+          You will be given four numbers and a target number, your task is to find a way to use all four numbers exactly once, along with the basic operations (+, -, *, /), to reach the target number.
+
+          [RULES]
+          - You can use each number exactly once.
+          - You can use the four basic operations (+, -, *, /).
+          - The intermediate results must be integers (no decimals allowed).
+          - The intermediate results must be positive.
+          - The intermediate results will not exceed 2000.
+
+          [APPROACH]
+          We will solve the problem by searching. Starting from a given set of four numbers, we will follow this search process:
+          - At each state, we will consider all possible number pairs (in order) from the current number set. Choose one pair and apply one of the four basic operations to them to obtain a new number.
+            * If there are still numbers left, we will add the new number to the number set and continue the search.
+            * If we have used all numbers, we will check if the new number is equal to the target number. If it is, we have found the solution. Otherwise, we will backtrack.
+          - Suppose the two numbers we choose are a and b (where a >= b). We will try the four options (a + b), (a - b), (a * b), (a / b) to obtain the new number. Remember to always use the larger number as the first operand.
+          - If the new number is a decimal, or exceeds the maximum intermediate result, we will discard this branch and backtrack.
+          - We will continue this process until we reach the target number with four numbers used or exhaust all possible combinations.
+
+          [EXAMPLES]
+          # Example
+          Numbers: [40, 19, 23, 7]
+          Target: 29
+
+          # Search Procedure
+          Initial number set: [40, 19, 23, 7], target: 29. Options for choosing two numbers: [(40, 19), (40, 23), (40, 7), (19, 23), (19, 7), (23, 7)].
+          |- Pick two numbers (40, 19) (numbers left: [23, 7]). Try possible operations.
+           |- Try 40 + 19 = 59. Add 59 to the number set. Current number set: [59, 23, 7], target: 29. Options for choosing two numbers: [(59, 23), (59, 7), (23, 7)].
+           |- Pick two numbers (59, 23) (numbers left: [7]). Try possible operations.
+            |- Try 59 + 23 = 82. Add 82 to the number set. Current number set: [82, 7], target: 29, just two numbers left.
+            |- Try 82 + 7 = 89. Evaluate 89 != 29, drop this branch.
+            |- Try 82 - 7 = 75. Evaluate 75 != 29, drop this branch.
+            |- Try 82 * 7 = 574. Evaluate 574 != 29, drop this branch.
+            |- Try 82 / 7 = 11.7. 11.7 is a decimal, drop this branch.
+            |- Try 59 - 23 = 36. Add 36 to the number set. Current number set: [36, 7], target: 29, just two numbers left.
+            |- Try 36 + 7 = 43. Evaluate 43 != 29, drop this branch.
+            |- Try 36 - 7 = 29. Evaluate 29 == 29, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 36 - 7 = 29
+          The step before: 59 - 23 = 36
+          The first step: 40 + 19 = 59
+
+          Output the solution in the required format:
+          <Solution>
+          40 + 19 = 59
+          59 - 23 = 36
+          36 - 7 = 29
+          </Solution>
+
+
+          # Example
+          Numbers: [9, 16, 6, 18]
+          Target: 12
+
+          # Search Procedure
+          Initial number set: [9, 16, 6, 18], target: 12. Options for choosing two numbers: [(9, 16), (9, 6), (9, 18), (16, 6), (16, 18), (6, 18)].
+          |- Pick two numbers (9, 16) (numbers left: [6, 18]). Try possible operations.
+           |- Try 16 + 9 = 25. Add 25 to the number set. Current number set: [25, 6, 18], target: 12. Options for choosing two numbers: [(25, 6), (25, 18), (6, 18)].
+           |- Pick two numbers (25, 6) (numbers left: [18]). Try possible operations.
+            |- Try 25 + 6 = 31. Add 31 to the number set. Current number set: [31, 18], target: 12, just two numbers left.
+            |- Try 31 + 18 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 31 - 18 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 31 * 18 = 558. Evaluate 558 != 12, drop this branch.
+            |- Try 31 / 18 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 25 - 6 = 19. Add 19 to the number set. Current number set: [19, 18], target: 12, just two numbers left.
+            |- Try 19 + 18 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 19 - 18 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 19 * 18 = 342. Evaluate 342 != 12, drop this branch.
+            |- Try 19 / 18 = 1.1. 1.1 is a decimal, drop this branch.
+            |- Try 25 * 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+           |- Pick two numbers (25, 18) (numbers left: [6]). Try possible operations.
+            |- Try 25 + 18 = 43. Add 43 to the number set. Current number set: [43, 6], target: 12, just two numbers left.
+            |- Try 43 + 6 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 43 - 6 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 43 * 6 = 258. Evaluate 258 != 12, drop this branch.
+            |- Try 43 / 6 = 7.2. 7.2 is a decimal, drop this branch.
+            |- Try 25 - 18 = 7. Add 7 to the number set. Current number set: [7, 6], target: 12, just two numbers left.
+            |- Try 7 + 6 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 7 - 6 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+            |- Try 25 * 18 = 450. Add 450 to the number set. Current number set: [450, 6], target: 12, just two numbers left.
+            |- Try 450 + 6 = 456. Evaluate 456 != 12, drop this branch.
+            |- Try 450 - 6 = 444. Evaluate 444 != 12, drop this branch.
+            |- Try 450 * 6 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 450 / 6 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 18 = 1.4. 1.4 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [25]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 25], target: 12, just two numbers left.
+            |- Try 25 + 24 = 49. Evaluate 49 != 12, drop this branch.
+            |- Try 25 - 24 = 1. Evaluate 1 != 12, drop this branch.
+            |- Try 25 * 24 = 600. Evaluate 600 != 12, drop this branch.
+            |- Try 25 / 24 = 1.0. 1.0 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 25], target: 12, just two numbers left.
+            |- Try 25 + 12 = 37. Evaluate 37 != 12, drop this branch.
+            |- Try 25 - 12 = 13. Evaluate 13 != 12, drop this branch.
+            |- Try 25 * 12 = 300. Evaluate 300 != 12, drop this branch.
+            |- Try 25 / 12 = 2.1. 2.1 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 25], target: 12, just two numbers left.
+            |- Try 108 + 25 = 133. Evaluate 133 != 12, drop this branch.
+            |- Try 108 - 25 = 83. Evaluate 83 != 12, drop this branch.
+            |- Try 108 * 25 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 108 / 25 = 4.3. 4.3 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 25], target: 12, just two numbers left.
+            |- Try 25 + 3 = 28. Evaluate 28 != 12, drop this branch.
+            |- Try 25 - 3 = 22. Evaluate 22 != 12, drop this branch.
+            |- Try 25 * 3 = 75. Evaluate 75 != 12, drop this branch.
+            |- Try 25 / 3 = 8.3. 8.3 is a decimal, drop this branch.
+           |- Try 16 - 9 = 7. Add 7 to the number set. Current number set: [7, 6, 18], target: 12. Options for choosing two numbers: [(7, 6), (7, 18), (6, 18)].
+           |- Pick two numbers (7, 6) (numbers left: [18]). Try possible operations.
+            |- Try 7 + 6 = 13. Add 13 to the number set. Current number set: [13, 18], target: 12, just two numbers left.
+            |- Try 18 + 13 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 18 - 13 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 18 * 13 = 234. Evaluate 234 != 12, drop this branch.
+            |- Try 18 / 13 = 1.4. 1.4 is a decimal, drop this branch.
+            |- Try 7 - 6 = 1. Add 1 to the number set. Current number set: [1, 18], target: 12, just two numbers left.
+            |- Try 18 + 1 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 18 - 1 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 18 * 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 18 / 1 = 18. Evaluate 18 != 12, drop this branch.
+            |- Try 7 * 6 = 42. Add 42 to the number set. Current number set: [42, 18], target: 12, just two numbers left.
+            |- Try 42 + 18 = 60. Evaluate 60 != 12, drop this branch.
+            |- Try 42 - 18 = 24. Evaluate 24 != 12, drop this branch.
+            |- Try 42 * 18 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 42 / 18 = 2.3. 2.3 is a decimal, drop this branch.
+            |- Try 7 / 6 = 1.2. 1.2 is a decimal, drop this branch.
+           |- Pick two numbers (7, 18) (numbers left: [6]). Try possible operations.
+            |- Try 18 + 7 = 25. Add 25 to the number set. Current number set: [25, 6], target: 12, just two numbers left.
+            |- Try 25 + 6 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 25 - 6 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 25 * 6 = 150. Evaluate 150 != 12, drop this branch.
+            |- Try 25 / 6 = 4.2. 4.2 is a decimal, drop this branch.
+            |- Try 18 - 7 = 11. Add 11 to the number set. Current number set: [11, 6], target: 12, just two numbers left.
+            |- Try 11 + 6 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 11 - 6 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 11 * 6 = 66. Evaluate 66 != 12, drop this branch.
+            |- Try 11 / 6 = 1.8. 1.8 is a decimal, drop this branch.
+            |- Try 18 * 7 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 18 / 7 = 2.6. 2.6 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [7]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 7], target: 12, just two numbers left.
+            |- Try 24 + 7 = 31. Evaluate 31 != 12, drop this branch.
+            |- Try 24 - 7 = 17. Evaluate 17 != 12, drop this branch.
+            |- Try 24 * 7 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 24 / 7 = 3.4. 3.4 is a decimal, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 7], target: 12, just two numbers left.
+            |- Try 12 + 7 = 19. Evaluate 19 != 12, drop this branch.
+            |- Try 12 - 7 = 5. Evaluate 5 != 12, drop this branch.
+            |- Try 12 * 7 = 84. Evaluate 84 != 12, drop this branch.
+            |- Try 12 / 7 = 1.7. 1.7 is a decimal, drop this branch.
+            |- Try 18 * 6 = 108. Add 108 to the number set. Current number set: [108, 7], target: 12, just two numbers left.
+            |- Try 108 + 7 = 115. Evaluate 115 != 12, drop this branch.
+            |- Try 108 - 7 = 101. Evaluate 101 != 12, drop this branch.
+            |- Try 108 * 7 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 108 / 7 = 15.4. 15.4 is a decimal, drop this branch.
+            |- Try 18 / 6 = 3. Add 3 to the number set. Current number set: [3, 7], target: 12, just two numbers left.
+            |- Try 7 + 3 = 10. Evaluate 10 != 12, drop this branch.
+            |- Try 7 - 3 = 4. Evaluate 4 != 12, drop this branch.
+            |- Try 7 * 3 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 7 / 3 = 2.3. 2.3 is a decimal, drop this branch.
+           |- Try 16 * 9 = 144. Add 144 to the number set. Current number set: [144, 6, 18], target: 12. Options for choosing two numbers: [(144, 6), (144, 18), (6, 18)].
+           |- Pick two numbers (144, 6) (numbers left: [18]). Try possible operations.
+            |- Try 144 + 6 = 150. Add 150 to the number set. Current number set: [150, 18], target: 12, just two numbers left.
+            |- Try 150 + 18 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 150 - 18 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 150 * 18 = 2700. 2700 exceeds the maximum intermediate result, drop this branch.
+            |- Try 150 / 18 = 8.3. 8.3 is a decimal, drop this branch.
+            |- Try 144 - 6 = 138. Add 138 to the number set. Current number set: [138, 18], target: 12, just two numbers left.
+            |- Try 138 + 18 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 138 - 18 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 138 * 18 = 2484. 2484 exceeds the maximum intermediate result, drop this branch.
+            |- Try 138 / 18 = 7.7. 7.7 is a decimal, drop this branch.
+            |- Try 144 * 6 = 864. Add 864 to the number set. Current number set: [864, 18], target: 12, just two numbers left.
+            |- Try 864 + 18 = 882. Evaluate 882 != 12, drop this branch.
+            |- Try 864 - 18 = 846. Evaluate 846 != 12, drop this branch.
+            |- Try 864 * 18 = 15552. 15552 exceeds the maximum intermediate result, drop this branch.
+            |- Try 864 / 18 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 144 / 6 = 24. Add 24 to the number set. Current number set: [24, 18], target: 12, just two numbers left.
+            |- Try 24 + 18 = 42. Evaluate 42 != 12, drop this branch.
+            |- Try 24 - 18 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 24 * 18 = 432. Evaluate 432 != 12, drop this branch.
+            |- Try 24 / 18 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (144, 18) (numbers left: [6]). Try possible operations.
+            |- Try 144 + 18 = 162. Add 162 to the number set. Current number set: [162, 6], target: 12, just two numbers left.
+            |- Try 162 + 6 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 162 - 6 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 162 * 6 = 972. Evaluate 972 != 12, drop this branch.
+            |- Try 162 / 6 = 27. Evaluate 27 != 12, drop this branch.
+            |- Try 144 - 18 = 126. Add 126 to the number set. Current number set: [126, 6], target: 12, just two numbers left.
+            |- Try 126 + 6 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 126 - 6 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 126 * 6 = 756. Evaluate 756 != 12, drop this branch.
+            |- Try 126 / 6 = 21. Evaluate 21 != 12, drop this branch.
+            |- Try 144 * 18 = 2592. 2592 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 18 = 8. Add 8 to the number set. Current number set: [8, 6], target: 12, just two numbers left.
+            |- Try 8 + 6 = 14. Evaluate 14 != 12, drop this branch.
+            |- Try 8 - 6 = 2. Evaluate 2 != 12, drop this branch.
+            |- Try 8 * 6 = 48. Evaluate 48 != 12, drop this branch.
+            |- Try 8 / 6 = 1.3. 1.3 is a decimal, drop this branch.
+           |- Pick two numbers (6, 18) (numbers left: [144]). Try possible operations.
+            |- Try 18 + 6 = 24. Add 24 to the number set. Current number set: [24, 144], target: 12, just two numbers left.
+            |- Try 144 + 24 = 168. Evaluate 168 != 12, drop this branch.
+            |- Try 144 - 24 = 120. Evaluate 120 != 12, drop this branch.
+            |- Try 144 * 24 = 3456. 3456 exceeds the maximum intermediate result, drop this branch.
+            |- Try 144 / 24 = 6. Evaluate 6 != 12, drop this branch.
+            |- Try 18 - 6 = 12. Add 12 to the number set. Current number set: [12, 144], target: 12, just two numbers left.
+            |- Try 144 + 12 = 156. Evaluate 156 != 12, drop this branch.
+            |- Try 144 - 12 = 132. Evaluate 132 != 12, drop this branch.
+            |- Try 144 * 12 = 1728. Evaluate 1728 != 12, drop this branch.
+            |- Try 144 / 12 = 12. Evaluate 12 == 12, target found!
+
+          Now we have found the target, let's trace back the solution:
+          Final step: 144 / 12 = 12
+          The step before: 18 - 6 = 12
+          The first step: 16 * 9 = 144
+
+          Output the solution in the required format:
+          <Solution>
+          16 * 9 = 144
+          18 - 6 = 12
+          144 / 12 = 12
+          </Solution>
+
+
+          [Problem]
+          Now, solve the following problem. Note that:
+          - Please carefully read the approach and examples provided above, and follow them to solve the problem.
+          - Please ALWAYS include your search procedure (after # Search Procedure). The search procedure should follow the format of the examples provided above.
+          - Please mark your answer with <Solution> and </Solution> tags. The solution should be a sequence of three equations exactly following the format of the examples above, with no additional text in between.
+        task_template: |-
+          Numbers: {nums}
+          Target: {target}
+        answer_template:
+        answer_tag:

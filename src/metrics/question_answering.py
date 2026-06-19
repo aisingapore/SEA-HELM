@@ -19,14 +19,26 @@ class QuestionAnsweringMetric(SeaHelmMetric):
         self,
         dataloader: AbstractDataloader,
         task_config: TaskConfig,
+        response_column: str = "responses",
+        postprocessed_response_column: str = "cleaned_responses",
+        label_column: str = "label",
     ):
         """Initialize the QuestionAnsweringMetric.
 
         Args:
             dataloader (AbstractDataloader): The dataloader to use.
             task_config (TaskConfig): The task configuration.
+            response_column (str, optional): The column name for model responses. Defaults to "responses".
+            postprocessed_response_column (str, optional): The column name for postprocessed model responses. Defaults to "cleaned_responses".
+            label_column (str, optional): The column name for labels. Defaults to "label".
         """
-        super().__init__(dataloader=dataloader, task_config=task_config)
+        super().__init__(
+            dataloader=dataloader,
+            task_config=task_config,
+            response_column=response_column,
+            postprocessed_response_column=postprocessed_response_column,
+            label_column=label_column,
+        )
         self.regex_string = (
             task_config.config["languages"][self.lang]["prompt_template"]["answer_tag"]
             + r"[\s\r\n`*]*(.*)"
@@ -74,7 +86,7 @@ class QuestionAnsweringMetric(SeaHelmMetric):
         Returns:
             List[Any]: The references from the dataloader.
         """
-        return self.dataloader.inference_df[self.label_column]
+        return self.dataloader.dataframe[self.label_column]
 
     def _f1_score(self, prediction: str, ground_truth: str) -> float:
         """Calculate the F1 score.
@@ -196,7 +208,7 @@ class QuestionAnsweringMetric(SeaHelmMetric):
             dict: The metrics.
         """
         references = self.get_references()
-        predictions = self.dataloader.inference_df[self.postprocessed_response_column]
+        predictions = self.dataloader.dataframe[self.postprocessed_response_column]
 
         if self.lang == "th":
             # Use PyThaiNLP newmm Thai tokenizer because Thai script does not use spaces between words
@@ -229,9 +241,10 @@ class QuestionAnsweringMetric(SeaHelmMetric):
             results, f1_list = self._evaluate(references, predictions)
             logger.info(results)
 
-        self.dataloader.inference_df["individual_scores"] = [
-            {"normalized_f1": self.normalize_score(x, 0, 1)} for x in f1_list
-        ]
+        self.dataloader.update_individual_scores(
+            [{"normalized_f1": self.normalize_score(x, 0, 1)} for x in f1_list]
+        )
+
         # Analyze if preds contain gold answer fully
         question_count = len(references)
         gold_in_pred = 0
@@ -247,7 +260,10 @@ class QuestionAnsweringMetric(SeaHelmMetric):
 
         if question_count > 0:
             logger.info(
-                f"{gold_in_pred} answers out of {question_count} ({gold_in_pred * 100 / question_count:.2f}%) can be found in the model's predictions."
+                "%d answers out of %d (%.2f%%) can be found in the model's predictions.",
+                gold_in_pred,
+                question_count,
+                gold_in_pred * 100 / question_count,
             )
 
             results.update({"found_in_prediction": gold_in_pred * 100 / question_count})

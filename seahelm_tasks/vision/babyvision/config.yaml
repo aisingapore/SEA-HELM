@@ -1,0 +1,69 @@
+babyvision:
+  metadata:
+    version: 1
+  name: babyvision
+  competency: vision
+  task_modality: vision
+  dataloader_file: seahelm_tasks/vision/babyvision/babyvision_dataloader.py
+  dataloader_class: BabyVisionDataloader
+  metric_file: seahelm_tasks/vision/babyvision/babyvision_metric.py
+  metric_class: BabyVisionJudgeMetric
+  metric: accuracy_score
+  use_judges: true
+  judge:
+    judge_model_name: openai/gpt-oss-120b
+    judge_model_type: vllm
+    judge_init_args:
+      tensor_parallel_size: auto
+      async_scheduling: true
+      load_format: instanttensor
+    judge_generation_kwargs:
+      max_tokens: 16384
+      reasoning_effort: high
+    judge_prompts:
+      system_prompt: ""
+      criteria_prompt: |-
+        You are a careful and strict evaluator. You will be given:
+
+        1. **Question**
+        2. **Ground Truth Answer** (correct answer)
+        3. **Model Output** (answer from another model)
+
+        **Your goal:** Determine if the Model Output **accurately matches** the Ground Truth Answer in meaning.
+
+        * Matching means: the facts, entities, and key details are equivalent, even if phrasing differs.
+        * Not matching means: the Model Output is wrong, incomplete, contains extra incorrect facts, or changes the meaning.
+
+        **Process (internal reasoning):**
+
+        1. Read and understand the Question, Ground Truth Answer, and Model Output.
+        2. Ignore small wording differences, formatting, or synonyms.
+        3. If all factual content matches, conclude `TRUE`. Otherwise, conclude `FALSE`.
+
+        **Important:**
+
+        * Think through your decision step-by-step **internally** before responding.
+        * In your final output, return **only** TRUE or FALSE, with no extra text or explanation.
+
+        **Output format:**
+        TRUE or FALSE
+
+        **Input:**
+
+        Question: {question},
+        Ground Truth Answer: {groundtruth},
+        Model Output: {modeloutput}
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    en:
+      filepath: UnipatAI/BabyVision
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: |-
+          {question}{choices}
+          Think about the question and give your final answer in \boxed{{Answer}} format.
+        answer_template: ""
+        answer_tag: "\\boxed{"

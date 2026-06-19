@@ -2,26 +2,31 @@ from src.base_logger import get_logger
 from src.serving.batch.anthropic_serving import ANTHROPIC_MODELS, AnthropicServing
 from src.serving.batch.base_batch_serving import BaseBatchServing as BaseBatchServing
 from src.serving.batch.openai_serving import (
-    OPENAI_MODELS,
     OpenAIServing,
     is_openai_model_name_supported,
 )
 from src.serving.batch.vertexai_serving import VERTEXAI_MODELS, VertexAIServing
-from src.serving.local.base_serving import BaseServing as BaseServing
-from src.serving.local.litellm_serving import LiteLLMServing
-from src.serving.local.local_openai_serving import LocalOpenAIServing
-from src.serving.local.metricx_serving import MetricXServing
-from src.serving.local.openclip_serving import OpenClipServing
-from src.serving.local.vllm_serving import VLLMServing
+from src.serving.offline.base_offline_serving import (
+    BaseOfflineServing as BaseOfflineServing,
+)
+from src.serving.offline.metricx_serving import MetricXServing
+from src.serving.offline.openclip_serving import OpenClipServing
+from src.serving.offline.vllm_serving import VLLMServing
+from src.serving.online.litellm_serving import LiteLLMServing
+from src.serving.online.local_openai_serving import LocalOpenAIServing
+from src.serving.online.online_sglang_serving import OnlineSGLangServing
+from src.serving.online.online_vllm_serving import OnlineVLLMServing
 
 logger = get_logger(__name__)
 
 # model_types
 MODEL_TYPE_SERVING_MAP = {
     "vllm": "local_serving",
+    "online_vllm": "local_serving",
+    "online_sglang": "local_serving",
     "metricx": "local_serving",
     "openclip": "local_serving",
-    "local_openai": "local_serving",
+    "local_openai": "remote_serving",
     "openai": "remote_serving",
     "anthropic": "remote_serving",
     "vertexai": "remote_serving",
@@ -62,7 +67,6 @@ def get_serving_class(
     model_type: str,
     is_base_model: bool = False,
     seed: int = 42,
-    batch_api_calls: bool = False,
     **model_args,
 ):
     """Get the appropriate serving class based on the model name.
@@ -73,91 +77,101 @@ def get_serving_class(
     Returns:
         BaseServing: The appropriate serving class.
     """
-    assert model_type.lower() in [
-        "litellm",
-        "vllm",
-        "local_openai",
-        "openai",
-        "vertexai",
-        "anthropic",
-        "metricx",
-        "openclip",
-        "none",
-    ], (
-        f"""model_type should be one of ["litellm", "vllm", "local_openai", "openai", "vertexai", "anthropic", "metricx", "openclip"]. Received {model_type} instead."""
+    _model_type = model_type.lower()
+    model_types = list(MODEL_TYPE_SERVING_MAP.keys()) + ["none"]
+    assert _model_type in model_types, (
+        f"model_type should be one of {model_types}. Received {model_type} instead."
     )
-    if model_type.lower() == "litellm":
+    if _model_type == "litellm":
         # typical model args: "api_provider=openai,base_url=http://localhost:8000/v1,api_key=token-abc123"
         logger.info(
-            f"Initializing model {model_name} using {model_args['api_provider'].upper()}..."
+            "Initializing model %s using %s...",
+            model_name,
+            model_args["api_provider"].upper(),
         )
         api_provider = model_args.pop("api_provider")
-        llm = LiteLLMServing(
+        serving_class = LiteLLMServing(
             model_name=f"{api_provider}/{model_name}",
             **model_args,
         )
-    elif model_type.lower() == "local_openai":
-        llm = LocalOpenAIServing(
+    elif _model_type == "local_openai":
+        serving_class = LocalOpenAIServing(
             model_name=model_name,
             is_base_model=is_base_model,
             **model_args,
         )
-    elif model_type.lower() == "openai":
+    elif _model_type == "openai":
         assert is_openai_model_name_supported(model_name), (
             f"Unsupported OpenAI model: {model_name}"
         )
-        assert batch_api_calls, "Only batch API calls are supported for OpenAI models."
-        llm = OpenAIServing(
+        serving_class = OpenAIServing(
             model_name=model_name,
             is_base_model=is_base_model,
             **model_args,
         )
-    elif model_type.lower() == "vertexai":
+    elif _model_type == "vertexai":
         assert model_name in VERTEXAI_MODELS, (
             f"Unsupported Vertex AI model: {model_name}"
         )
-        assert batch_api_calls, (
-            "Only batch API calls are supported for Vertex AI models."
-        )
-        llm = VertexAIServing(
+        serving_class = VertexAIServing(
             model_name=model_name,
             is_base_model=is_base_model,
             **model_args,
         )
-    elif model_type.lower() == "anthropic":
+    elif _model_type == "anthropic":
         assert model_name in ANTHROPIC_MODELS, (
             f"Unsupported Anthropic model: {model_name}"
         )
-        assert batch_api_calls, (
-            "Only batch API calls are supported for Anthropic models."
-        )
-        llm = AnthropicServing(
+        serving_class = AnthropicServing(
             model_name=model_name,
             is_base_model=is_base_model,
             **model_args,
         )
-    elif model_type.lower() == "vllm":
-        # typical model args: "dtype=bfloat16,enable_prefix_caching=True,gpu_memory_utilization=0.95,tensor_parallel_size=1"
-        logger.info(f"Initializing model {model_name} using vLLMs...")
-        llm = VLLMServing(
+    elif _model_type == "vllm":
+        # typical model args: "tensor_parallel_size=1,reasoning_parser=qwen3,enable_thinking=True"
+        logger.info("Initializing model %s using vLLMs...", model_name)
+        if model_name.startswith("mistralai"):
+            model_args["tokenizer_mode"] = model_args.get("tokenizer_mode", "mistral")
+            model_args["load_format"] = model_args.get("load_format", "mistral")
+            model_args["config_format"] = model_args.get("config_format", "mistral")
+        serving_class = VLLMServing(
             model_name=model_name,
             is_base_model=is_base_model,
             seed=seed,
-            tokenizer_mode="mistral" if model_name.startswith("mistralai") else "auto",
-            load_format="mistral" if model_name.startswith("mistralai") else "auto",
-            config_format="mistral" if model_name.startswith("mistralai") else "auto",
             **model_args,
         )
-    elif model_type.lower() == "metricx":
+    elif _model_type == "online_vllm":
+        # typical model args: "tensor_parallel_size=1,reasoning_parser=qwen3,enable_thinking=True"
+        logger.info("Initializing model %s using online vLLM serving...", model_name)
+        if model_name.startswith("mistralai"):
+            model_args["tokenizer_mode"] = model_args.get("tokenizer_mode", "mistral")
+            model_args["load_format"] = model_args.get("load_format", "mistral")
+            model_args["config_format"] = model_args.get("config_format", "mistral")
+        serving_class = OnlineVLLMServing(
+            model_name=model_name,
+            is_base_model=is_base_model,
+            seed=seed,
+            **model_args,
+        )
+    elif _model_type == "online_sglang":
+        # typical model args: "tp=1,mem_fraction_static=0.9"
+        logger.info("Initializing model %s using online SGLang serving...", model_name)
+        serving_class = OnlineSGLangServing(
+            model_name=model_name,
+            is_base_model=is_base_model,
+            seed=seed,
+            **model_args,
+        )
+    elif _model_type == "metricx":
         logger.info("Initializing MetricX model using Transformers...")
-        llm = MetricXServing(model_name=model_name, **model_args)
-    elif model_type.lower() == "openclip":
-        logger.info(f"Initializing model {model_name} using OpenCLIP...")
-        llm = OpenClipServing(model_name=model_name, **model_args)
-    elif model_type.lower() == "none":
+        serving_class = MetricXServing(model_name=model_name, **model_args)
+    elif _model_type == "openclip":
+        logger.info("Initializing model %s using OpenCLIP...", model_name)
+        serving_class = OpenClipServing(model_name=model_name, **model_args)
+    elif _model_type == "none":
         logger.info(
             "Model type is set to None. Please ensure that the model inferences are in the correct folder and format."
         )
-        llm = None
+        serving_class = None
 
-    return llm
+    return serving_class

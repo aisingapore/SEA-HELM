@@ -26,6 +26,7 @@ class WorldCuisineDataloader(HuggingFaceImageDataloader):
         model_name: str = "",
         run_base_path: str = "",
         inference_file_type: str = "jsonl",
+        num_workers: int = 16,
     ) -> None:
         """Initialize the WorldCuisineDataloader.
 
@@ -44,6 +45,7 @@ class WorldCuisineDataloader(HuggingFaceImageDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
 
         self.rng = np.random.default_rng(seed=3722236)
@@ -106,8 +108,12 @@ class WorldCuisineDataloader(HuggingFaceImageDataloader):
         new_dataset = []
 
         for prompt_type in prompt_index_list:
+
+            def _filter_by_prompt_type(example):
+                return example["prompt_type"] == prompt_type  # noqa: B023
+
             subset = dataset.filter(
-                lambda example: example["prompt_type"] == prompt_type,
+                _filter_by_prompt_type,
                 num_proc=self.num_workers,
             )
             # Create a reproducible shuffled list of target insertion indices

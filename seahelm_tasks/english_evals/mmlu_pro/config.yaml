@@ -4,7 +4,7 @@ mmlu_pro_business:
     changes:
       v1.1: Use the original dataset from Huggingface and increase the max_tokens to 2048.
   name: mmlu_pro_business
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -56,7 +56,7 @@ mmlu_pro_law:
   metadata:
     version: 1.0
   name: mmlu_pro_law
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -108,7 +108,7 @@ mmlu_pro_psychology:
   metadata:
     version: 1.0
   name: mmlu_pro_psychology
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -160,7 +160,7 @@ mmlu_pro_biology:
   metadata:
     version: 1.0
   name: mmlu_pro_biology
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -212,7 +212,7 @@ mmlu_pro_chemistry:
   metadata:
     version: 1.0
   name: mmlu_pro_chemistry
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -264,7 +264,7 @@ mmlu_pro_history:
   metadata:
     version: 1.0
   name: mmlu_pro_history
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -316,7 +316,7 @@ mmlu_pro_other:
   metadata:
     version: 1.0
   name: mmlu_pro_other
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -368,7 +368,7 @@ mmlu_pro_health:
   metadata:
     version: 1.0
   name: mmlu_pro_health
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -420,7 +420,7 @@ mmlu_pro_economics:
   metadata:
     version: 1.0
   name: mmlu_pro_economics
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -472,7 +472,7 @@ mmlu_pro_math:
   metadata:
     version: 1.0
   name: mmlu_pro_math
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -524,7 +524,7 @@ mmlu_pro_physics:
   metadata:
     version: 1.0
   name: mmlu_pro_physics
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -576,7 +576,7 @@ mmlu_pro_computer_science:
   metadata:
     version: 1.0
   name: mmlu_pro_computer_science
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -628,7 +628,7 @@ mmlu_pro_philosophy:
   metadata:
     version: 1.0
   name: mmlu_pro_philosophy
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader
@@ -680,7 +680,7 @@ mmlu_pro_engineering:
   metadata:
     version: 1.0
   name: mmlu_pro_engineering
-  competency: english_evals
+  competency: english_knowledge
   aggregation_group: mmlu_pro
   dataloader_file: seahelm_tasks/english_evals/mmlu_pro/mmlu_pro_dataloader.py
   dataloader_class: MMLUProDataloader

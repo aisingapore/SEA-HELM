@@ -81,8 +81,8 @@ class PairwiseFineGrainedLLMJudgeMetric(PairwiseLLMJudgeMetric):
                     }
                 }
             )
-            logger.info(f"Score for category <{category}>: {score}")
-            logger.info(f"Win rate for category <{category}>: {subset_win_rate}")
+            logger.info("Score for category <%s>: %.2f", category, score)
+            logger.info("Win rate for category <%s>: %.2f", category, subset_win_rate)
 
         overall_judgement_list = [
             j for judgement_turn in judgement_list for j in judgement_turn
@@ -98,22 +98,22 @@ class PairwiseFineGrainedLLMJudgeMetric(PairwiseLLMJudgeMetric):
         metric_dict["null_judgements"] = len(overall_judgement_list) - len(
             overall_judgement_list_wo_null
         )
-        logger.info(f"Overall score: {overall_score}")
+        logger.info("Overall score: %.2f", overall_score)
 
         overall_win_rate = self.get_win_rate(overall_judgement_list_wo_null)
         metric_dict["win_rate"] = overall_win_rate
-        logger.info(f"Overall win rate: {overall_win_rate}")
+        logger.info("Overall win rate: %.2f", overall_win_rate)
 
         weighted_score = sum(
             [x["subset_score"] for x in metric_dict["categories"].values()]
         ) / len(metric_dict["categories"])
         metric_dict["weighted_score"] = weighted_score
-        logger.info(f"Weighted score: {weighted_score}")
+        logger.info("Weighted score: %.2f", weighted_score)
 
         weighted_win_rate = sum(
             [x["subset_win_rate"] for x in metric_dict["categories"].values()]
         ) / len(metric_dict["categories"])
         metric_dict["weighted_win_rate"] = weighted_win_rate
-        logger.info(f"Weighted win rate: {weighted_win_rate}")
+        logger.info("Weighted win rate: %.2f", weighted_win_rate)
 
         return metric_dict

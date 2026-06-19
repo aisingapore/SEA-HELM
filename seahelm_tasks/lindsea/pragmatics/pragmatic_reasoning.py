@@ -38,7 +38,7 @@ class PragmaticReasoningMetric(SeaHelmMetric):
         super().__init__(dataloader=dataloader, task_config=task_config)
         self.null_label = null_label
 
-        unique_labels = set(self.dataloader.inference_df[self.label_column].to_list())
+        unique_labels = set(self.dataloader.dataframe[self.label_column].to_list())
         label_string = "|".join(unique_labels)
         self.label_map = {label.lower(): label for label in unique_labels}
         self.regex_string = (
@@ -76,15 +76,13 @@ class PragmaticReasoningMetric(SeaHelmMetric):
         - Populates `self.postprocessed_response_column` with cleaned labels.
         - Extracts and writes `linguistic_phenomenon` as a separate column.
         """
-        self.dataloader.inference_df[self.postprocessed_response_column] = (
-            self.dataloader.inference_df[self.response_column].apply(
-                self.extract_response
-            )
+        self.dataloader.dataframe[self.postprocessed_response_column] = (
+            self.dataloader.dataframe[self.response_column].apply(self.extract_response)
         )
 
         # make linguistic_phenomenon a column
-        self.dataloader.inference_df["linguistic_phenomenon"] = [
-            x["linguistic_phenomenon"] for x in self.dataloader.inference_df["metadata"]
+        self.dataloader.dataframe["linguistic_phenomenon"] = [
+            x["linguistic_phenomenon"] for x in self.dataloader.dataframe["metadata"]
         ]
 
     def calculate_metrics(self) -> dict:
@@ -97,11 +95,9 @@ class PragmaticReasoningMetric(SeaHelmMetric):
                 `individual_scores` with `normalized_accuracy` (0/1).
         """
         metric_dict = {"subcategories": {}}
-        for phenomenon in self.dataloader.inference_df[
-            "linguistic_phenomenon"
-        ].unique():
-            subset = self.dataloader.inference_df[
-                self.dataloader.inference_df["linguistic_phenomenon"] == phenomenon
+        for phenomenon in self.dataloader.dataframe["linguistic_phenomenon"].unique():
+            subset = self.dataloader.dataframe[
+                self.dataloader.dataframe["linguistic_phenomenon"] == phenomenon
             ]
             subset_predictions = subset[self.postprocessed_response_column]
             subset_references = subset[self.label_column]
@@ -120,12 +116,12 @@ class PragmaticReasoningMetric(SeaHelmMetric):
                 subset_size,
             )
 
-        predictions = self.dataloader.inference_df[self.postprocessed_response_column]
-        references = self.dataloader.inference_df[self.label_column]
+        predictions = self.dataloader.dataframe[self.postprocessed_response_column]
+        references = self.dataloader.dataframe[self.label_column]
         individual_scores = predictions.eq(references, axis=0).astype(int)
-        self.dataloader.inference_df["individual_scores"] = [
-            {"normalized_accuracy": x} for x in individual_scores
-        ]
+        self.dataloader.update_individual_scores(
+            [{"normalized_accuracy": x} for x in individual_scores]
+        )
 
         return metric_dict
 
@@ -158,8 +154,8 @@ class PragmaticReasoningLogProbMetric(SeaHelmMetric):
         Adds `linguistic_phenomenon` as a separate column derived from the
         `metadata` field in the inference DataFrame.
         """
-        self.dataloader.inference_df["linguistic_phenomenon"] = [
-            x["linguistic_phenomenon"] for x in self.dataloader.inference_df["metadata"]
+        self.dataloader.dataframe["linguistic_phenomenon"] = [
+            x["linguistic_phenomenon"] for x in self.dataloader.dataframe["metadata"]
         ]
 
     def calculate_metrics(self) -> dict:
@@ -181,11 +177,9 @@ class PragmaticReasoningLogProbMetric(SeaHelmMetric):
         """
         metric_dict = {"subcategories": {}}
         cumulative_probabilities = []
-        for phenomenon in self.dataloader.inference_df[
-            "linguistic_phenomenon"
-        ].unique():
-            subset = self.dataloader.inference_df[
-                self.dataloader.inference_df["linguistic_phenomenon"] == phenomenon
+        for phenomenon in self.dataloader.dataframe["linguistic_phenomenon"].unique():
+            subset = self.dataloader.dataframe[
+                self.dataloader.dataframe["linguistic_phenomenon"] == phenomenon
             ]
 
             subset_cumulative_logprobs = [x[0] for x in subset["cumulative_logprobs"]]
@@ -239,8 +233,8 @@ class PragmaticReasoningLogProbMetric(SeaHelmMetric):
             )
             cumulative_probabilities.extend(subset_cumulative_probabilities)
 
-        self.dataloader.inference_df["individual_scores"] = [
-            {"probabilities_accuracy": x} for x in cumulative_probabilities
-        ]
+        self.dataloader.update_individual_scores(
+            [{"probabilities_accuracy": x} for x in cumulative_probabilities]
+        )
 
         return metric_dict

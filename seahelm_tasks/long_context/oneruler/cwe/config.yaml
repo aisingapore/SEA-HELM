@@ -1,0 +1,215 @@
+cwe_8k:
+  metadata:
+    version: 1
+  name: cwe_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 8000
+  num_common_words: 10
+  num_repeats_common_words: 20
+  num_repeats_uncommon_words: 10
+  num_samples: 200
+  languages:
+    en:
+      filepath:
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Below is a numbered list of words. In these words, some appear more often than others. Memorize the ones that appear most often.
+        task_template: |-
+          <List>{list}</List>
+
+          <Question>What are the {num_common_words} most common words in the above list?</Question>
+
+          Please provide your answer in the following format:
+          <Answer>List the words here, using commas to separate them</Answer>
+        answer_template:
+        answer_tag: <Answer>
+    zh:
+      filepath:
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          以下是一列带编号的词语。在这些词语中，一些的出现频率高于另一些。请记住高频出现的词语。
+        task_template: |-
+          <列表>{list}</列表>
+
+          <问题>以上列表中，最常出现的{num_common_words}个词语是什么？</问题>
+
+          请用以下格式提供你的答案：
+          <答案>在此处列出所有词语，使用逗号分隔</答案>
+        answer_template:
+        answer_tag: <答案>
+    ta:
+      filepath:
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          எண்ணிடப்பட்ட சொற்களின் பட்டியல் கீழே உள்ளது. இந்தச்சொற்களில் சிலவை மற்றவையை விட அதிகம் தோன்றும். மிகவும் அடிக்கடி தோன்றும் சொற்களை நினைவில் கொள்ளவும்.
+        task_template: |-
+          <பட்டியல்>{list}</பட்டியல்>
+
+          <கேள்வி> மேற்கண்ட பட்டியலில் அதிகம் காணப்படும் {num_common_words} சொற்கள் யாவை? </கேள்வி>
+
+          பின்வரும் வடிவத்தில் தங்கள் விடையை அளிக்கவும்:
+          <விடை>சொற்களை இங்கு பட்டியலிடுக, காமா பிரிக்கப்பட்டவை</விடை>
+        answer_template:
+        answer_tag: <விடை>
+    vi:
+      filepath:
+      example_filepath:
+      max_tokens: 2048
+      prompt_template:
+        preamble: |-
+          Dưới đây là một danh sách các từ. Trong những từ này, một số từ xuất hiện thường xuyên hơn những từ khác. Hãy ghi nhớ những từ xuất hiện thường xuyên nhất.
+        task_template: |-
+          <Danh sách>{list}</Danh sách>
+
+          <Câu hỏi>{num_common_words} từ ngữ phổ biến nhất trong danh sách trên là gì?</Câu hỏi>
+
+          Hãy cho câu trả lời theo hình thức như sau:
+          <Câu trả lời>Liệt kê các từ ở đây, sử dụng dấu phẩy để phân tách</Câu trả lời>
+        answer_template:
+        answer_tag: <Câu trả lời>
+
+cwe_32k:
+  metadata:
+    version: 1
+  name: cwe_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 32000
+  num_common_words: 10
+  num_repeats_common_words: 20
+  num_repeats_uncommon_words: 10
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_64k:
+  metadata:
+    version: 1
+  name: cwe_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 64000
+  num_common_words: 10
+  num_repeats_common_words: 20
+  num_repeats_uncommon_words: 10
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_128k:
+  metadata:
+    version: 1
+  name: cwe_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 128000
+  num_common_words: 10
+  num_repeats_common_words: 20
+  num_repeats_uncommon_words: 10
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_easy_8k:
+  metadata:
+    version: 1
+  name: cwe_easy_8k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 8000
+  num_common_words: 10
+  num_repeats_common_words: 30
+  num_repeats_uncommon_words: 3
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_easy_32k:
+  metadata:
+    version: 1
+  name: cwe_easy_32k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 32000
+  num_common_words: 10
+  num_repeats_common_words: 30
+  num_repeats_uncommon_words: 3
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_easy_64k:
+  metadata:
+    version: 1
+  name: cwe_easy_64k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 32000
+  num_common_words: 10
+  num_repeats_common_words: 30
+  num_repeats_uncommon_words: 3
+  num_samples: 200
+  languages: ${cwe_8k.languages}
+
+cwe_easy_128k:
+  metadata:
+    version: 1
+  name: cwe_easy_128k
+  competency: long-context
+  dataloader_file: seahelm_tasks/long_context/oneruler/cwe/cwe_dataloader.py
+  dataloader_class: CWEDataloader
+  metric_file: seahelm_tasks/long_context/oneruler/cwe/cwe_metric.py
+  metric_class: CweMetric
+  metric: normalized_strict_accuracy
+  aggregation_group: oneruler
+  random_seed: 9472347
+  context_size: 128000
+  num_common_words: 10
+  num_repeats_common_words: 30
+  num_repeats_uncommon_words: 3
+  num_samples: 200
+  languages: ${cwe_8k.languages}

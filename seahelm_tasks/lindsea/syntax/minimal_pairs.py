@@ -44,7 +44,7 @@ class MinimalPairsMetric(SeaHelmMetric):
         super().__init__(dataloader=dataloader, task_config=task_config)
         self.null_label = null_label
 
-        unique_labels = set(self.dataloader.inference_df[self.label_column].to_list())
+        unique_labels = set(self.dataloader.dataframe[self.label_column].to_list())
         label_string = "|".join(unique_labels)
         self.label_map = {label.lower(): label for label in unique_labels}
         self.regex_string = (
@@ -81,15 +81,13 @@ class MinimalPairsMetric(SeaHelmMetric):
         - Extracts and maps responses into the postprocessed response column.
         - Derives the `linguistic_phenomenon` column from metadata for grouping.
         """
-        self.dataloader.inference_df[self.postprocessed_response_column] = (
-            self.dataloader.inference_df[self.response_column].map(
-                self.extract_response
-            )
+        self.dataloader.dataframe[self.postprocessed_response_column] = (
+            self.dataloader.dataframe[self.response_column].map(self.extract_response)
         )
 
         # make linguistic_phenomenon a column
-        self.dataloader.inference_df["linguistic_phenomenon"] = [
-            x["linguistic_phenomenon"] for x in self.dataloader.inference_df["metadata"]
+        self.dataloader.dataframe["linguistic_phenomenon"] = [
+            x["linguistic_phenomenon"] for x in self.dataloader.dataframe["metadata"]
         ]
 
     def calculate_metrics(self) -> dict:
@@ -99,15 +97,13 @@ class MinimalPairsMetric(SeaHelmMetric):
             dict: Dictionary with overall accuracy (`accuracy`), per-phenomenon
             scores (`subcategories`), and `normalized_accuracy`. Individual
             example scores are stored in the dataloader under
-            `inference_df['individual_scores']`.
+            `dataframe['individual_scores']`.
         """
         metric_dict = {"accuracy": None, "subcategories": {}}
 
-        for phenomenon in self.dataloader.inference_df[
-            "linguistic_phenomenon"
-        ].unique():
-            subset = self.dataloader.inference_df[
-                self.dataloader.inference_df["linguistic_phenomenon"] == phenomenon
+        for phenomenon in self.dataloader.dataframe["linguistic_phenomenon"].unique():
+            subset = self.dataloader.dataframe[
+                self.dataloader.dataframe["linguistic_phenomenon"] == phenomenon
             ]
             subset_predictions = subset[self.postprocessed_response_column]
             subset_references = subset[self.label_column].apply(
@@ -135,15 +131,15 @@ class MinimalPairsMetric(SeaHelmMetric):
             * 100
         )
 
-        predictions = self.dataloader.inference_df[self.postprocessed_response_column]
-        references = self.dataloader.inference_df[self.label_column].apply(
+        predictions = self.dataloader.dataframe[self.postprocessed_response_column]
+        references = self.dataloader.dataframe[self.label_column].apply(
             lambda x: self.label_map.get(x.lower())
         )
 
         individual_scores = predictions.eq(references, axis=0).astype(int)
-        self.dataloader.inference_df["individual_scores"] = [
-            {"normalized_accuracy": x} for x in individual_scores
-        ]
+        self.dataloader.update_individual_scores(
+            [{"normalized_accuracy": x} for x in individual_scores]
+        )
         return metric_dict
 
 
@@ -174,8 +170,8 @@ class MinimalPairsLogProbMetric(SeaHelmMetric):
 
     def postprocess_responses(self) -> None:
         """Derive `linguistic_phenomenon` column from metadata for grouping."""
-        self.dataloader.inference_df["linguistic_phenomenon"] = [
-            x["linguistic_phenomenon"] for x in self.dataloader.inference_df["metadata"]
+        self.dataloader.dataframe["linguistic_phenomenon"] = [
+            x["linguistic_phenomenon"] for x in self.dataloader.dataframe["metadata"]
         ]
 
     def calculate_probabilites(self, logprobs: list) -> tuple[dict, list]:
@@ -233,15 +229,13 @@ class MinimalPairsLogProbMetric(SeaHelmMetric):
         Returns:
             dict: Dictionary containing per-phenomenon (`subcategories`) metrics
             and overall summary statistics. Per-example probabilities are stored
-            in `inference_df['individual_scores']`.
+            in `dataframe['individual_scores']`.
         """
         metric_dict = {"subcategories": {}}
         cumulative_probabilities = []
-        for phenomenon in self.dataloader.inference_df[
-            "linguistic_phenomenon"
-        ].unique():
-            subset = self.dataloader.inference_df[
-                self.dataloader.inference_df["linguistic_phenomenon"] == phenomenon
+        for phenomenon in self.dataloader.dataframe["linguistic_phenomenon"].unique():
+            subset = self.dataloader.dataframe[
+                self.dataloader.dataframe["linguistic_phenomenon"] == phenomenon
             ]
 
             subset_metric, _ = self.calculate_probabilites(
@@ -257,7 +251,7 @@ class MinimalPairsLogProbMetric(SeaHelmMetric):
             )
 
         full_metrics, cumulative_probabilities = self.calculate_probabilites(
-            self.dataloader.inference_df["cumulative_logprobs"]
+            self.dataloader.dataframe["cumulative_logprobs"]
         )
         metric_dict.update(full_metrics)
         logger.info(
@@ -266,8 +260,8 @@ class MinimalPairsLogProbMetric(SeaHelmMetric):
             full_metrics["clt_se_cumulative_probabilities"],
         )
 
-        self.dataloader.inference_df["individual_scores"] = [
-            {"probabilities_accuracy": x} for x in cumulative_probabilities
-        ]
+        self.dataloader.update_individual_scores(
+            [{"probabilities_accuracy": x} for x in cumulative_probabilities]
+        )
 
         return metric_dict

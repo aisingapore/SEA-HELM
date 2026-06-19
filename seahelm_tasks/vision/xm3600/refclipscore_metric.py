@@ -10,8 +10,6 @@ RefCLIPScore combines:
 The implementation uses multilingual CLIP models to support cross-lingual evaluation.
 """
 
-import os
-
 import numpy as np
 import pandas as pd
 
@@ -69,10 +67,7 @@ class RefClipScoreMetric(SeaHelmMetric):
             self.regex_string,
         )
         self.model_name = dataloader.model_name
-        self.judge_model_name = task_config.config["judge"].get("judge_model_name", "")
-
-    def get_judgement_file_name(self) -> str:
-        return f"{os.path.basename(self.model_name)}_{self.task}_{self.lang}_{os.path.basename(self.judge_model_name)}_judgement.jsonl"
+        self.judge_model_name = task_config.config.judge.get("judge_model_name", "")
 
     def calculate_metrics(self):
         """Calculate RefCLIPScore and related metrics from pre-computed judgements.
@@ -94,7 +89,7 @@ class RefClipScoreMetric(SeaHelmMetric):
                 - null_count (int): Number of empty/null predictions
 
         Side Effects:
-            - Updates self.dataloader.inference_df with individual_scores column containing
+            - Updates self.dataloader.dataframe with individual_scores column containing
               normalized refclipscore for each instance
             - Logs CLIPScore and RefCLIPScore percentages to logger
 
@@ -104,10 +99,7 @@ class RefClipScoreMetric(SeaHelmMetric):
             >>> print(f"RefCLIPScore: {results['refclipscore']:.3f}")
         """
         # Get judgements
-        llm_judgement_file_path = os.path.join(
-            self.dataloader.get_parent_folder(),
-            self.get_judgement_file_name(),
-        )
+        llm_judgement_file_path = self.dataloader.get_judge_batch_response_filepath()
         judgement_df = pd.read_json(llm_judgement_file_path, lines=True)
 
         clipscores = []
@@ -137,10 +129,10 @@ class RefClipScoreMetric(SeaHelmMetric):
             for refclip_score in refclipscores
         ]
 
-        self.dataloader.inference_df["individual_scores"] = individual_scores
+        self.dataloader.update_individual_scores(individual_scores)
 
         # Count null predictions
-        predictions = self.dataloader.inference_df[self.postprocessed_response_column]
+        predictions = self.dataloader.dataframe[self.postprocessed_response_column]
         null_count = sum([1 for pred in predictions if pred == ""])
 
         logger.info("CLIPScore: %.2f", clipscore_mean * 100)

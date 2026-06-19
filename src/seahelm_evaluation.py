@@ -8,7 +8,6 @@ from typing import Any
 
 import pandas as pd
 from omegaconf import ListMergeMode, OmegaConf
-from vllm.v1.engine.exceptions import EngineDeadError
 
 # Add main directory to path for imports. Importing LiteLLM used to add os.cwd() to path.
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,15 +16,14 @@ from src.aggregate_metrics import aggregate_metrics
 from src.base_logger import get_logger, setup_root_logger
 from src.collect_env import get_pretty_env_info
 from src.dataloaders.base_dataloader import AbstractDataloader
+from src.inference_strategy import get_inference_strategy_class
 from src.queue_manager import QueueManager
 from src.serving import (
-    BaseBatchServing,
-    VLLMServing,
     get_serving_class,
     is_serving_type_remote,
 )
 from src.task_config import TaskConfig
-from src.utils import get_error_count, get_git_commit_hash, simple_parse_args_string
+from src.utils import get_git_commit_hash, simple_parse_args_string
 
 logger = get_logger(__name__)
 
@@ -54,10 +52,11 @@ class SeaHelmEvaluation:
         task_config_file: str = "seahelm_tasks/task_config.yaml",
         constants_file: str = "seahelm_tasks/constants.yaml",
         task_folder: str = "seahelm_tasks",
+        inference_strategy: str | None = None,
         is_base_model: bool = False,
         is_vision_model: bool = False,
         is_reasoning_model: bool = False,
-        inference_file_type: str = "csv",
+        inference_file_type: str = "jsonl",
         tokenize_prompts: bool = True,
         skip_task: list | None = None,
         limit: int | None = None,
@@ -66,6 +65,7 @@ class SeaHelmEvaluation:
         ignore_missing_files: bool = False,
         run_number: int = 1,
         datetime: str | None = None,
+        sandbox_type: str | None = None,
     ):
         """Initialize SeaHelmEvaluation instance with configurations and model settings.
 
@@ -93,7 +93,7 @@ class SeaHelmEvaluation:
             is_reasoning_model (bool, optional): If True, adds thinking tokens and increases
                 max_tokens for reasoning. Defaults to False.
             inference_file_type (str, optional): File format for saving inferences ("csv" or "jsonl").
-                Defaults to "csv".
+                Defaults to "jsonl".
             tokenize_prompts (bool, optional): Whether to tokenize and save prompts.
                 Auto-disabled for VertexAI/Anthropic. Defaults to True.
             skip_task (list | None, optional): List of task names to skip. If None, uses
@@ -109,6 +109,8 @@ class SeaHelmEvaluation:
                 Defaults to 1.
             datetime (str | None, optional): ISO format timestamp for file naming.
                 If None, uses current datetime. Defaults to None.
+            sandbox_type (str | None, optional): Type of sandbox to use for code execution.
+                Defaults to None.
 
         Raises:
             AssertionError: If tasks_configuration is not found in task_config.yaml
@@ -130,6 +132,8 @@ class SeaHelmEvaluation:
         self.is_base_model = is_base_model
         self.is_vision_model = is_vision_model
         self.is_reasoning_model = is_reasoning_model
+        self.inference_strategy = inference_strategy
+        self.sandbox_type = sandbox_type
 
         config, self.task_list_by_lang, task_alias = self.load_config_from_folders(
             task_folder
@@ -233,6 +237,7 @@ class SeaHelmEvaluation:
         run_args = {}
         for key in [
             "model_name",
+            "inference_strategy",
             "is_base_model",
             "is_vision_model",
             "is_reasoning_model",
@@ -241,6 +246,7 @@ class SeaHelmEvaluation:
             "skip_task",
             "limit",
             "no_batching",
+            "sandbox_type",
         ]:
             run_args[key] = self.__dict__[key]
 
@@ -427,9 +433,22 @@ Filepath: %s""",
 
         return True
 
+    def setup_dataloader(self, task_config):
+        Dataloader = task_config.get_dataloader_class()
+        dataloader = Dataloader(
+            task_config,
+            self.default_num_in_context_examples,
+            is_base_model=self.is_base_model,
+            model_name=self.model_name,
+            run_base_path=self.run_base_path,
+            inference_file_type=self.inference_file_type,
+        )
+
+        return dataloader
+
     def run_single_task_inference(
         self,
-        llm: Any,
+        model: Any,
         task_config: TaskConfig,
         limit: int | None = None,
     ) -> tuple[pd.DataFrame, dict]:
@@ -443,15 +462,13 @@ Filepath: %s""",
         - Saving results to disk
 
         Args:
-            llm (Any): The language model instance to use for inference
-            task_config (dict): Configuration dictionary for the specific task
-            task_name (str): Name of the task to run inference for
-            lang (str): Language code for the task
+            model (Any): The model to use for inference
+            task_config (TaskConfig): Configuration object for the specific task
             limit (int, optional): Maximum number of examples to process. Defaults to None.
 
         Returns:
             tuple[pd.DataFrame, dict]: A tuple containing:
-                - inference_df: DataFrame with inference results
+                - dataframe: DataFrame with inference results
                 - cache_status: Dictionary containing cache status information including:
                     - inference_time_taken: Total time taken for inference
                     - is_cached: Boolean indicating if cached results were used
@@ -463,21 +480,6 @@ Filepath: %s""",
         """
         task_name = task_config.task_name
         lang = task_config.lang
-        cache_status = {
-            task_name: {
-                "inference_time_taken": [],
-                "is_cached": False,
-            }
-        }
-        if llm is None:
-            if self.ignore_missing_files:
-                logger.warning(
-                    "use_cached_results must be set to True if model_type is None"
-                )
-            else:
-                assert task_config.should_use_cached_results(), (
-                    "use_cached_results must be set to True if model_type is None."
-                )
 
         logger.info(
             "---------- Inference | Lang: %s | Task: %s ----------\nTesting Competency: %s",
@@ -485,191 +487,85 @@ Filepath: %s""",
             task_name.upper(),
             task_config.config["competency"].upper(),
         )
-
-        Dataloader = task_config.get_dataloader_class()
-        dataloader = Dataloader(
-            task_config,
-            self.default_num_in_context_examples,
-            is_base_model=self.is_base_model,
-            model_name=self.model_name,
-            run_base_path=self.run_base_path,
-            inference_file_type=self.inference_file_type,
-        )
-
-        if task_config.should_use_cached_results():
-            is_cached_results_loaded = dataloader.read_inference_results_as_df()
-
-            if is_cached_results_loaded:
-                cache_status[task_name]["is_cached"] = True
-                logger.info(
-                    "Using cached results for Task: %s | Lang: %s\n",
-                    task_name.upper(),
-                    lang.upper(),
-                )
-                return dataloader, cache_status
-            elif llm is None:
-                if self.ignore_missing_files:
-                    logger.warning(
-                        f"Unable to load cached results for task {task_name} and lang {lang}. (When model_type is None)."
-                    )
-                    logger.warning(
-                        "Proceeding to next task due to flag ignore_missing_files."
-                    )
-                    return None, cache_status
-                else:
-                    assert is_cached_results_loaded, (
-                        f"Unable to load cached results for task {task_name} and lang {lang}. (When model_type is None)"
-                    )
-
-        # load model if model has not been loaded yet
-        llm.load_model()
-
-        # Set up generation kwargs
-        generation_kwargs = task_config.get_generation_kwargs()
-
-        # Update generation kwargs for reasoning models
-        # Follows the kwargs for DeepSeek models
-        if self.is_reasoning_model:
-            generation_kwargs["max_tokens"] += self.config[
-                "reasoning_generation_kwargs"
-            ]["max_think_tokens"]
-            logger.info(
-                "Model is a reasoning model. Increasing the max_tokens to '%d'.",
-                generation_kwargs["max_tokens"],
-            )
+        # run inference strategy
+        cache_status = {
+            task_name: {
+                "inference_time_taken": [],
+                "is_cached": [],
+            }
+        }
 
         try:
-            dataloader.load_dataset(limit)
+            is_logprobs = "logprobs" in task_name
+            strategy = task_config.get_strategy(self.inference_strategy)
+            InferenceStrategy = get_inference_strategy_class(
+                model,
+                strategy,
+                is_base_model=self.is_base_model,
+                is_logprobs=is_logprobs,
+            )
+            inference_strategy = InferenceStrategy(
+                serving_class=model,
+                task_config=task_config,
+            )
 
-            # max number of turns of all rows
+            # load dataset
+            dataloader = self.setup_dataloader(task_config)
+            dataloader.load_dataset(limit)
             n_turns = dataloader.get_num_turns()
 
-            for turn in range(1, n_turns + 1):  # NOTE: n_turns is 1-indexed
+            # run inference strategy
+            for turn in range(1, n_turns + 1):
+                # Set up generation kwargs
+                batch_filepath = dataloader.get_batch_filepath(
+                    turn=turn, file_type="jsonl"
+                )
+                batch_response_filepath = dataloader.get_batch_response_filepath(
+                    turn=turn, file_type="jsonl"
+                )
+
+                generation_kwargs, additional_kwargs = (
+                    task_config.get_generation_kwargs()
+                )
                 conversations = dataloader.prepare_conversations_for_inference(
                     turn, self.fewshot_as_multiturn
                 )
 
-                active_rows = [
-                    i for i, row in enumerate(conversations) if row is not None
-                ]
-                active_conversations = [conversations[i] for i in active_rows]
+                labels = dataloader.prepare_labels_for_inference()
 
-                if isinstance(llm, BaseBatchServing):
-                    generated_outputs = llm.generate_batch_api_responses(
-                        active_conversations,
-                        generation_kwargs,
-                        model_name,
-                        task_name,
-                        lang,
-                        dataloader.get_parent_folder(),
-                    )
-                else:
-                    # Filter labels for active rows only
-                    active_labels = None
-                    if task_config.config.get("use_logprobs", False):
-                        all_labels = dataloader.dataset["label"]
-                        active_labels = [all_labels[i] for i in active_rows]
-
-                    generated_outputs, inference_time_taken = llm.generate_responses(
-                        active_conversations,
-                        generation_kwargs,
-                        labels=active_labels,
-                        no_batching=self.no_batching,
-                        use_logprobs=task_config.config.get("use_logprobs", False),
-                    )
-                    cache_status[task_name]["inference_time_taken"].append(
-                        inference_time_taken
-                    )
-
-                outputs = llm.parse_outputs(
-                    generated_outputs,
-                    conversations=active_conversations,
-                    tokenize_prompts=self.tokenize_prompts,
-                    use_logprobs=task_config.config.get("use_logprobs", False),
+                inference_time_taken, is_cached = inference_strategy.run_inference(
+                    conversations,
+                    generation_kwargs,
+                    batch_filepath,
+                    batch_response_filepath,
+                    custom_ids=None,
+                    additional_kwargs=additional_kwargs,
+                    labels=labels,
                 )
+                cache_status[task_name]["inference_time_taken"].append(
+                    inference_time_taken
+                )
+                cache_status[task_name]["is_cached"].append(is_cached)
 
-                responses = outputs["responses"]
-
-                columns_to_update = {}
-                # udpate responses column
-                if self.is_reasoning_model:
-                    columns_to_update["responses_with_thinking"] = outputs["responses"]
-                    # remove think portion
-                    clean_responses = []
-                    for response in responses:
-                        # skip None responses
-                        if response is None:
-                            clean_responses.append(response)
-                        else:
-                            response = response.split(
-                                self.config["reasoning_generation_kwargs"][
-                                    "end_think_token"
-                                ]
-                            )[-1]
-                            clean_responses.append(response.strip())
-                    responses = clean_responses
-
-                columns_to_update["responses"] = responses
-
-                # update logprobs columns
-                if task_config.config.get("use_logprobs", False):
-                    columns_to_update["logprobs"] = outputs["logprobs"]
-                    columns_to_update["cumulative_logprobs"] = outputs[
-                        "cumulative_logprobs"
-                    ]
-                    columns_to_update["response_tokens"] = outputs["response_tokens"]
-
-                # update errors
-                columns_to_update["errors"] = outputs["errors"]
-
-                # update tokenized prompts
-                if self.tokenize_prompts:
-                    columns_to_update["tokenized_prompts"] = outputs[
-                        "tokenized_prompts"
-                    ]
-
-                # update all the columns
-                for col_name, col_value in columns_to_update.items():
-                    dataloader.update_column(
-                        col_name, col_value, active_rows=active_rows
-                    )
-
-            dataloader.update_inference_df()  # must run to populate inference_df with the dataset
-            dataloader.write_out_inference_results()
+                # update dataloader with parsed responses
+                # TODO Handle logprobs case
+                dataloader.load_model_outputs_into_dataset(turn)
+            dataloader.convert_dataset_to_dataframe()
 
             logger.info("Inference for task '%s' completed!\n", task_name.upper())
-
-            return dataloader, cache_status
-
-        except EngineDeadError as e:
-            logger.error("vLLM engine is dead. Re-raising the issue and exiting.")
-            raise e
-        except ValueError as e:
-            logger.error(
-                "Failed to run inference for task %s and lang %s", task_name, lang
-            )
-            logger.exception(e)
-            if isinstance(llm, VLLMServing):
-                if llm.llm.llm_engine.has_unfinished_requests():
-                    logger.warning(
-                        "vLLM has unfinished requests!\nWaiting for vLLM to finish requests before proceeding to the next task."
-                    )
-                    _ = llm.llm._run_engine()
-                    logger.warning(
-                        "vLLM has completed all the requests. Proceeding to the next task."
-                    )
-            return None, cache_status
         except Exception as e:
             logger.error(
                 "Failed to run inference for task %s and lang %s", task_name, lang
             )
             logger.exception(e)
-            return None, cache_status
+            dataloader = None
+
+        return dataloader, cache_status
 
     def run_single_judgement(
         self,
+        model: Any,
         dataloader: AbstractDataloader,
-        judge_model,
         task_config: TaskConfig,
         judge_config: dict,
     ) -> None:
@@ -679,14 +575,13 @@ Filepath: %s""",
         model on the dataloader's inference results.
 
         Args:
+            model: Serving instance for the LLM judge (can be any serving type)
             dataloader (AbstractDataloader): Dataloader containing model inference results
-            judge_model: Serving instance for the LLM judge (can be any serving type)
-            task_config (dict): Task configuration including judge settings and generation kwargs
-            task_name (str): Name of the task being judged
-            lang (str): Language code (e.g., "en", "id", "vi")
+            task_config (TaskConfig): Task configuration including judge settings and generation kwargs
+            judge_config (dict): Configuration for initializing the judge model, including:
 
         Side Effects:
-            - Updates dataloader.inference_df with judge evaluations
+            - Updates dataloader.dataframe with judge evaluations
             - Writes updated results to disk via dataloader
             - Logs evaluation progress
 
@@ -702,23 +597,41 @@ Filepath: %s""",
                 lang.upper(),
                 task_name.upper(),
             )
-            Judge = task_config.get_judge_class()
+
+            InferenceStrategy = get_inference_strategy_class(
+                model, judge_config.get("judge_inference_strategy", None)
+            )
+            inference_strategy = InferenceStrategy(
+                serving_class=model,
+                task_config=task_config,
+            )
+
+            # initialise metric class as we need the response extraction function
             Metric = task_config.get_metric_class()
             metric = Metric(
                 dataloader=dataloader,
                 task_config=task_config,
             )
 
-            logger.info("Judging '%s' using %s", task_name.upper(), Judge.__name__)
-            evaluation_judge = Judge(
-                judge_model=judge_model,
-                judge_config=judge_config,
-                dataloader=dataloader,
-                metric=metric,
-                task_config=task_config,
+            judge_batch_filepath = dataloader.get_judge_batch_filepath()
+            judge_batch_response_filepath = (
+                dataloader.get_judge_batch_response_filepath()
             )
 
-            evaluation_judge.judge_responses()
+            judge_generation_kwargs = judge_config["judge_generation_kwargs"]
+            conversations, custom_ids = dataloader.prepare_conversations_for_judgements(
+                metric
+            )
+
+            # TODO save out judge inference times and cache status
+            _, _ = inference_strategy.run_inference(
+                conversations=conversations,
+                generation_kwargs=judge_generation_kwargs,
+                batch_filepath=judge_batch_filepath,
+                batch_response_filepath=judge_batch_response_filepath,
+                custom_ids=custom_ids,
+                additional_kwargs=None,
+            )
 
             logger.info("Judgement for task '%s' completed!\n", task_name.upper())
         except Exception as e:
@@ -726,41 +639,6 @@ Filepath: %s""",
                 "Failed to run judgement for task %s and lang %s", task_name, lang
             )
             logger.exception(e)
-
-    def async_run_single_judgement(
-        self,
-        judge_config: dict,
-        dataloader: AbstractDataloader,
-        task_config: dict,
-    ) -> None:
-        """Wrapper for running single judgment asynchronously in the process pool.
-
-        Creates a new judge model instance and delegates to run_single_judgement.
-        This method is called by the QueueManager's async pool for remote LLM judges,
-        allowing multiple judge evaluations to run in parallel.
-
-        Args:
-            judge_config (dict): Configuration for initializing the judge model
-            dataloader (AbstractDataloader): Dataloader with inference results to judge
-            task_config (dict): Task configuration including judge settings
-
-        Note:
-            This method is designed for async execution in a separate process, so it
-            creates its own judge model instance rather than sharing one.
-        """
-        judge_model = get_serving_class(
-            model_name=judge_config["judge_model_name"],
-            model_type=judge_config["judge_model_type"],
-            seed=self.seed,
-            batch_api_calls=judge_config.get("batch_api_calls", False),
-            **judge_config.get("judge_init_args", {}),
-        )
-        self.run_single_judgement(
-            dataloader=dataloader,
-            judge_model=judge_model,
-            task_config=task_config,
-            judge_config=judge_config,
-        )
 
     def update_metrics(
         self,
@@ -847,12 +725,12 @@ Filepath: %s""",
             )
 
             metric_json = evaluation_metric.evaluate_responses()
-            dataloader.write_out_inference_results()
+            dataloader.write_out_dataframe()
 
             # TODO move this elsewhere
-            metric_json[task_name]["errors"] = get_error_count(
-                dataloader.inference_df["errors"]
-            )
+            # metric_json[task_name]["errors"] = get_error_count(
+            #     dataloader.dataframe["errors"]
+            # )
 
             logger.info("Evaluation for task '%s' completed!\n", task_name.upper())
         except Exception as e:
@@ -929,6 +807,25 @@ Filepath: %s""",
         )
         return json_filepath
 
+    def invalidate_judge_cache(
+        self, dataloader: AbstractDataloader, task_name: str, lang: str
+    ) -> None:
+        """Invalidate cached judge inference results if the corresponding task inference results are not cached."""
+
+        if hasattr(dataloader, "get_judge_batch_response_filepath"):
+            judge_response_filepath = dataloader.get_judge_batch_response_filepath()
+            if os.path.exists(judge_response_filepath):
+                logger.warning(
+                    "Inference results for task %s and lang %s is not cached, but found existing judge inference results at %s. Renaming judge inference results to ensure correct evaluation.",
+                    task_name,
+                    lang,
+                    judge_response_filepath,
+                )
+                os.replace(
+                    judge_response_filepath,
+                    judge_response_filepath + ".invalid",
+                )
+
     def run_evaluation(self, llm: Any, use_cached_results: bool = True) -> None:
         """Run the complete evaluation pipeline for all configured tasks and languages.
 
@@ -939,26 +836,26 @@ Filepath: %s""",
 
         Execution Order:
             1. Remote LLM Judge Tasks (mt-bench, mental-health-safety, arena-hard-v2):
-               - Run inference on the model being evaluated
-               - Submit outputs to remote judge APIs asynchronously
-               - Continue with other tasks while waiting for judge responses
+                - Run inference on the model being evaluated
+                - Submit outputs to remote judge APIs asynchronously
+                - Continue with other tasks while waiting for judge responses
 
             2. Normal Tasks (all non-judge tasks):
-               - Run inference and compute metrics immediately
-               - Write results incrementally to JSON
+                - Run inference and compute metrics immediately
+                - Write results incrementally to JSON
 
             3. Local LLM Judge Tasks (deferred):
-               - Free memory by cleaning up the main LLM
-               - Load local judge models and run judgments
-               - Compute metrics from judge evaluations
+                - Free memory by cleaning up the main LLM
+                - Load local judge models and run judgments
+                - Compute metrics from judge evaluations
 
             4. Remote LLM Judge Collection:
-               - Collect async judge responses
-               - Compute final metrics from remote judgments
+                - Collect async judge responses
+                - Compute final metrics from remote judgments
 
             5. Aggregation:
-               - Aggregate metrics across tasks, competencies, and languages
-               - Write final results with SEA average scores
+                - Aggregate metrics across tasks, competencies, and languages
+                - Write final results with SEA average scores
 
         Args:
             llm (Any): Language model instance to evaluate (or None for cached-only runs)
@@ -1001,6 +898,10 @@ Filepath: %s""",
                     use_cached_results=use_cached_results,
                     constants=self.constants,
                     is_reasoning_model=self.is_reasoning_model,
+                    reasoning_generation_kwargs=self.config.get(
+                        "reasoning_generation_kwargs", None
+                    ),
+                    sandbox_type=self.sandbox_type,
                 )
 
                 if not task_config.should_task_run_for_run_number(self.run_number):
@@ -1022,13 +923,14 @@ Filepath: %s""",
                         lang.upper(),
                         task_name.upper(),
                     )
-
-                    # Runs round 1 inferences of the model to be evaluated
                     dataloader, cache_status = self.run_single_task_inference(
-                        llm,
-                        task_config,
+                        model=llm,
+                        task_config=task_config,
                         limit=self.limit,
                     )
+                    if not all(cache_status[task_name]["is_cached"]):
+                        self.invalidate_judge_cache(dataloader, task_name, lang)
+
                     metrics = self.update_metrics(cache_status, metrics, task_config)
 
                     # Creates the parameters for the judge LLM to be called later
@@ -1036,10 +938,22 @@ Filepath: %s""",
                         if is_serving_type_remote(judge_config["judge_model_type"]):
                             if not remote_queue.is_pool_started():
                                 remote_queue.start_pool()
+                            judge_model = get_serving_class(
+                                model_name=judge_config["judge_model_name"],
+                                model_type=judge_config["judge_model_type"],
+                                seed=self.seed,
+                                **judge_config["judge_init_args"],
+                            )
+                            # NOTE This assumes that the judge model is a small object that can be easily serialized and passed to the process pool. If the judge model is large or has non-serializable components, this approach may need to be revised to initialize the judge model within the async function instead of passing it as a parameter.
                             remote_queue.add_to_async_queue(
                                 key=(lang, task_name, judge_config["judge_model_name"]),
-                                function=self.async_run_single_judgement,
-                                params=(judge_config, dataloader, task_config),
+                                function=self.run_single_judgement,
+                                params=(
+                                    judge_model,
+                                    dataloader,
+                                    task_config,
+                                    judge_config,
+                                ),
                             )
                             remote_queue.add_to_evaluation_queue(
                                 key=key,
@@ -1058,14 +972,18 @@ Filepath: %s""",
         # proceed with the rest of tasks (local LLM judges and normal tasks)
         for task_config in normal_queue:
             logger.info("Running evaluation for local LLM judges and normal tasks...")
+            # inference_strategy = task_config.get_inference_strategy()
             dataloader, cache_status = self.run_single_task_inference(
-                llm,
-                task_config,
+                model=llm,
+                task_config=task_config,
                 limit=self.limit,
             )
             metrics = self.update_metrics(cache_status, metrics, task_config)
 
             if task_config.task_uses_judges():
+                if not all(cache_status[task_config.task_name]["is_cached"]):
+                    self.invalidate_judge_cache(dataloader, task_config.task_name, lang)
+
                 logger.info(
                     "Deferring evaluation for task %s to run last as it uses a local judge model.",
                     task_config.task_name.upper(),
@@ -1094,21 +1012,20 @@ Filepath: %s""",
                     model_name=judge_config["judge_model_name"],
                     model_type=judge_config["judge_model_type"],
                     seed=self.seed,
-                    batch_api_calls=judge_config["batch_api_calls"],
                     **judge_config["judge_init_args"],
                 )
 
                 for task in tasks:
                     dataloader, task_config = task["evaluation_params"]
                     self.run_single_judgement(
-                        judge_model=judge_model,
+                        model=judge_model,
                         dataloader=dataloader,
                         task_config=task_config,
                         judge_config=task["judge_configs"],
                     )
 
-            # clear judge model
-            judge_model.cleanup()
+                # clear judge model
+                judge_model.cleanup()
 
             logger.info("Local judgement completed for local LLM judges.")
 
@@ -1171,11 +1088,6 @@ if __name__ == "__main__":
         help="Model args to pass to the model (e.g vLLM [tensor_parallel_size, pipeline_parallel_size, max_model_len, ...])",
     )
     parser.add_argument(
-        "--batch-api-calls",
-        action="store_true",
-        help="Include this flag to enable batch API calls for remote LLMs",
-    )
-    parser.add_argument(
         "--is_base_model",
         action="store_true",
         help="Include this flag if the model is a base model. The model's chat template (if available) will be not be applied.",
@@ -1234,6 +1146,12 @@ if __name__ == "__main__":
         default=0,
         help="A label from {0,...,N-1} for N non-deterministic runs. Please assign a distinct seed for each run.",
     )
+    parser.add_argument(
+        "--sandbox_type",
+        type=str,
+        default=None,
+        help="Type of sandbox to use for code execution.",
+    )
 
     args = parser.parse_args()
     tasks_configuration = args.tasks
@@ -1249,7 +1167,7 @@ if __name__ == "__main__":
     no_batching = args.no_batching
     skip_tokenize_prompts = args.skip_tokenize_prompts
     ignore_missing_files = args.ignore_missing_files
-    batch_api_calls = args.batch_api_calls
+    sandbox_type = args.sandbox_type
     skip_tasks = (
         args.skip_tasks.split(",") if args.skip_tasks is not None else args.skip_tasks
     )
@@ -1274,7 +1192,6 @@ if __name__ == "__main__":
         model_name=model_name,
         is_base_model=is_base_model,
         seed=seed,
-        batch_api_calls=batch_api_calls,
         **model_args,
     )
 
@@ -1295,6 +1212,7 @@ if __name__ == "__main__":
         tokenize_prompts=not skip_tokenize_prompts,
         run_number=run_number,
         datetime=current_datetime,
+        sandbox_type=sandbox_type,
     )
     seahelm_eval.run_evaluation(
         llm=llm, use_cached_results=not args.rerun_cached_results

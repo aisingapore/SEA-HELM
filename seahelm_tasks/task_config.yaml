@@ -15,29 +15,38 @@ vision:
   ms: ["cvqa"]
 
 seahelm:
-  id: ["sentiment", "qa", "metaphor", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "mp-r", "pragmatic-single", "pragmatic-pair", "if-eval", "mt-bench", "global_mmlu_lite"]
-  vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "global_mmlu_lite"]
-  th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "thai_exam"]
-  ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "mp-r", "pragmatic-single", "pragmatic-pair"]
-  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "kalahi-mc", "global_mmlu_lite"]
-  ms: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench", "global_mmlu_lite"]
-  my: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench", "global_mmlu_lite"]
-
+  id: ["sentiment", "qa", "metaphor", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "syntax-criteria", "mp-r", "pragmatic-single", "pragmatic-pair", "if-eval", "mt-bench-judge", "global_mmlu_lite"]
+  vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "global_mmlu_lite"]
+  th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "thai_exam", "mt-bench-judge"]
+  ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "mp-r", "pragmatic-single", "pragmatic-pair"]
+  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "kalahi-mc", "kalahi-criteria", "global_mmlu_lite"]
+  ms: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench-judge", "global_mmlu_lite"]
+  my: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "global_mmlu_lite"] # "mt-bench"
 
 seahelm_logprobs:
-  id: ["sentiment-logprobs", "qa", "metaphor-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
-  vi: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
-  th: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "thai_exam-logprobs"]
-  ta: ["sentiment-logprobs", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs"]
-  tl: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "kalahi-mc-logprobs", "global_mmlu_lite-logprobs"]
-  ms: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
-  my: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench", "global_mmlu_lite-logprobs"]
+  id: ["sentiment-logprobs", "qa", "metaphor-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "syntax-criteria", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs", "if-eval", "mt-bench-judge", "global_mmlu_lite-logprobs"]
+  vi: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "global_mmlu_lite-logprobs"]
+  th: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "thai_exam-logprobs", "mt-bench-judge"]
+  ta: ["sentiment-logprobs", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs"]
+  tl: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "kalahi-mc-logprobs", "kalahi-criteria", "global_mmlu_lite-logprobs"]
+  ms: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench-judge", "global_mmlu_lite-logprobs"]
+  my: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "global_mmlu_lite-logprobs"] # "mt-bench"
 
 batayan:
   tl: ["sentiment", "belebele-qa-mc", "toxicity", "paraphrase", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli"]
 
 english_evals:
-  en: ["bbh", "gpqa", "ifeval", "math_hard", "mmlu_pro", "musr"]
+  en: ["aa-lcr", "supergpqa", "musr", "MathArena", "ifeval", "livecodebench_v6", "mmlu_redux"]
 
 english_evals_logprobs:
   en: ["bbh-logprobs", "bbh_dyck_languages", "bbh_multistep_arithmetic_two", "bbh_object_counting", "gpqa-logprobs", "ifeval", "math_hard", "mmlu_pro-logprobs", "musr-logprobs"]
+
+sea_safeguard:
+  id: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  vi: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  th: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  ta: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  tl: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  my: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  ms: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_cultural_in_the_wild", "safeguard_general_prompt", "safeguard_general_response"]
+  en: ["safeguard_cultural_content_generation_prompt", "safeguard_cultural_content_generation_response", "safeguard_general_prompt", "safeguard_general_response"]

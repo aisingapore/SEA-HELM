@@ -15,7 +15,6 @@ xm3600:
   judge:
     judge_model_name: laion/CLIP-ViT-H-14-frozen-xlm-roberta-large-laion5B-s13B-b90k
     judge_model_type: openclip
-    batch_api_calls: false
   fewshot_num_examples:
     instruct: 0
     base: 5

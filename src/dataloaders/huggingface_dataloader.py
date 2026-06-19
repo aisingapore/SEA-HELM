@@ -1,6 +1,4 @@
-from typing import Any, Callable
-
-from datasets import Sequence, load_dataset
+import datasets
 
 from src.base_logger import get_logger
 from src.dataloaders.base_dataloader import AbstractDataloader
@@ -39,9 +37,8 @@ class HuggingFaceDataloader(AbstractDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
-
-        self.num_workers = num_workers
 
     def load_dataset(self, limit: int | None = None) -> None:
         """Load the HuggingFace datasets.
@@ -59,9 +56,11 @@ class HuggingFaceDataloader(AbstractDataloader):
             logger.info("Dataset already loaded, skipping loading process")
             pass
         else:
-            self.dataset = load_dataset(
-                self.specific_task_config["filepath"], self.lang, split="eval"
-            )
+            filepath = self.specific_task_config["filepath"]
+
+            logger.info("Drawing and preparing instances from %s", filepath)
+
+            self.dataset = datasets.load_dataset(filepath, self.lang, split="eval")
             if limit is not None:
                 self.dataset = self.dataset.select(range(limit))
 
@@ -78,7 +77,7 @@ class HuggingFaceDataloader(AbstractDataloader):
             example_filepath = self.specific_task_config["example_filepath"]
             logger.info("Drawing and preparing examples from %s", example_filepath)
 
-            self.example_dataset = load_dataset(
+            self.example_dataset = datasets.load_dataset(
                 example_filepath, self.lang, split="examples"
             )
 
@@ -93,48 +92,10 @@ class HuggingFaceDataloader(AbstractDataloader):
                 self.example_dataset = self.example_dataset.select(range(limit))
 
             # check if label is of type list and convert it to string
-            if isinstance(self.example_dataset.features["label"], Sequence):
+            if isinstance(self.example_dataset.features["label"], datasets.Sequence):
                 self.example_dataset = self.example_dataset.map(
-                    lambda x: {"label": x["label"][0]}, num_proc=16
+                    lambda x: {"label": x["label"][0]}, num_proc=self.num_workers
                 )
-
-    def prepare_conversations_for_inference(
-        self, turn: int, fewshot_as_multiturn: bool = False
-    ) -> list[Any]:
-        """Prepare the conversations for inference by formatting prompts for the given turn.
-
-        The formatted conversations should be in chat format compatible with the
-        `apply_chat_template` method for prompt tokenization.
-
-        Args:
-            turn (int): Which turn to prepare the prompts for (0-indexed).
-            fewshot_as_multiturn (bool, optional): Whether to treat few-shot examples as multi-turn dialogues. Defaults to False.
-
-        Returns:
-            list[Any]: The formatted conversations stored in self.conversations.
-        """
-        logger.info(
-            "Performing inference for task '%s', turn %d with %d examples",
-            self.task_name.upper(),
-            turn,
-            self.fewshot_num_examples,
-        )
-
-        if self.fewshot_num_examples > 0:
-            if self.specific_task_config["example_filepath"]:
-                self.load_example_dataset(limit=self.fewshot_num_examples)
-            else:
-                logger.warning(
-                    "Example filepath not found! Reverting back to 0-shot instead of %d-shot.",
-                    self.fewshot_num_examples,
-                )
-
-        self.dataset = self.dataset.map(
-            self.get_prompt_formatter(turn, fewshot_as_multiturn),
-            num_proc=16,
-        )
-        self.conversations = self.dataset["conversations"]
-        return self.conversations
 
     def get_num_turns(self) -> int:
         """Get the number of turns in the dataset.
@@ -144,47 +105,44 @@ class HuggingFaceDataloader(AbstractDataloader):
         """
         return len(self.dataset[0]["prompts"])
 
-    def get_prompt_formatter(
-        self,
+    @staticmethod
+    def prompt_formatter(
+        row: dict,
+        idx: int,
+        *,
         turn: int,
+        specific_task_config: dict,
         fewshot_as_multiturn: bool = False,
-    ) -> Callable:
-        """Get the prompt formatter for the given turn.
+        update_conversations_fn=None,
+        generate_formatted_conversation_fn=None,
+    ) -> list:
+        """Static, picklable row formatter for multiprocessing.
 
-        Args:
-            turn (int): Which turn to prepare the prompts for (1-indexed).
-            fewshot_as_multiturn (bool, optional): Whether to format examples as multi-turn dialogue. Defaults to False.
-
-        Returns:
-            Callable: The prompt formatter for the given turn.
+        Returns the updated conversations list for a given dataset row.
         """
-
-        def _prompt_formatter(row):
-            if turn == 1:
-                conversations = []
-            else:
-                conversations = row["conversations"]
-                conversations = self.update_conversation(
-                    conversations, "assistant", row["responses"][turn - 2]
-                )
-
-            values = row["prompts"][turn - 1]
-
-            roles, contents = self.generate_formatted_conversation(
-                self.specific_task_config,
-                values,
-                fewshot_as_multiturn=fewshot_as_multiturn,
+        if turn == 1:
+            conversations = []
+        else:
+            conversations = row["conversations"]
+            conversations = update_conversations_fn(
+                conversations, "assistant", row["responses"][turn - 2]
             )
-            for role, content in zip(roles, contents, strict=True):
-                conversations = self.update_conversation(conversations, role, content)
 
-            row["conversations"] = conversations
-            return row
+        values = row["prompts"][turn - 1]
 
-        return _prompt_formatter
+        roles, text_contents = generate_formatted_conversation_fn(
+            specific_task_config,
+            values,
+            fewshot_as_multiturn=fewshot_as_multiturn,
+        )
+        for role, text_content in zip(roles, text_contents, strict=True):
+            conversations = update_conversations_fn(conversations, role, text_content)
 
+        return conversations
+
+    @staticmethod
     def update_conversation(
-        self, conversations: list[dict], role: str, content: str
+        conversations: list[dict], role: str, content: str
     ) -> list[dict]:
         """Update the conversation with the given role and content.
 

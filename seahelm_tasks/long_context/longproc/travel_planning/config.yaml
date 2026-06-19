@@ -1,0 +1,744 @@
+travel_planning_2k:
+  metadata:
+    version: 1
+  name: "travel_planning_2k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/travel_planning/travel_planning.py"
+  metric_class: "TravelPlanningMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/travel_planning/data/travel_planning_2k_en.jsonl"
+      example_filepath:
+      max_tokens: 3072
+      prompt_template:
+        preamble: |-
+          TASK:
+          Your task is to create a trip plan based on given constraints regarding cities to visit, duration of stays for each city, and available direct flight connections.
+
+          REQUIREMENTS AND NOTES:
+          - You will arrange a trip plan for visiting several cities for a specified total number of days.
+          - You will be informed about how long we will stay in each city. Some cities have fixed schedules because of pre-planned events. You have to follow the fixed schedules for those cities. Cities without fixed schedules need to be arranged according to the constraints.
+          - You will be provided with information about direct flight connections between cities. Only direct flights may be used to travel between cities. Note that the flight information is one-way. For example, if there is a direct flight from City A to City B, it does not necessarily mean that there is a direct flight from City B to City A, unless it is explicitly mentioned. There ALWAYS exists a direct flight from the starting point to the first city in the plan.
+          - When calculating the duration of a stay in a city, count both arrival and departure days as full days. If you arrive at a city on Day x and stay for y days, you will leave the city on Day x + y - 1. For example, if you arrive in a city on Day 1 and stay for 3 days, you will depart on Day 3.
+          - When handling the cities with fixed schedules, these fixed schedules may overlap with the arrival and departure days of other cities. For example, if City A has a fixed schedule from Day 4 to Day 7, you can depart another city and arrive in City A on Day 4, and you can depart City A and arrive in another city on Day 7.
+
+          APPROACH:
+          We will solve the problem by searching. You will follow this process:
+          - First, read the constraints carefully and identify the cities that have fixed schedules and the cities needing arrangement.
+          - Next, you will search for the trip plan starting from Day 1. At each day, you will execute the following steps:
+            * Check whether the schedule for the current day is fixed. If it is fixed, the only option for the day is to follow the fixed schedule. If it is not fixed, you will consider possible options from the cities needing arrangement.
+            * For each option, you will check whether it is feasible to arrange the city on the current day. You will first check whether there is a direct flight from the last city on the plan to the current city.
+            * For each option, you will also check whether the arrangement is compatible with the fixed schedules. Recall that fixed schedules may overlap with the arrival and departure days of other cities. It is considered incompatible only if the departure day is later than the required arrival day for the following fixed schedule. For example, you can depart from City A on Day 3 and arrive in City B, which has a fixed schedule of Day 3 - 6. However, you cannot depart from City A on Day 4, which is later than the required arrival day for City B.
+            * If the arrangement is not feasible, you will drop this branch and try the next option. If the arrangement is feasible, you will continue to arrange the rest of the plan. If you fail to arrange any option on the current day, you will drop this branch and backtrack to the previous stage.
+          - You will continue this process until you have arranged all the cities in the trip plan and find a complete plan.
+          - Finally, you will output the complete trip plan.
+
+          EXAMPLES:
+          # Example
+          You plan to visit 3 European cities for 14 days in total. You only take direct flights to commute between cities. You would like to visit Florence for 6 days. You want to meet a friend in Florence between day 9 and day 14. You would like to visit Barcelona for 5 days. You would like to visit Helsinki for 5 days.
+
+          Here are the cities that have direct flights:
+          from Barcelona to Florence, from Helsinki to Barcelona.
+
+          Find a trip plan of visiting the cities for 14 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Florence, Duration: 6 days, Fixed Schedule: Day 9 - 14.
+          * City: Barcelona, Duration: 5 days.
+          * City: Helsinki, Duration: 5 days.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Florence, Fixed Schedule: Day 9 - 14.
+
+          Cities needing arrangement:
+          * City: Barcelona, Duration: 5 days.
+          * City: Helsinki, Duration: 5 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Barcelona, Helsinki] and explore these options in order.
+          |- Try arranging to visit Barcelona from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Barcelona.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Florence (Day 9 - 14).
+          |- The departure day of Barcelona is Day 5. The arrival day of Florence is Day 9. Day 5 is not later than (<=) Day 9. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Barcelona].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Helsinki] and explore these options in order.
+            |- Try arranging to visit Helsinki from Day 5. Duration: 5 days. Schedule: Day 5 - 9.
+            |- Check for direct flight from Barcelona to Helsinki.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 5 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Helsinki from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Helsinki.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Florence (Day 9 - 14).
+          |- The departure day of Helsinki is Day 5. The arrival day of Florence is Day 9. Day 5 is not later than (<=) Day 9. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Helsinki].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Barcelona] and explore these options in order.
+            |- Try arranging to visit Barcelona from Day 5. Duration: 5 days. Schedule: Day 5 - 9.
+            |- Check for direct flight from Helsinki to Barcelona.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: Florence (Day 9 - 14).
+            |- The departure day of Barcelona is Day 9. The arrival day of Florence is Day 9. Day 9 is not later than (<=) Day 9. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 9. Current plan: [Helsinki, Barcelona].
+              |- Check whether the city with an arrival day of Day 9 - is fixed.
+              |- Yes. The city with an arrival day of Day 9 - is fixed: Florence.
+              |- Try arranging to visit Florence from Day 9. Duration: 6 days. Schedule: Day 9 - 14.
+              |- Check for direct flight from Barcelona to Florence.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 9: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 14. Current plan: [Helsinki, Barcelona, Florence].
+                |- All 3 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Helsinki and visit Helsinki for 5 days.
+          **Day 5:** Fly from Helsinki to Barcelona.
+          **Day 5-9:** Visit Barcelona for 5 days.
+          **Day 9:** Fly from Barcelona to Florence.
+          **Day 9-14:** Visit Florence for 6 days.
+          </Plan>
+
+          # Example
+          You plan to visit 3 European cities for 13 days in total. You only take direct flights to commute between cities. You would like to visit Manchester for 3 days. You plan to visit relatives in Manchester between day 5 and day 7. You plan to stay in Split for 7 days. You plan to stay in Dublin for 5 days.
+
+          Here are the cities that have direct flights:
+          from Dublin to Split, from Manchester to Split, from Dublin to Manchester.
+
+          Find a trip plan of visiting the cities for 13 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Manchester, Duration: 3 days, Fixed Schedule: Day 5 - 7.
+          * City: Split, Duration: 7 days.
+          * City: Dublin, Duration: 5 days.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Manchester, Fixed Schedule: Day 5 - 7.
+
+          Cities needing arrangement:
+          * City: Split, Duration: 7 days.
+          * City: Dublin, Duration: 5 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Split, Dublin] and explore these options in order.
+          |- Try arranging to visit Split from Day 1. Duration: 7 days. Schedule: Day 1 - 7.
+          |- Check for direct flight from the starting point to Split.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Manchester (Day 5 - 7).
+          |- The departure day of Split is Day 7. The arrival day of Manchester is Day 5. Day 7 is later than (>) Day 5. This arrangement is incompatible. Drop this branch.
+          |- Try arranging to visit Dublin from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Dublin.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Manchester (Day 5 - 7).
+          |- The departure day of Dublin is Day 5. The arrival day of Manchester is Day 5. Day 5 is not later than (<=) Day 5. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Dublin].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- Yes. The city with an arrival day of Day 5 - is fixed: Manchester.
+            |- Try arranging to visit Manchester from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Dublin to Manchester.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 7. Current plan: [Dublin, Manchester].
+              |- Check whether the city with an arrival day of Day 7 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Split] and explore these options in order.
+              |- Try arranging to visit Split from Day 7. Duration: 7 days. Schedule: Day 7 - 13.
+              |- Check for direct flight from Manchester to Split.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 7: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Dublin, Manchester, Split].
+                |- All 3 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Dublin and visit Dublin for 5 days.
+          **Day 5:** Fly from Dublin to Manchester.
+          **Day 5-7:** Visit Manchester for 3 days.
+          **Day 7:** Fly from Manchester to Split.
+          **Day 7-13:** Visit Split for 7 days.
+          </Plan>
+
+          # Example
+          You plan to visit 4 European cities for 17 days in total. You only take direct flights to commute between cities. You would like to visit Dubrovnik for 5 days. You want to spend 5 days in Lyon. You would like to visit Porto for 7 days. You would like to visit Zurich for 3 days. From day 5 to day 7, there is a annual show you want to attend in Zurich.
+
+          Here are the cities that have direct flights:
+          from Zurich to Porto, from Porto to Lyon, from Dubrovnik to Zurich.
+
+          Find a trip plan of visiting the cities for 17 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Dubrovnik, Duration: 5 days.
+          * City: Lyon, Duration: 5 days.
+          * City: Porto, Duration: 7 days.
+          * City: Zurich, Duration: 3 days, Fixed Schedule: Day 5 - 7.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Zurich, Fixed Schedule: Day 5 - 7.
+
+          Cities needing arrangement:
+          * City: Dubrovnik, Duration: 5 days.
+          * City: Lyon, Duration: 5 days.
+          * City: Porto, Duration: 7 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Dubrovnik, Lyon, Porto] and explore these options in order.
+          |- Try arranging to visit Dubrovnik from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Dubrovnik.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Zurich (Day 5 - 7).
+          |- The departure day of Dubrovnik is Day 5. The arrival day of Zurich is Day 5. Day 5 is not later than (<=) Day 5. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Dubrovnik].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- Yes. The city with an arrival day of Day 5 - is fixed: Zurich.
+            |- Try arranging to visit Zurich from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Dubrovnik to Zurich.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 7. Current plan: [Dubrovnik, Zurich].
+              |- Check whether the city with an arrival day of Day 7 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Lyon, Porto] and explore these options in order.
+              |- Try arranging to visit Lyon from Day 7. Duration: 5 days. Schedule: Day 7 - 11.
+              |- Check for direct flight from Zurich to Lyon.
+              |- No. Drop this branch.
+              |- Try arranging to visit Porto from Day 7. Duration: 7 days. Schedule: Day 7 - 13.
+              |- Check for direct flight from Zurich to Porto.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 7: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Dubrovnik, Zurich, Porto].
+                |- Check whether the city with an arrival day of Day 13 - is fixed.
+                |- No. Consider possible options from cities needing arrangement: [Lyon] and explore these options in order.
+                |- Try arranging to visit Lyon from Day 13. Duration: 5 days. Schedule: Day 13 - 17.
+                |- Check for direct flight from Porto to Lyon.
+                |- Yes.
+                |- Check whether this arrangement is compatible with the next fixed schedule after Day 13: None.
+                |- No following fixed schedules. This arrangement is compatible.
+                |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                  |- Current day: 17. Current plan: [Dubrovnik, Zurich, Porto, Lyon].
+                  |- All 4 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Dubrovnik and visit Dubrovnik for 5 days.
+          **Day 5:** Fly from Dubrovnik to Zurich.
+          **Day 5-7:** Visit Zurich for 3 days.
+          **Day 7:** Fly from Zurich to Porto.
+          **Day 7-13:** Visit Porto for 7 days.
+          **Day 13:** Fly from Porto to Lyon.
+          **Day 13-17:** Visit Lyon for 5 days.
+          </Plan>
+
+          # Example
+          You plan to visit 4 European cities for 17 days in total. You only take direct flights to commute between cities. You want to spend 3 days in Krakow. You plan to stay in Vilnius for 5 days. You would like to visit Hamburg for 6 days. You want to spend 6 days in Helsinki. You plan to visit relatives in Helsinki between day 6 and day 11.
+
+          Here are the cities that have direct flights:
+          from Helsinki to Krakow, from Helsinki to Vilnius, from Krakow to Vilnius, from Hamburg to Helsinki.
+
+          Find a trip plan of visiting the cities for 17 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Krakow, Duration: 3 days.
+          * City: Vilnius, Duration: 5 days.
+          * City: Hamburg, Duration: 6 days.
+          * City: Helsinki, Duration: 6 days, Fixed Schedule: Day 6 - 11.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Helsinki, Fixed Schedule: Day 6 - 11.
+
+          Cities needing arrangement:
+          * City: Krakow, Duration: 3 days.
+          * City: Vilnius, Duration: 5 days.
+          * City: Hamburg, Duration: 6 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Krakow, Vilnius, Hamburg] and explore these options in order.
+          |- Try arranging to visit Krakow from Day 1. Duration: 3 days. Schedule: Day 1 - 3.
+          |- Check for direct flight from the starting point to Krakow.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Krakow is Day 3. The arrival day of Helsinki is Day 6. Day 3 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 3. Current plan: [Krakow].
+            |- Check whether the city with an arrival day of Day 3 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Vilnius, Hamburg] and explore these options in order.
+            |- Try arranging to visit Vilnius from Day 3. Duration: 5 days. Schedule: Day 3 - 7.
+            |- Check for direct flight from Krakow to Vilnius.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 3: Helsinki (Day 6 - 11).
+            |- The departure day of Vilnius is Day 7. The arrival day of Helsinki is Day 6. Day 7 is later than (>) Day 6. This arrangement is incompatible. Drop this branch.
+            |- Try arranging to visit Hamburg from Day 3. Duration: 6 days. Schedule: Day 3 - 8.
+            |- Check for direct flight from Krakow to Hamburg.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 3 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Vilnius from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Vilnius.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Vilnius is Day 5. The arrival day of Helsinki is Day 6. Day 5 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Vilnius].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Krakow, Hamburg] and explore these options in order.
+            |- Try arranging to visit Krakow from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Vilnius to Krakow.
+            |- No. Drop this branch.
+            |- Try arranging to visit Hamburg from Day 5. Duration: 6 days. Schedule: Day 5 - 10.
+            |- Check for direct flight from Vilnius to Hamburg.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 5 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Hamburg from Day 1. Duration: 6 days. Schedule: Day 1 - 6.
+          |- Check for direct flight from the starting point to Hamburg.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Hamburg is Day 6. The arrival day of Helsinki is Day 6. Day 6 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 6. Current plan: [Hamburg].
+            |- Check whether the city with an arrival day of Day 6 - is fixed.
+            |- Yes. The city with an arrival day of Day 6 - is fixed: Helsinki.
+            |- Try arranging to visit Helsinki from Day 6. Duration: 6 days. Schedule: Day 6 - 11.
+            |- Check for direct flight from Hamburg to Helsinki.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 6: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 11. Current plan: [Hamburg, Helsinki].
+              |- Check whether the city with an arrival day of Day 11 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Krakow, Vilnius] and explore these options in order.
+              |- Try arranging to visit Krakow from Day 11. Duration: 3 days. Schedule: Day 11 - 13.
+              |- Check for direct flight from Helsinki to Krakow.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 11: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Hamburg, Helsinki, Krakow].
+                |- Check whether the city with an arrival day of Day 13 - is fixed.
+                |- No. Consider possible options from cities needing arrangement: [Vilnius] and explore these options in order.
+                |- Try arranging to visit Vilnius from Day 13. Duration: 5 days. Schedule: Day 13 - 17.
+                |- Check for direct flight from Krakow to Vilnius.
+                |- Yes.
+                |- Check whether this arrangement is compatible with the next fixed schedule after Day 13: None.
+                |- No following fixed schedules. This arrangement is compatible.
+                |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                  |- Current day: 17. Current plan: [Hamburg, Helsinki, Krakow, Vilnius].
+                  |- All 4 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-6:** Arriving in Hamburg and visit Hamburg for 6 days.
+          **Day 6:** Fly from Hamburg to Helsinki.
+          **Day 6-11:** Visit Helsinki for 6 days.
+          **Day 11:** Fly from Helsinki to Krakow.
+          **Day 11-13:** Visit Krakow for 3 days.
+          **Day 13:** Fly from Krakow to Vilnius.
+          **Day 13-17:** Visit Vilnius for 5 days.
+          </Plan>
+
+          YOUR TASK:
+          Now, make a trip plan according to the following constraints. Note that: 
+          - Please carefully read the approach and examples provided above, and follow them to make the trip plan.
+          - Please ALWAYS include your solving procedure and mark it with <Solving Procedure> and </Solving Procedure> tags. The solving procedure should follow the format of the examples provided above.
+          - Please mark your final plan with <Plan> and </Plan> tags. The final plan should also follow the format of the examples provided above.
+        task_template: |-
+          {problem}
+        answer_template:
+        answer_tag:
+travel_planning_8k:
+  metadata:
+    version: 1
+  name: "travel_planning_8k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/travel_planning/travel_planning.py"
+  metric_class: "TravelPlanningMetric"
+  metric: "normalized_accuracy"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/travel_planning/data/travel_planning_8k_en.jsonl"
+      example_filepath:
+      max_tokens: 9316
+      prompt_template:
+        preamble: |-
+          TASK:
+          Your task is to create a trip plan based on given constraints regarding cities to visit, duration of stays for each city, and available direct flight connections.
+
+          REQUIREMENTS AND NOTES:
+          - You will arrange a trip plan for visiting several cities for a specified total number of days.
+          - You will be informed about how long we will stay in each city. Some cities have fixed schedules because of pre-planned events. You have to follow the fixed schedules for those cities. Cities without fixed schedules need to be arranged according to the constraints.
+          - You will be provided with information about direct flight connections between cities. Only direct flights may be used to travel between cities. Note that the flight information is one-way. For example, if there is a direct flight from City A to City B, it does not necessarily mean that there is a direct flight from City B to City A, unless it is explicitly mentioned. There ALWAYS exists a direct flight from the starting point to the first city in the plan.
+          - When calculating the duration of a stay in a city, count both arrival and departure days as full days. If you arrive at a city on Day x and stay for y days, you will leave the city on Day x + y - 1. For example, if you arrive in a city on Day 1 and stay for 3 days, you will depart on Day 3.
+          - When handling the cities with fixed schedules, these fixed schedules may overlap with the arrival and departure days of other cities. For example, if City A has a fixed schedule from Day 4 to Day 7, you can depart another city and arrive in City A on Day 4, and you can depart City A and arrive in another city on Day 7.
+
+          APPROACH:
+          We will solve the problem by searching. You will follow this process:
+          - First, read the constraints carefully and identify the cities that have fixed schedules and the cities needing arrangement.
+          - Next, you will search for the trip plan starting from Day 1. At each day, you will execute the following steps:
+            * Check whether the schedule for the current day is fixed. If it is fixed, the only option for the day is to follow the fixed schedule. If it is not fixed, you will consider possible options from the cities needing arrangement.
+            * For each option, you will check whether it is feasible to arrange the city on the current day. You will first check whether there is a direct flight from the last city on the plan to the current city.
+            * For each option, you will also check whether the arrangement is compatible with the fixed schedules. Recall that fixed schedules may overlap with the arrival and departure days of other cities. It is considered incompatible only if the departure day is later than the required arrival day for the following fixed schedule. For example, you can depart from City A on Day 3 and arrive in City B, which has a fixed schedule of Day 3 - 6. However, you cannot depart from City A on Day 4, which is later than the required arrival day for City B.
+            * If the arrangement is not feasible, you will drop this branch and try the next option. If the arrangement is feasible, you will continue to arrange the rest of the plan. If you fail to arrange any option on the current day, you will drop this branch and backtrack to the previous stage.
+          - You will continue this process until you have arranged all the cities in the trip plan and find a complete plan.
+          - Finally, you will output the complete trip plan.
+
+          EXAMPLES:
+          # Example
+          You plan to visit 3 European cities for 14 days in total. You only take direct flights to commute between cities. You would like to visit Florence for 6 days. You want to meet a friend in Florence between day 9 and day 14. You would like to visit Barcelona for 5 days. You would like to visit Helsinki for 5 days.
+
+          Here are the cities that have direct flights:
+          from Barcelona to Florence, from Helsinki to Barcelona.
+
+          Find a trip plan of visiting the cities for 14 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Florence, Duration: 6 days, Fixed Schedule: Day 9 - 14.
+          * City: Barcelona, Duration: 5 days.
+          * City: Helsinki, Duration: 5 days.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Florence, Fixed Schedule: Day 9 - 14.
+
+          Cities needing arrangement:
+          * City: Barcelona, Duration: 5 days.
+          * City: Helsinki, Duration: 5 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Barcelona, Helsinki] and explore these options in order.
+          |- Try arranging to visit Barcelona from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Barcelona.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Florence (Day 9 - 14).
+          |- The departure day of Barcelona is Day 5. The arrival day of Florence is Day 9. Day 5 is not later than (<=) Day 9. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Barcelona].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Helsinki] and explore these options in order.
+            |- Try arranging to visit Helsinki from Day 5. Duration: 5 days. Schedule: Day 5 - 9.
+            |- Check for direct flight from Barcelona to Helsinki.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 5 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Helsinki from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Helsinki.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Florence (Day 9 - 14).
+          |- The departure day of Helsinki is Day 5. The arrival day of Florence is Day 9. Day 5 is not later than (<=) Day 9. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Helsinki].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Barcelona] and explore these options in order.
+            |- Try arranging to visit Barcelona from Day 5. Duration: 5 days. Schedule: Day 5 - 9.
+            |- Check for direct flight from Helsinki to Barcelona.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: Florence (Day 9 - 14).
+            |- The departure day of Barcelona is Day 9. The arrival day of Florence is Day 9. Day 9 is not later than (<=) Day 9. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 9. Current plan: [Helsinki, Barcelona].
+              |- Check whether the city with an arrival day of Day 9 - is fixed.
+              |- Yes. The city with an arrival day of Day 9 - is fixed: Florence.
+              |- Try arranging to visit Florence from Day 9. Duration: 6 days. Schedule: Day 9 - 14.
+              |- Check for direct flight from Barcelona to Florence.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 9: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 14. Current plan: [Helsinki, Barcelona, Florence].
+                |- All 3 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Helsinki and visit Helsinki for 5 days.
+          **Day 5:** Fly from Helsinki to Barcelona.
+          **Day 5-9:** Visit Barcelona for 5 days.
+          **Day 9:** Fly from Barcelona to Florence.
+          **Day 9-14:** Visit Florence for 6 days.
+          </Plan>
+
+          # Example
+          You plan to visit 3 European cities for 13 days in total. You only take direct flights to commute between cities. You would like to visit Manchester for 3 days. You plan to visit relatives in Manchester between day 5 and day 7. You plan to stay in Split for 7 days. You plan to stay in Dublin for 5 days.
+
+          Here are the cities that have direct flights:
+          from Dublin to Split, from Manchester to Split, from Dublin to Manchester.
+
+          Find a trip plan of visiting the cities for 13 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Manchester, Duration: 3 days, Fixed Schedule: Day 5 - 7.
+          * City: Split, Duration: 7 days.
+          * City: Dublin, Duration: 5 days.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Manchester, Fixed Schedule: Day 5 - 7.
+
+          Cities needing arrangement:
+          * City: Split, Duration: 7 days.
+          * City: Dublin, Duration: 5 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Split, Dublin] and explore these options in order.
+          |- Try arranging to visit Split from Day 1. Duration: 7 days. Schedule: Day 1 - 7.
+          |- Check for direct flight from the starting point to Split.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Manchester (Day 5 - 7).
+          |- The departure day of Split is Day 7. The arrival day of Manchester is Day 5. Day 7 is later than (>) Day 5. This arrangement is incompatible. Drop this branch.
+          |- Try arranging to visit Dublin from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Dublin.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Manchester (Day 5 - 7).
+          |- The departure day of Dublin is Day 5. The arrival day of Manchester is Day 5. Day 5 is not later than (<=) Day 5. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Dublin].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- Yes. The city with an arrival day of Day 5 - is fixed: Manchester.
+            |- Try arranging to visit Manchester from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Dublin to Manchester.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 7. Current plan: [Dublin, Manchester].
+              |- Check whether the city with an arrival day of Day 7 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Split] and explore these options in order.
+              |- Try arranging to visit Split from Day 7. Duration: 7 days. Schedule: Day 7 - 13.
+              |- Check for direct flight from Manchester to Split.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 7: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Dublin, Manchester, Split].
+                |- All 3 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Dublin and visit Dublin for 5 days.
+          **Day 5:** Fly from Dublin to Manchester.
+          **Day 5-7:** Visit Manchester for 3 days.
+          **Day 7:** Fly from Manchester to Split.
+          **Day 7-13:** Visit Split for 7 days.
+          </Plan>
+
+          # Example
+          You plan to visit 4 European cities for 17 days in total. You only take direct flights to commute between cities. You would like to visit Dubrovnik for 5 days. You want to spend 5 days in Lyon. You would like to visit Porto for 7 days. You would like to visit Zurich for 3 days. From day 5 to day 7, there is a annual show you want to attend in Zurich.
+
+          Here are the cities that have direct flights:
+          from Zurich to Porto, from Porto to Lyon, from Dubrovnik to Zurich.
+
+          Find a trip plan of visiting the cities for 17 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Dubrovnik, Duration: 5 days.
+          * City: Lyon, Duration: 5 days.
+          * City: Porto, Duration: 7 days.
+          * City: Zurich, Duration: 3 days, Fixed Schedule: Day 5 - 7.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Zurich, Fixed Schedule: Day 5 - 7.
+
+          Cities needing arrangement:
+          * City: Dubrovnik, Duration: 5 days.
+          * City: Lyon, Duration: 5 days.
+          * City: Porto, Duration: 7 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Dubrovnik, Lyon, Porto] and explore these options in order.
+          |- Try arranging to visit Dubrovnik from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Dubrovnik.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Zurich (Day 5 - 7).
+          |- The departure day of Dubrovnik is Day 5. The arrival day of Zurich is Day 5. Day 5 is not later than (<=) Day 5. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Dubrovnik].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- Yes. The city with an arrival day of Day 5 - is fixed: Zurich.
+            |- Try arranging to visit Zurich from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Dubrovnik to Zurich.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 5: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 7. Current plan: [Dubrovnik, Zurich].
+              |- Check whether the city with an arrival day of Day 7 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Lyon, Porto] and explore these options in order.
+              |- Try arranging to visit Lyon from Day 7. Duration: 5 days. Schedule: Day 7 - 11.
+              |- Check for direct flight from Zurich to Lyon.
+              |- No. Drop this branch.
+              |- Try arranging to visit Porto from Day 7. Duration: 7 days. Schedule: Day 7 - 13.
+              |- Check for direct flight from Zurich to Porto.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 7: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Dubrovnik, Zurich, Porto].
+                |- Check whether the city with an arrival day of Day 13 - is fixed.
+                |- No. Consider possible options from cities needing arrangement: [Lyon] and explore these options in order.
+                |- Try arranging to visit Lyon from Day 13. Duration: 5 days. Schedule: Day 13 - 17.
+                |- Check for direct flight from Porto to Lyon.
+                |- Yes.
+                |- Check whether this arrangement is compatible with the next fixed schedule after Day 13: None.
+                |- No following fixed schedules. This arrangement is compatible.
+                |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                  |- Current day: 17. Current plan: [Dubrovnik, Zurich, Porto, Lyon].
+                  |- All 4 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-5:** Arriving in Dubrovnik and visit Dubrovnik for 5 days.
+          **Day 5:** Fly from Dubrovnik to Zurich.
+          **Day 5-7:** Visit Zurich for 3 days.
+          **Day 7:** Fly from Zurich to Porto.
+          **Day 7-13:** Visit Porto for 7 days.
+          **Day 13:** Fly from Porto to Lyon.
+          **Day 13-17:** Visit Lyon for 5 days.
+          </Plan>
+
+          # Example
+          You plan to visit 4 European cities for 17 days in total. You only take direct flights to commute between cities. You want to spend 3 days in Krakow. You plan to stay in Vilnius for 5 days. You would like to visit Hamburg for 6 days. You want to spend 6 days in Helsinki. You plan to visit relatives in Helsinki between day 6 and day 11.
+
+          Here are the cities that have direct flights:
+          from Helsinki to Krakow, from Helsinki to Vilnius, from Krakow to Vilnius, from Hamburg to Helsinki.
+
+          Find a trip plan of visiting the cities for 17 days by taking direct flights to commute between them.
+
+          <Solving Procedure>
+          Read the requirements and identify the cities that have fixed schedules and the cities that need to be arranged.
+          * City: Krakow, Duration: 3 days.
+          * City: Vilnius, Duration: 5 days.
+          * City: Hamburg, Duration: 6 days.
+          * City: Helsinki, Duration: 6 days, Fixed Schedule: Day 6 - 11.
+
+          Cities that have fixed schedules (sorted by their arrival days):
+          * City: Helsinki, Fixed Schedule: Day 6 - 11.
+
+          Cities needing arrangement:
+          * City: Krakow, Duration: 3 days.
+          * City: Vilnius, Duration: 5 days.
+          * City: Hamburg, Duration: 6 days.
+
+          Current day: 1. Current plan: [].
+          Check whether the city with an arrival day of Day 1 - is fixed.
+          No. Consider possible options from cities needing arrangement: [Krakow, Vilnius, Hamburg] and explore these options in order.
+          |- Try arranging to visit Krakow from Day 1. Duration: 3 days. Schedule: Day 1 - 3.
+          |- Check for direct flight from the starting point to Krakow.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Krakow is Day 3. The arrival day of Helsinki is Day 6. Day 3 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 3. Current plan: [Krakow].
+            |- Check whether the city with an arrival day of Day 3 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Vilnius, Hamburg] and explore these options in order.
+            |- Try arranging to visit Vilnius from Day 3. Duration: 5 days. Schedule: Day 3 - 7.
+            |- Check for direct flight from Krakow to Vilnius.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 3: Helsinki (Day 6 - 11).
+            |- The departure day of Vilnius is Day 7. The arrival day of Helsinki is Day 6. Day 7 is later than (>) Day 6. This arrangement is incompatible. Drop this branch.
+            |- Try arranging to visit Hamburg from Day 3. Duration: 6 days. Schedule: Day 3 - 8.
+            |- Check for direct flight from Krakow to Hamburg.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 3 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Vilnius from Day 1. Duration: 5 days. Schedule: Day 1 - 5.
+          |- Check for direct flight from the starting point to Vilnius.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Vilnius is Day 5. The arrival day of Helsinki is Day 6. Day 5 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 5. Current plan: [Vilnius].
+            |- Check whether the city with an arrival day of Day 5 - is fixed.
+            |- No. Consider possible options from cities needing arrangement: [Krakow, Hamburg] and explore these options in order.
+            |- Try arranging to visit Krakow from Day 5. Duration: 3 days. Schedule: Day 5 - 7.
+            |- Check for direct flight from Vilnius to Krakow.
+            |- No. Drop this branch.
+            |- Try arranging to visit Hamburg from Day 5. Duration: 6 days. Schedule: Day 5 - 10.
+            |- Check for direct flight from Vilnius to Hamburg.
+            |- No. Drop this branch.
+            |- Fail to arrange any option on day 5 in the current arrangement. Drop this branch.
+          |- Try arranging to visit Hamburg from Day 1. Duration: 6 days. Schedule: Day 1 - 6.
+          |- Check for direct flight from the starting point to Hamburg.
+          |- Yes.
+          |- Check whether this arrangement is compatible with the next fixed schedule after Day 1: Helsinki (Day 6 - 11).
+          |- The departure day of Hamburg is Day 6. The arrival day of Helsinki is Day 6. Day 6 is not later than (<=) Day 6. This arrangement is compatible.
+          |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+            |- Current day: 6. Current plan: [Hamburg].
+            |- Check whether the city with an arrival day of Day 6 - is fixed.
+            |- Yes. The city with an arrival day of Day 6 - is fixed: Helsinki.
+            |- Try arranging to visit Helsinki from Day 6. Duration: 6 days. Schedule: Day 6 - 11.
+            |- Check for direct flight from Hamburg to Helsinki.
+            |- Yes.
+            |- Check whether this arrangement is compatible with the next fixed schedule after Day 6: None.
+            |- No following fixed schedules. This arrangement is compatible.
+            |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+              |- Current day: 11. Current plan: [Hamburg, Helsinki].
+              |- Check whether the city with an arrival day of Day 11 - is fixed.
+              |- No. Consider possible options from cities needing arrangement: [Krakow, Vilnius] and explore these options in order.
+              |- Try arranging to visit Krakow from Day 11. Duration: 3 days. Schedule: Day 11 - 13.
+              |- Check for direct flight from Helsinki to Krakow.
+              |- Yes.
+              |- Check whether this arrangement is compatible with the next fixed schedule after Day 11: None.
+              |- No following fixed schedules. This arrangement is compatible.
+              |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                |- Current day: 13. Current plan: [Hamburg, Helsinki, Krakow].
+                |- Check whether the city with an arrival day of Day 13 - is fixed.
+                |- No. Consider possible options from cities needing arrangement: [Vilnius] and explore these options in order.
+                |- Try arranging to visit Vilnius from Day 13. Duration: 5 days. Schedule: Day 13 - 17.
+                |- Check for direct flight from Krakow to Vilnius.
+                |- Yes.
+                |- Check whether this arrangement is compatible with the next fixed schedule after Day 13: None.
+                |- No following fixed schedules. This arrangement is compatible.
+                |- This arrangement is feasible for now. Continue to arrange the rest of the plan.
+                  |- Current day: 17. Current plan: [Hamburg, Helsinki, Krakow, Vilnius].
+                  |- All 4 cities are arranged. Complete plan is found!
+          </Solving Procedure>
+
+          Output the plan in the required format:
+          <Plan>
+          **Day 1-6:** Arriving in Hamburg and visit Hamburg for 6 days.
+          **Day 6:** Fly from Hamburg to Helsinki.
+          **Day 6-11:** Visit Helsinki for 6 days.
+          **Day 11:** Fly from Helsinki to Krakow.
+          **Day 11-13:** Visit Krakow for 3 days.
+          **Day 13:** Fly from Krakow to Vilnius.
+          **Day 13-17:** Visit Vilnius for 5 days.
+          </Plan>
+
+          YOUR TASK:
+          Now, make a trip plan according to the following constraints. Note that: 
+          - Please carefully read the approach and examples provided above, and follow them to make the trip plan.
+          - Please ALWAYS include your solving procedure and mark it with <Solving Procedure> and </Solving Procedure> tags. The solving procedure should follow the format of the examples provided above.
+          - Please mark your final plan with <Plan> and </Plan> tags. The final plan should also follow the format of the examples provided above.
+        task_template: |-
+          {problem}
+        answer_template:
+        answer_tag:

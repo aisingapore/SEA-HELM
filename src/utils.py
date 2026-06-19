@@ -1,5 +1,7 @@
+import ast
 import logging
 import os
+import re
 import subprocess
 from collections import Counter
 from pathlib import Path
@@ -29,8 +31,8 @@ def handle_arg_string(arg: str) -> bool | int | float | str:
     elif arg.isnumeric():
         return int(arg)
     try:
-        return float(arg)
-    except ValueError:
+        return ast.literal_eval(arg)
+    except (ValueError, SyntaxError):
         return arg
 
 
@@ -52,10 +54,12 @@ def simple_parse_args_string(
     args_string = args_string.strip()
     if not args_string:
         return {}
-    arg_list = [arg for arg in args_string.split(",") if arg]
-    args_dict = {
-        k: handle_arg_string(v) for k, v in [arg.split("=", 1) for arg in arg_list]
-    }
+    arg_list = [arg for arg in re.split(r",(?=\w+=)", args_string) if arg]
+    args_dict = {}
+    for arg in arg_list:
+        k, v = arg.split("=", 1)
+        v = v.strip("'")
+        args_dict[k] = handle_arg_string(v)
 
     return args_dict
 

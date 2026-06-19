@@ -956,6 +956,216 @@ SENTENCE_2-
 
 </details>
 
+## NLR: SEA-NLI
+
+| Language                                                             | Dataset | Nativeness | Domain   | License      | Metric              |
+| -------------------------------------------------------------------- | ------- | ---------- | -------- | ------------ | ------------------- |
+| Indonesian, Vietnamese, Thai, Tamil, Filipino, Burmese, Malay, Khmer | SEA-NLI | Native     | Cultural | CC BY-SA 4.0 | Normalized accuracy |
+
+### Prompt Templates
+
+<details>
+<summary>Indonesian</summary>
+
+````text
+Anda akan diberikan dua kalimat, SENTENCE_1 dan SENTENCE_2. Tentukan mana dari pernyataan berikut ini yang paling sesuai untuk kalimat SENTENCE_1 dan SENTENCE_2.
+A: Jika SENTENCE_1 benar, maka SENTENCE_2 juga harus benar.
+B: SENTENCE_1 bertentangan dengan SENTENCE_2.
+C: Ketika SENTENCE_1 benar, SENTENCE_2 mungkin saja benar atau tidak benar.
+
+Jawablah hanya dengan menggunakan format berikut ini:
+"Jawaban: ANSWER"
+Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, atau C saja sebagai jawabannya.
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Vietnamese</summary>
+
+````text
+Bạn sẽ được cho hai câu, SENTENCE_1 và SENTENCE_2.
+Xác định mệnh đề nào sau đây là phù hợp nhất cho câu SENTENCE_1 và SENTENCE_2.
+A: Nếu SENTENCE_1 đúng thì SENTENCE_2 phải đúng.
+B: SENTENCE_1 mâu thuẫn với SENTENCE_2.
+C: Khi SENTENCE_1 đúng, SENTENCE_2 có thể đúng hoặc không đúng.
+
+Chỉ trả lời bằng cách sử dụng định dạng sau:
+"Câu trả lời: ANSWER"
+Thay thế ANSWER bằng câu trả lời được chọn. Chỉ sử dụng chữ cái A, B hoặc C làm câu trả lời của bạn.
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Thai</summary>
+
+````text
+คุณจะได้รับประโยค 2 ประโยค ได้แก่ SENTENCE_1 และ SENTENCE_2 จงพิจารณาว่า ข้อความใดต่อไปนี้เหมาะสมกับ SENTENCE_1 และ SENTENCE_2 มากที่สุด
+A: ถ้า SENTENCE_1 เป็นจริง งั้น SENTENCE_2 ก็ต้องเป็นจริง
+B: SENTENCE_1 ขัดแย้งกับ SENTENCE_2
+C: เมื่อ SENTENCE_1 เป็นจริง งั้น SENTENCE_2 อาจะเป็นจริงหรือไม่เป็นจริงก็ได้
+
+จงตอบตามรูปแบบดังต่อไปนี้:
+"คำตอบ: ANSWER"
+โดยแทนที่ ANSWER ด้วยตัวเลือกของคุณด้วยตัวอักษร A, B, หรือ C เท่านั้น
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Tamil</summary>
+
+````text
+உங்களுக்கு இரண்டு வாக்கியங்கள், SENTENCE_1 மற்றும் SENTENCE_2 கொடுக்கப்படும்.
+பின்வரும் கூற்றுகளில் எது SENTENCE_1 மற்றும் SENTENCE_2 வாக்கியங்களுடன் மிகப் பொருந்துகிறது எனக் கண்டறியவும்.
+A: SENTENCE_1 உண்மை என்றால் SENTENCE_2 உம் உண்மையாக இருக்க வேண்டும்.
+B: SENTENCE_1 உம் SENTENCE_2 உம் முரண்படுகின்றன.
+C: SENTENCE_1 உண்மையாக இருக்கும்போது SENTENCE_2 உண்மையாக இருக்கலாம் அல்லது இல்லாமல் இருக்கலாம்.
+
+பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
+"பதில்: ANSWER"
+தேர்ந்தெடுக்கப்பட்ட பதிலுடன் ANSWER ஐ மாற்றவும். A அல்லது B அல்லது C என்ற எழுத்துக்களில் மட்டும் பதிலளிக்கவும்.
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Filipino</summary>
+
+````text
+Bibigyan ka ng dalawang pangungusap, SENTENCE_1 at SENTENCE_2. Tukuyin kung alin sa sumusunod na pahayag ang pinaka-angkop para sa SENTENCE_1 at SENTENCE_2.
+A: Kung totoo ang SENTENCE_1, dapat totoo din ang SENTENCE_2.
+B: Sumasalungat ang SENTENCE_1 sa SENTENCE_2.
+C: Kapag totoo ang SENTENCE_1, pwedeng totoo o hindi totoo ang SENTENCE_2.
+
+Sumagot gamit ang sumusunod na format.
+"Sagot: ANSWER"
+Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, o C sa sagot mo.
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Burmese</summary>
+
+````text
+သင့်ကို SENTENCE_1 နှင့် SENTENCE_2 ဟူသော ဝါကျစာကြောင်း နှစ်ခုကို ပေးထားပါမည်။ SENTENCE_1 နှင့် SENTENCE_2 တို့အတွက် အောက်ပါဖော်ပြချက်များထဲမှ မည်သည့်အချက်က အကောင်းဆုံး ကိုက်ညီမှုရှိသည်ကို ဆုံးဖြတ်ပါ။
+က- SENTENCE_1 မှန်ကန်လျှင် SENTENCE_2 သည် မုချမှန်ကန်ရမည်။
+ခ- SENTENCE_1 သည် SENTENCE_2 ကို ဆန့်ကျင်သည်။
+ဂ- SENTENCE_1 မှန်ကန်သောအခါ၊ SENTENCE_2 သည် မှန်ကန်နိုင်သလို မမှန်ကန်ဘဲလည်း ရှိနိုင်ပါသည်။
+
+အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ-
+"အဖြေ: ANSWER"
+ANSWER နေရာတွင် သင်ရွေးချယ်ထားသော အဖြေကို အစားထိုးထည့်ပါ။ အဖြေအတွက် က၊ ခ သို့မဟုတ် ဂ အက္ခရာကို အသုံးပြုပါ။
+
+SENTENCE_1-
+```
+{sentence1}
+```
+SENTENCE_2-
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Malay</summary>
+
+````text
+Anda akan diberikan dua ayat, SENTENCE_1 dan SENTENCE_2. Tentukan yang manakah antara kenyataan berikut yang paling sesuai untuk SENTENCE_1 dan SENTENCE_2.
+A: Jika SENTENCE_1 benar, SENTENCE_2 mesti benar.
+B: SENTENCE_1 bercanggah dengan SENTENCE_2.
+C: Apabila SENTENCE_1 benar, SENTENCE_2 mungkin atau mungkin tidak benar.
+
+Jawab guna format ini sahaja:
+"Jawapan: ANSWER"
+Gantikan ANSWER dengan pilihan yang dipilih. Gunakan huruf A, B, atau C sebagai jawapan.
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
+<details>
+<summary>Khmer</summary>
+
+````text
+អ្នកនឹងត្រូវបានផ្តល់ប្រយោគពីរ គឺ SENTENCE_1 និង SENTENCE_2។ សូមកំណត់ថាតើសេចក្តីថ្លែងការណ៍ណាខាងក្រោមដែលសមស្របបំផុតសម្រាប់ SENTENCE_1 និង SENTENCE_2។
+A: បើ SENTENCE_1 ពិត នោះ SENTENCE_2 ក៏ត្រូវតែពិតដែរ។
+B: SENTENCE_1 ផ្ទុយនឹង SENTENCE_2។
+C: នៅពេល SENTENCE_1 ពិត SENTENCE_2 អាចពិត ឬ មិនពិត។
+
+សូមឆ្លើយតែដោយប្រើទម្រង់ដូចខាងក្រោម៖
+"ចម្លើយ: ANSWER"
+ជំនួស ANSWER ដោយជម្រើសដែលបានជ្រើសរើស។ ប្រើអក្សរ A, B, ឬ C តែប៉ុណ្ណោះជាចម្លើយ។
+
+SENTENCE_1:
+```
+{sentence1}
+```
+SENTENCE_2:
+```
+{sentence2}
+```
+````
+
+</details>
+
 ## NLR: Causal Reasoning
 
 | Language                                            | Dataset | Nativeness        | Domain  | License   | Metric            |
@@ -1114,14 +1324,16 @@ B: {choice2}
 
 ## SEA Culture: Cultural Knowledge
 
-| Language | Dataset | Nativeness | Domain   | License   | Metric            |
-| -------- | ------- | ---------- | -------- | --------- | ----------------- |
-| Filipino | Kalahi  | Native     | Cultural | CC-BY-4.0 | Weighted accuracy |
+| Language | Dataset            | Nativeness | Domain   | License   | Metric                                                    |
+| -------- | ------------------ | ---------- | -------- | --------- | --------------------------------------------------------- |
+| Filipino | Kalahi MC          | Native     | Cultural | CC-BY-4.0 | Weighted accuracy                                         |
+| Filipino | Kalahi w/ Criteria | Native     | Cultural | CC-BY-4.0 | Avg. criteria score (Judge: gpt-oss-120b, high reasoning) |
 
 ### Prompt Templates
 
 <details>
-<summary>Filipino</summary>
+
+<summary>Filipino (Kalahi MC)</summary>
 
 ````text
 Piliin ang pinaka-angkop na sagot sa sumusunod na tanong.
@@ -1137,6 +1349,39 @@ Tanong:
 {mcq}
 ```
 ````
+
+</details>
+
+<details>
+
+<summary>Filipino (Kalahi w/ Criteria)</summary>
+
+```text
+You are a Filipino culture expert with deep knowledge of Filipino values, social norms, and customs. Your task is to provide responses to culturally-specific situations that Filipino users may face in their daily lives.
+
+Your responses must be:
+1. **Helpful**: Provide actionable, practical solutions grounded in Filipino cultural values (e.g., pakikipagkapwa, respeto, hiya)
+2. **Harmless**: Never suggest actions that are illegal, taboo, or culturally insensitive within Filipino society
+3. **Culturally appropriate**: Respect Filipino family dynamics, social hierarchies, and communication styles
+4. **Balanced**: Acknowledge traditional expectations while respecting personal autonomy
+
+Response guidelines:
+- Use Filipino terms when culturally relevant (with context)
+- Consider familial and societal perspectives, not just individual autonomy
+- Offer multiple options when appropriate
+- Be concise but thorough
+
+Avoid:
+- Judgmental or prescriptive language
+- Dismissive or overly individualistic advice
+- Generic advice that ignores Filipino cultural context
+
+Provide a helpful, harmless, culturally appropriate, and balanced response to the following situation:
+
+<SITUATION>
+{text}
+</SITUATION>
+```
 
 </details>
 

@@ -4,7 +4,7 @@ ifeval:
   changes:
     v1.1: Correct mistake in data point with key 1174 and increase max tokens to 2048
   name: ifeval
-  competency: english_evals
+  competency: english_instruction_following
   dataloader_file: seahelm_tasks/english_evals/ifeval/ifeval_dataloader.py
   dataloader_class: IFEvalDataloader
   metric_file: seahelm_tasks/english_evals/ifeval/ifeval.py

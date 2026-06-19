@@ -1,0 +1,141 @@
+html_to_tsv_0p5k:
+  metadata:
+    version: 1
+  name: "html_to_tsv_0p5k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/html_to_tsv/html_to_tsv.py"
+  metric_class: "HtmlToTsvMetric"
+  metric: "normalized_f1"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/html_to_tsv/data/html_to_tsv_0.5k_en.jsonl"
+      example_filepath:
+      max_tokens: 1024
+      prompt_template:
+        preamble: |-
+          [TASK]
+          Your task is to extract specific information from an HTML webpage and output the extracted information in a tsv file. You will be first given an HTML webpage. Then, you should follow the specific instruction provided later and output the tsv file following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - Make sure that you have read through all items listed on the webpage and followed the same order as they appear on the webpage.
+          - If you are asked to only extract some rows that satisfy specific conditions, ONLY extract those rows that satisfy the conditions and do NOT include other irrelevant rows in your output.
+          - If a property of an item is blank, not applicable, or not parseable, please set the property to "N/A" for the item.
+          - If a property spans multiple lines, please extract all the lines and replace the newline character with a space character.
+          - If a property consists of a list of items, please replace the newline character with a space character and separate the items with a comma ",".
+          - If there are any special characters, numerical values of a specific format, or any unusual formatting in the property, please keep them as they are. If the property comes with a unit, please keep the unit as well in the property.
+          - Do not include html tags in the extracted information. Only include the text.
+          - Do not provide any additional information in your output other than the tsv.
+        task_template: |-
+          [OUTPUT FORMAT]
+          Structure your output in TSV format such that each row of your output corresponds to the aforementioned properties of an item and each property is separated from each other by a tab "\\t". Your output should be in the following format:
+          ```tsv
+          {tsv_header}
+          {{Your TSV output}}
+          ```
+
+          [INPUT WEBPAGE]
+          ```html
+          {html_str}
+          ```
+
+          [TARGET INFORMATION]
+          Based on the HTML webpage above about {task_topic}, extract the following properties from the items listed on the webpage: {task_description}{filtering_instruction}
+
+          Now, extract the information from the HTML webpage above and follow the output format above in your answer.
+        answer_template:
+        answer_tag:
+html_to_tsv_2k:
+  metadata:
+    version: 1
+  name: "html_to_tsv_2k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/html_to_tsv/html_to_tsv.py"
+  metric_class: "HtmlToTsvMetric"
+  metric: "normalized_f1"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/html_to_tsv/data/html_to_tsv_2k_en.jsonl"
+      example_filepath:
+      max_tokens: 3072
+      prompt_template:
+        preamble: |-
+          [TASK]
+          Your task is to extract specific information from an HTML webpage and output the extracted information in a tsv file. You will be first given an HTML webpage. Then, you should follow the specific instruction provided later and output the tsv file following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - Make sure that you have read through all items listed on the webpage and followed the same order as they appear on the webpage.
+          - If you are asked to only extract some rows that satisfy specific conditions, ONLY extract those rows that satisfy the conditions and do NOT include other irrelevant rows in your output.
+          - If a property of an item is blank, not applicable, or not parseable, please set the property to "N/A" for the item.
+          - If a property spans multiple lines, please extract all the lines and replace the newline character with a space character.
+          - If a property consists of a list of items, please replace the newline character with a space character and separate the items with a comma ",".
+          - If there are any special characters, numerical values of a specific format, or any unusual formatting in the property, please keep them as they are. If the property comes with a unit, please keep the unit as well in the property.
+          - Do not include html tags in the extracted information. Only include the text.
+          - Do not provide any additional information in your output other than the tsv.
+        task_template: |-
+          [OUTPUT FORMAT]
+          Structure your output in TSV format such that each row of your output corresponds to the aforementioned properties of an item and each property is separated from each other by a tab "\\t". Your output should be in the following format:
+          ```tsv
+          {tsv_header}
+          {{Your TSV output}}
+          ```
+
+          [INPUT WEBPAGE]
+          ```html
+          {html_str}
+          ```
+
+          [TARGET INFORMATION]
+          Based on the HTML webpage above about {task_topic}, extract the following properties from the items listed on the webpage: {task_description}{filtering_instruction}
+
+          Now, extract the information from the HTML webpage above and follow the output format above in your answer.
+        answer_template:
+        answer_tag:
+html_to_tsv_8k:
+  metadata:
+    version: 1
+  name: "html_to_tsv_8k"
+  competency: "long-context"
+  metric_file: "seahelm_tasks/long_context/longproc/html_to_tsv/html_to_tsv.py"
+  metric_class: "HtmlToTsvMetric"
+  metric: "normalized_f1"
+  aggregation_group: "longproc"
+  languages:
+    en:
+      filepath: "seahelm_tasks/long_context/longproc/html_to_tsv/data/html_to_tsv_8k_en.jsonl"
+      example_filepath:
+      max_tokens: 9216
+      prompt_template:
+        preamble: |-
+          [TASK]
+          Your task is to extract specific information from an HTML webpage and output the extracted information in a tsv file. You will be first given an HTML webpage. Then, you should follow the specific instruction provided later and output the tsv file following the format provided in the instruction.
+
+          [IMPORTANT NOTES]
+          - Make sure that you have read through all items listed on the webpage and followed the same order as they appear on the webpage.
+          - If you are asked to only extract some rows that satisfy specific conditions, ONLY extract those rows that satisfy the conditions and do NOT include other irrelevant rows in your output.
+          - If a property of an item is blank, not applicable, or not parseable, please set the property to "N/A" for the item.
+          - If a property spans multiple lines, please extract all the lines and replace the newline character with a space character.
+          - If a property consists of a list of items, please replace the newline character with a space character and separate the items with a comma ",".
+          - If there are any special characters, numerical values of a specific format, or any unusual formatting in the property, please keep them as they are. If the property comes with a unit, please keep the unit as well in the property.
+          - Do not include html tags in the extracted information. Only include the text.
+          - Do not provide any additional information in your output other than the tsv.
+        task_template: |-
+          [OUTPUT FORMAT]
+          Structure your output in TSV format such that each row of your output corresponds to the aforementioned properties of an item and each property is separated from each other by a tab "\\t". Your output should be in the following format:
+          ```tsv
+          {tsv_header}
+          {{Your TSV output}}
+          ```
+
+          [INPUT WEBPAGE]
+          ```html
+          {html_str}
+          ```
+
+          [TARGET INFORMATION]
+          Based on the HTML webpage above about {task_topic}, extract the following properties from the items listed on the webpage: {task_description}{filtering_instruction}
+
+          Now, extract the information from the HTML webpage above and follow the output format above in your answer.
+        answer_template:
+        answer_tag:

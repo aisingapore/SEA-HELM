@@ -1,9 +1,13 @@
+import functools
 import os
 from abc import abstractmethod
-from typing import Any, Callable
+from multiprocessing import Pool
+from typing import Any
 
 import pandas as pd
+import ujson
 from datasets import Dataset
+from tqdm import tqdm
 
 from src.base_logger import get_logger
 from src.task_config import TaskConfig
@@ -26,6 +30,7 @@ class AbstractDataloader:
         model_name: str = "",
         run_base_path: str = "",
         inference_file_type: str = "jsonl",
+        num_workers: int = 16,
     ):
         """Initialize the AbstractDataloader.
 
@@ -58,15 +63,15 @@ class AbstractDataloader:
         else:
             fewshot_num_examples = default_num_in_context_examples
             logger.warning(
-                f"No fewshot_num_examples found in task config. Using default value of {default_num_in_context_examples}."
+                "No fewshot_num_examples found in task config. Using default value of %d.",
+                default_num_in_context_examples,
             )
         self.fewshot_num_examples = fewshot_num_examples
 
         self.dataset = None
         self.example_dataset = None
-        self.inference_df = None
-        self.conversations = None
-        self.num_turns = None
+        self.dataframe = None
+        self.num_workers = num_workers
 
     def get_parent_folder(self) -> str:
         """Generate the parent folder path for storing inference results.
@@ -84,6 +89,22 @@ class AbstractDataloader:
         os.makedirs(parent_path, exist_ok=True)
         return parent_path
 
+    def get_filepath(
+        self, parent_path: str, parts: list[str], file_type: str = "jsonl"
+    ) -> str:
+        """Generate the file path for batch processing files.
+
+        Args:
+            parent_path (str): The base path for storing run files.
+            model_name (str): The name of the model being used.
+            parts (list[str]): List of parts to include in the file name.
+            file_type (str, optional): The file extension to use. Defaults to "jsonl".
+
+        Returns:
+            str: The generated file path for the batch file.
+        """
+        return os.path.join(parent_path, "_".join(parts) + f".{file_type}")
+
     def get_inference_filepath(self, file_type: str = "jsonl") -> str:
         """Generate the file path for storing inference results.
 
@@ -95,50 +116,84 @@ class AbstractDataloader:
         """
         parent_path = self.get_parent_folder()
 
-        return os.path.join(
-            parent_path,
-            f"{os.path.basename(self.model_name)}_{self.task_name}_{self.lang}.{file_type}",
+        return self.get_filepath(
+            parent_path=parent_path,
+            parts=[os.path.basename(self.model_name), self.task_name, self.lang],
+            file_type=file_type,
         )
 
-    def read_inference_results_as_df(self) -> bool:
-        """Read cached inference results from file into a DataFrame.
-
-        Loads previously saved inference results from disk and converts
-        numerical columns to strings for consistency.
+    def load_cached_inference_results(self) -> bool:
+        """Load cached inference results if available.
 
         Returns:
-            bool: True if results were successfully loaded, False if file doesn't exist.
+            bool: True if cached inference results were loaded, False otherwise.
         """
-        file_type = self.inference_file_type
-        assert file_type in [
-            "csv",
-            "jsonl",
-        ], "File type must be either 'csv' or 'jsonl'"
+        inference_filepath = self.get_inference_filepath(
+            file_type=self.inference_file_type
+        )
+        if os.path.exists(inference_filepath):
+            if self.inference_file_type == "jsonl":
+                self.dataframe = pd.read_json(inference_filepath, lines=True)
+                return True
+            elif self.inference_file_type == "csv":
+                self.dataframe = pd.read_csv(inference_filepath)
+                return True
+        return False
 
-        # save outputs
-        input_filepath = self.get_inference_filepath(file_type=file_type)
+    ### Filepath generation functions
+    def get_filepath_creator(self, suffix):
+        """Return a filepath-generating function bound to a given filename suffix.
 
-        if os.path.exists(input_filepath) is False:
-            logger.debug(
-                "No cached inference results found for %s and %s at %s.",
-                self.task_name,
-                self.lang,
-                input_filepath,
+        Args:
+            suffix (str): Suffix appended to the filename (e.g., 'batch', 'batch_response').
+
+        Returns:
+            Callable[[int, str], str]: A function that accepts a turn number and file type
+                and returns the corresponding file path.
+        """
+
+        def _get_filepath(turn: int, file_type: str = "jsonl") -> str:
+            parent_path = self.get_parent_folder()
+
+            return self.get_filepath(
+                parent_path=parent_path,
+                parts=[
+                    os.path.basename(self.model_name),
+                    self.task_name,
+                    self.lang,
+                    f"turn{turn}",
+                    suffix,
+                ],
+                file_type=file_type,
             )
-            return False
 
-        if file_type == "csv":
-            self.inference_df = pd.read_csv(input_filepath)
-        elif file_type == "jsonl":
-            self.inference_df = pd.read_json(input_filepath, lines=True)
+        return _get_filepath
 
-        # ensure that inference_df only contains
-        numerical_cols = self.inference_df.select_dtypes(include="number").columns
+    def get_batch_filepath(self, turn: int = 1, file_type: str = "jsonl") -> str:
+        """Generate the file path for storing conversations batch for a specific turn.
 
-        # Convert numerical columns to string
-        for col in numerical_cols:
-            self.inference_df[col] = self.inference_df[col].astype(str)
-        return True
+        Args:
+            turn (int): The conversational turn number (1-indexed).
+            file_type (str): File format ('jsonl' or 'csv').
+
+        Returns:
+            str: Full file path for storing conversational batches for the specified turn.
+        """
+        return self.get_filepath_creator("batch")(turn, file_type)
+
+    def get_batch_response_filepath(
+        self, turn: int = 1, file_type: str = "jsonl"
+    ) -> str:
+        """Generate the file path for storing batch responses for a specific turn.
+
+        Args:
+            turn (int): The conversational turn number (1-indexed).
+            file_type (str): File format ('jsonl' or 'csv').
+
+        Returns:
+            str: Full file path for storing batch responses for the specified turn.
+        """
+        return self.get_filepath_creator("batch_response")(turn, file_type)
 
     @abstractmethod
     def load_dataset(self, limit: int | None = None) -> Dataset:
@@ -168,29 +223,6 @@ class AbstractDataloader:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def prepare_conversations_for_inference(
-        self,
-        turn: int,
-        fewshot_as_multiturn: bool = False,
-    ) -> list[Any]:
-        """Prepare the conversations for inference by formatting prompts for the given turn.
-
-        The formatted conversations should be in chat format compatible with the
-        `apply_chat_template` method for prompt tokenization.
-
-        Args:
-            turn (int): Which turn to prepare the prompts for (1-indexed).
-            fewshot_as_multiturn (bool): Whether to treat few-shot examples as multi-turn dialogues. Defaults to False.
-
-        Returns:
-            list[Any]: The formatted conversations stored in self.conversations.
-
-        Note:
-            Subclasses must implement this method to handle their specific prompt formatting.
-        """
-        raise NotImplementedError("Subclasses must implement this method")
-
-    @abstractmethod
     def get_num_turns(self) -> int:
         """Get the number of turns in the dataset.
 
@@ -202,6 +234,93 @@ class AbstractDataloader:
             For multi-turn tasks, this should return the number of exchanges between the user and the assistant.
         """
         raise NotImplementedError("Subclasses must implement this method")
+
+    def prepare_conversations_for_inference(
+        self, turn: int, fewshot_as_multiturn: bool = False
+    ) -> list[Any]:
+        """Prepare the conversations for inference by formatting prompts for the given turn.
+
+        The formatted conversations should be in chat format compatible with the
+        `apply_chat_template` method for prompt tokenization.
+
+        Args:
+            turn (int): Which turn to prepare the prompts for (0-indexed).
+            fewshot_as_multiturn (bool, optional): Whether to treat few-shot examples as multi-turn dialogues. Defaults to False.
+
+        Returns:
+            list[Any]: The formatted conversations.
+        """
+        logger.info(
+            "Preparing conversations for task '%s', turn %d with %d examples",
+            self.task_name.upper(),
+            turn,
+            self.fewshot_num_examples,
+        )
+
+        if self.fewshot_num_examples > 0:
+            if self.specific_task_config["example_filepath"]:
+                self.load_example_dataset(limit=self.fewshot_num_examples)
+            else:
+                logger.warning(
+                    "Example filepath not found! Reverting back to 0-shot instead of %d-shot.",
+                    self.fewshot_num_examples,
+                )
+        _formatter = self.get_prompt_formatter(turn, fewshot_as_multiturn)
+
+        with Pool(self.num_workers) as p:
+            conversations = list(
+                tqdm(
+                    p.starmap(
+                        _formatter,
+                        zip(self.dataset, range(len(self.dataset)), strict=True),
+                    ),
+                    total=len(self.dataset),
+                )
+            )
+
+        if "conversations" in self.dataset.column_names:
+            self.dataset = self.dataset.remove_columns("conversations")
+        self.dataset = self.dataset.add_column("conversations", conversations)
+
+        return conversations
+
+    def prepare_labels_for_inference(self):
+        """Extract ground-truth labels from the dataset.
+
+        Returns:
+            list | None: The list of labels from the dataset's 'label' column,
+                or None if the column does not exist.
+        """
+        if "label" not in self.dataset.column_names:
+            logger.warning(
+                "No 'label' column found in dataset. Labels will be set to None for inference."
+            )
+            return None
+        else:
+            return self.dataset["label"]
+
+    def get_prompt_formatter(
+        self,
+        turn: int,
+        fewshot_as_multiturn: bool = False,
+    ):
+        """Return a picklable formatter callable for multiprocessing Pool.map.
+
+        Args:
+            turn (int): Which turn to prepare the prompts for (0-indexed).
+            fewshot_as_multiturn (bool, optional): Whether to format examples as multi-turn dialogue. Defaults to False.
+
+        Returns:
+            Callable: The prompt formatter for the given turn.
+        """
+        return functools.partial(
+            self.prompt_formatter,
+            turn=turn,
+            specific_task_config=self.specific_task_config,
+            fewshot_as_multiturn=fewshot_as_multiturn,
+            update_conversations_fn=self.update_conversation,
+            generate_formatted_conversation_fn=self.generate_formatted_conversation,
+        )
 
     def generate_formatted_conversation(
         self,
@@ -269,70 +388,60 @@ class AbstractDataloader:
 
         return roles, contents
 
-    def get_update_function(
-        self,
-        column: str,
-        data: list,
-        active_rows: list[int] | None = None,
-    ) -> Callable:
-        """Create a function to update a specific column with new data.
+    ### Dataframe functions
+    def convert_dataset_to_dataframe(self) -> None:
+        """Convert the loaded dataset to a pandas DataFrame for easier manipulation."""
+        if self.dataset is None:
+            raise ValueError("Dataset not loaded. Please load the dataset first.")
+
+        if self.dataframe is not None:
+            logger.warning("DataFrame already exists. Skipping conversion.")
+        else:
+            self.dataframe = self.dataset.to_pandas()
+
+    def load_model_outputs_into_dataset(self, turn):
+        """Load model responses for a given turn and merge them into the dataset.
+
+        Reads the batch response file for the specified turn and appends each
+        response column to the corresponding dataset row. Columns that already
+        exist in the row are converted to lists so multiple turn responses are
+        accumulated.
 
         Args:
-            column (str): Name of the column to update.
-            data (list): List of data values to append to the column.
-            active_rows (list[int], optional): List of row indices to update. Defaults to None.
-                If not None, data is expected to be of same length and includes values for the active rows only.
-
-        Returns:
-            Callable: Update function that can be used with dataset.map().
+            turn (int): The conversational turn number (1-indexed) whose response
+                file should be loaded.
         """
-        # Re-populate data to the original length
-        should_update = [
-            True if i in active_rows else False for i in range(len(self.dataset))
-        ]
-        update_values = [
-            data[active_rows.index(i)] if i in active_rows else None
-            for i in range(len(self.dataset))
-        ]
+        responses_filepath = self.get_batch_response_filepath(turn)
 
-        def update_function(row, i):
-            if should_update[i]:
-                if column in row:
-                    row[column].append(update_values[i])
+        # only try to load response files if they exist, since some turns may not have generated responses yet
+        if os.path.exists(responses_filepath):
+            with open(responses_filepath, "r") as f:
+                responses = f.readlines()
+            # responses_df = pd.read_json(responses_filepath, lines=True)
+
+        output = []
+        for row, response in tqdm(
+            zip(self.dataset, responses, strict=True), total=len(self.dataset)
+        ):
+            response_json = ujson.loads(response.strip())
+
+            for col_name, value in response_json.items():
+                if col_name == "id":
+                    # remove id column since it's not needed for merging
+                    continue
+
+                if col_name in row:
+                    if not isinstance(row[col_name], list):
+                        row[col_name] = [row[col_name]]
+                    row[col_name].append(value)
                 else:
-                    row[column] = [update_values[i]]
-            return row
+                    row[col_name] = [value]
+            output.append(row)
 
-        return update_function
+        self.dataset = Dataset.from_list(output)
 
-    def update_column(
-        self, column: str, data: list, active_rows: list | None = None
-    ) -> None:
-        """Update a column in the dataset with new data.
-
-        Args:
-            column (str): Name of the column to update.
-            data (list): List of data values to add to the column.
-            active_rows (list, optional): List of row indices to update. Defaults to None.
-        """
-        assert self.dataset is not None, "Dataset is not loaded."
-        update_function = self.get_update_function(
-            column, data, active_rows=active_rows
-        )
-        self.dataset = self.dataset.map(update_function, with_indices=True)
-
-    def update_inference_df(self) -> None:
-        """Update the inference DataFrame from the current dataset.
-
-        Converts the HuggingFace dataset to a pandas DataFrame for easier manipulation.
-        """
-        assert self.dataset is not None, "Dataset is not loaded."
-        self.inference_df = self.dataset.to_pandas()
-        if "conversations" not in self.inference_df:
-            self.inference_df["conversations"] = self.conversations
-
-    def prepare_inference_df_for_writing(self) -> None:
-        """Prepare the inference DataFrame for writing to file.
+    def prepare_dataframe_for_writing(self) -> None:
+        """Prepare the DataFrame for writing to file.
 
         Subclasses can override this method to drop unnecessary columns
         or transform data before saving inference results.
@@ -343,16 +452,16 @@ class AbstractDataloader:
         """
         pass
 
-    def write_out_inference_results(self) -> None:
-        """Write inference results to a file.
+    def write_out_dataframe(self) -> None:
+        """Write dataframe to a file.
 
-        Saves the inference DataFrame to disk in the specified format
+        Saves the pandas DataFrame to disk in the specified format
         (CSV or JSONL) after preparing it for writing.
 
         Raises:
             AssertionError: If file_type is not 'csv' or 'jsonl'.
         """
-        self.prepare_inference_df_for_writing()
+        self.prepare_dataframe_for_writing()
         output_filepath = self.get_inference_filepath(
             file_type=self.inference_file_type
         )
@@ -370,10 +479,19 @@ class AbstractDataloader:
 
         # save outputs
         if file_type == "csv":
-            self.inference_df.to_csv(output_filepath, index=False)
+            self.dataframe.to_csv(output_filepath, index=False)
         elif file_type == "jsonl":
-            self.inference_df.to_json(
+            self.dataframe.to_json(
                 output_filepath, orient="records", force_ascii=False, lines=True
             )
 
         logger.info("Inference results saved!")
+
+    def update_individual_scores(self, scores):
+        """Write per-example scores into the dataframe
+
+        Args:
+            scores (list): Per-example score values to store in the
+                'individual_scores' column of the dataframe.
+        """
+        self.dataframe["individual_scores"] = scores

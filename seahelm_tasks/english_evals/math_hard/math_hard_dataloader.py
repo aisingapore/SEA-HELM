@@ -22,6 +22,7 @@ class MathHardDataloader(HuggingFaceDataloader):
         model_name: str = "",
         run_base_path: str = "",
         inference_file_type: str = "jsonl",
+        num_workers: int = 16,
     ):
         """Initialize the MathHardDataloader.
 
@@ -40,6 +41,7 @@ class MathHardDataloader(HuggingFaceDataloader):
             model_name=model_name,
             run_base_path=run_base_path,
             inference_file_type=inference_file_type,
+            num_workers=num_workers,
         )
         self.example_indices = {
             "algebra": [363, 228, 160, 90, 176],
@@ -88,7 +90,7 @@ class MathHardDataloader(HuggingFaceDataloader):
 
             dataset = dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=dataset.column_names,
                 with_indices=True,
             )
@@ -130,7 +132,7 @@ class MathHardDataloader(HuggingFaceDataloader):
 
             example_dataset = example_dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=example_dataset.column_names,
                 with_indices=True,
             )

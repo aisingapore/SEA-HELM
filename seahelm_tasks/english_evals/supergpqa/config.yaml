@@ -1,0 +1,546 @@
+supergpqa-engineering:
+  metadata:
+    version: 1.0
+  name: supergpqa-engineering
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-engineering-logprobs:
+  metadata: ${supergpqa-engineering.metadata}
+  name: supergpqa-engineering-logprobs
+  competency: ${supergpqa-engineering.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-engineering.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-engineering.languages}
+supergpqa-philosophy:
+  metadata:
+    version: 1.0
+  name: supergpqa-philosophy
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-philosophy-logprobs:
+  metadata: ${supergpqa-philosophy.metadata}
+  name: supergpqa-philosophy-logprobs
+  competency: ${supergpqa-philosophy.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-philosophy.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-philosophy.languages}
+supergpqa-medicine:
+  metadata:
+    version: 1.0
+  name: supergpqa-medicine
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-medicine-logprobs:
+  metadata: ${supergpqa-medicine.metadata}
+  name: supergpqa-medicine-logprobs
+  competency: ${supergpqa-medicine.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-medicine.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-medicine.languages}
+supergpqa-economics:
+  metadata:
+    version: 1.0
+  name: supergpqa-economics
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-economics-logprobs:
+  metadata: ${supergpqa-economics.metadata}
+  name: supergpqa-economics-logprobs
+  competency: ${supergpqa-economics.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-economics.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-economics.languages}
+supergpqa-science:
+  metadata:
+    version: 1.0
+  name: supergpqa-science
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-science-logprobs:
+  metadata: ${supergpqa-science.metadata}
+  name: supergpqa-science-logprobs
+  competency: ${supergpqa-science.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-science.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-science.languages}
+supergpqa-law:
+  metadata:
+    version: 1.0
+  name: supergpqa-law
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-law-logprobs:
+  metadata: ${supergpqa-law.metadata}
+  name: supergpqa-law-logprobs
+  competency: ${supergpqa-law.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-law.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-law.languages}
+supergpqa-history:
+  metadata:
+    version: 1.0
+  name: supergpqa-history
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-history-logprobs:
+  metadata: ${supergpqa-history.metadata}
+  name: supergpqa-history-logprobs
+  competency: ${supergpqa-history.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-history.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-history.languages}
+supergpqa-education:
+  metadata:
+    version: 1.0
+  name: supergpqa-education
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-education-logprobs:
+  metadata: ${supergpqa-education.metadata}
+  name: supergpqa-education-logprobs
+  competency: ${supergpqa-education.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-education.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-education.languages}
+supergpqa-military-science:
+  metadata:
+    version: 1.0
+  name: supergpqa-military-science
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-military-science-logprobs:
+  metadata: ${supergpqa-military-science.metadata}
+  name: supergpqa-military-science-logprobs
+  competency: ${supergpqa-military-science.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-military-science.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-military-science.languages}
+supergpqa-management:
+  metadata:
+    version: 1.0
+  name: supergpqa-management
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-management-logprobs:
+  metadata: ${supergpqa-management.metadata}
+  name: supergpqa-management-logprobs
+  competency: ${supergpqa-management.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-management.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-management.languages}
+supergpqa-literature-and-arts:
+  metadata:
+    version: 1.0
+  name: supergpqa-literature-and-arts
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-literature-and-arts-logprobs:
+  metadata: ${supergpqa-literature-and-arts.metadata}
+  name: supergpqa-literature-and-arts-logprobs
+  competency: ${supergpqa-literature-and-arts.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-literature-and-arts.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-literature-and-arts.languages}
+supergpqa-agronomy:
+  metadata:
+    version: 1.0
+  name: supergpqa-agronomy
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-agronomy-logprobs:
+  metadata: ${supergpqa-agronomy.metadata}
+  name: supergpqa-agronomy-logprobs
+  competency: ${supergpqa-agronomy.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-agronomy.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-agronomy.languages}
+supergpqa-sociology:
+  metadata:
+    version: 1.0
+  name: supergpqa-sociology
+  competency: english_knowledge
+  aggregation_group: supergpqa
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: seahelm_tasks/english_evals/supergpqa/supergpqa_metric.py
+  metric_class: SuperGPQAMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base:
+  languages:
+    en:
+      filepath: m-a-p/SuperGPQA
+      example_filepath:
+      max_tokens: 4096
+      prompt_template:
+        preamble: |-
+          Answer the following multiple choice question. There is only one correct answer. The last line of your response should be in the format 'Answer: $LETTER' (without quotes), where LETTER is one of A, B, C, D, E, F, G, H, I, or J.
+        task_template: |-
+          {question}
+          Options:
+          {options}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Answer:"
+supergpqa-sociology-logprobs:
+  metadata: ${supergpqa-sociology.metadata}
+  name: supergpqa-sociology-logprobs
+  competency: ${supergpqa-sociology.competency}
+  dataloader_file: seahelm_tasks/english_evals/supergpqa/supergpqa_dataloader.py
+  dataloader_class: SuperGPQADataloader
+  metric_file: src/metrics/logprob_metric.py
+  metric_class: LogProbMetric
+  metric: average_cumulative_probabilities
+  use_logprobs: true
+  fewshot_num_examples: ${supergpqa-sociology.fewshot_num_examples}
+  aggregation_group: supergpqa-logprobs
+  languages: ${supergpqa-sociology.languages}

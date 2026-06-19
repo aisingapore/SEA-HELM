@@ -1,0 +1,183 @@
+mt-bench-judge:
+  metadata:
+    version: 1
+  name: mt-bench-judge
+  competency: multi-turn
+  dataloader_file: seahelm_tasks/multi_turn/mt_bench_judge/mtbench_judge_dataloader.py
+  dataloader_class: MTBenchJudgeDataloader
+  metric_file: seahelm_tasks/multi_turn/mt_bench_judge/mtbench_judge_metric.py
+  metric_class: MTBenchJudgeMetric
+  metric: average_criteria_score
+  use_judges: true
+  judge:
+    judge_model_name: openai/gpt-oss-120b
+    judge_model_type: vllm
+    judge_init_args:
+      tensor_parallel_size: auto
+      async_scheduling: true
+      load_format: instanttensor
+    judge_generation_kwargs:
+      max_tokens: 16384
+      reasoning_effort: high
+    classifications:
+      CLASS_UNMET: 0
+      CLASS_SLIGHTLY_MET: 0.25
+      CLASS_MODERATELY_MET: 0.5
+      CLASS_MAJORLY_MET: 0.75
+      CLASS_EXACTLY_MET: 1.0
+    judge_prompts:
+      system_prompt: |-
+        You are an expert evaluator that gives precise feedback. Your task is to assess how well a specific criterion is covered by a given text by providing a reflection and a precise classification.
+
+        Focus solely on the provided criterion, the text, and the classification guidelines. Adhere strictly to the XML output format specified in the user prompt. Be brief if possible.
+
+        The criterion is an assertion being made about the <TEXT>. It might be allude to a 'response', which relates to the <TEXT>. It might be phrased in various ways. So some valid variations of a criterion given the text "The lemonade stand was open for 10 hours." might be:
+
+        - "The response should have included opening times and be concise"
+        - "Must include opening times and be concise"
+        - "Should be concise and include opening times"
+        - "Be concise and include opening times"
+        - "Not forget to include opening times and not forget to be concise"
+        - "Concise, w/ opening times"
+
+        (These are all equivalent ways to express the same criterion)
+
+        Here are examples of correct outputs:
+
+        -----
+        Input: <TEXT>The people in the room were not happy.</TEXT><CRITERION>The people in the room were happy.</CRITERION>
+        Output: <reflection>The text states that the people in the room were NOT happy. However, the criterion is that the people in the room WERE happy, which means the criterion is entirely UNMET.</reflection><classification>CLASS_UNMET</classification>
+        -----
+        Input: <TEXT>We were meant to meet at 7pm.</TEXT><CRITERION>Both the location and time of the meeting should be mentioned.</CRITERION>
+        Output: <reflection>The text states that the meeting time was 7pm. However, the location of the meeting was not mentioned. Thus, the criterion is moderately met.</reflection><classification>CLASS_MODERATELY_MET</classification>
+        -----
+        Input: <TEXT>The population is 8,000,000</TEXT><CRITERION>The population is 8,019,828</CRITERION>
+        Output: <reflection>The number provided in the text is very close to the number in the criterion. Therefore, the criterion is nearly met, i.e. CLASS_MAJORLY_MET.</reflection><classification>CLASS_MAJORLY_MET</classification>
+        -----
+        Input: <TEXT>Handling a situation where a colleague consistently takes credit for your ideas requires a balance of assertiveness, empathy, and strategic communication</TEXT><CRITERION>Mentions empathy</CRITERION>
+        Output: <reflection>The text mentions empathy, which means the criterion is MET precisely.</reflection><classification>CLASS_EXACTLY_MET</classification>
+        -----
+      criteria_prompt:
+        turn_1: |-
+          You are given a single-turn conversation transcript and a criterion. Evaluate ONLY the content produced by the candidate model (marked as [Assistant (generated)]). Do not give credit for [Assistant (fixed)] turns.
+
+          <TRANSCRIPT>
+          {transcript}
+          </TRANSCRIPT>
+
+          <TEXT>
+          [Assistant (generated)]
+          {response}
+          </TEXT>
+
+          Evaluate how well the generated assistant content satisfies THIS SPECIFIC <CRITERION>.
+          <CRITERION>
+          {keyPointText}
+          </CRITERION>
+
+          Your task is to provide a 'reflection' and a 'classification' based on the guidelines below. Your classification should indicate which class the text falls into, according to the wording of the criterion. The classification labels are ordered from lowest to highest level of fulfillment as follows:
+
+          Classification Guidelines (from the lowest to highest level of fulfillment):
+          - CLASS_UNMET: The criterion is not met.
+          - CLASS_SLIGHTLY_MET: The criterion is slightly met.
+          - CLASS_MODERATELY_MET: The criterion is moderately met.
+          - CLASS_MAJORLY_MET: The criterion is mostly met.
+          - CLASS_EXACTLY_MET: The criterion is fully met.
+
+          Your output MUST strictly follow this XML format:
+          <reflection>Your 1-2 sentence reflection and reasoning for the classification, explaining how well the criterion is met, if at all.</reflection>
+          <classification>ONE of the five class names (e.g., CLASS_MAJORLY_MET)</classification>
+        turn_2: |-
+          You are given a multi-turn conversation transcript and a criterion. Evaluate ONLY the content produced by the candidate model (marked as [Assistant (generated)]). Do not give credit for [Assistant (fixed)] turns.
+
+          <TRANSCRIPT>
+          {transcript}
+          </TRANSCRIPT>
+
+          <TEXT>
+          [Assistant (generated)]
+          {response}
+          </TEXT>
+
+          Evaluate how well the generated assistant content satisfies THIS SPECIFIC <CRITERION>.
+          <CRITERION>
+          {keyPointText}
+          </CRITERION>
+
+          Your task is to provide a 'reflection' and a 'classification' based on the guidelines below. Your classification should indicate which class the text falls into, according to the wording of the criterion. The classification labels are ordered from lowest to highest level of fulfillment as follows:
+
+          Classification Guidelines (from the lowest to highest level of fulfillment):
+          - CLASS_UNMET: The criterion is not met.
+          - CLASS_SLIGHTLY_MET: The criterion is slightly met.
+          - CLASS_MODERATELY_MET: The criterion is moderately met.
+          - CLASS_MAJORLY_MET: The criterion is mostly met.
+          - CLASS_EXACTLY_MET: The criterion is fully met.
+
+          Your output MUST strictly follow this XML format:
+          <reflection>Your 1-2 sentence reflection and reasoning for the classification, explaining how well the criterion is met, if at all.</reflection>
+          <classification>ONE of the five class names (e.g., CLASS_MAJORLY_MET)</classification>
+      reference_prompt: |-
+        Use the <REFERENCE_TEXT> as the standard for comparison.
+        <REFERENCE_TEXT>
+        {reference}
+        </REFERENCE_TEXT>
+  fewshot_num_examples:
+    instruct: 0
+    base: # no fewshot examples
+  languages:
+    en:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    id:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ta:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    th:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    tl:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    ms:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""
+    vi:
+      filepath: aisingapore/MultiTurn-Chat-MT-Bench-Judge
+      max_tokens: 4096
+      prompt_template:
+        preamble: ""
+        task_template: "{text}"
+        answer_template: ""
+        answer_tag: ""

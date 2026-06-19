@@ -15,7 +15,7 @@ class BBHExactMatch(SeaHelmMetric):
 
     Args:
         dataloader (AbstractDataloader): The dataloader containing
-            `inference_df` with model responses and reference labels.
+            `dataframe` with model responses and reference labels.
         task_config (TaskConfig): The task configuration.
     """
 
@@ -36,10 +36,10 @@ class BBHExactMatch(SeaHelmMetric):
                 - "normalized_exact_match": Percentage after applying normalization
                   to the exact match score.
         """
-        predictions = self.dataloader.inference_df[
+        predictions = self.dataloader.dataframe[
             self.postprocessed_response_column
         ].to_list()
-        references = self.dataloader.inference_df[self.label_column].to_list()
+        references = self.dataloader.dataframe[self.label_column].to_list()
         metric_dict: dict[str, float] = {}
 
         exact_match_scores: list[bool] = []
@@ -54,15 +54,15 @@ class BBHExactMatch(SeaHelmMetric):
         exact_match_score = sum(exact_match_scores) / len(exact_match_scores)
         normalized_exact_match = self.normalize_score(exact_match_score, 0, 1)
 
-        logger.info(f"Normalized Exact Match: {100 * normalized_exact_match:.2f}")
+        logger.info("Normalized Exact Match: %.2f", 100 * normalized_exact_match)
         metrics = {
             "exact_match": 100 * exact_match_score,
             "normalized_exact_match": 100 * normalized_exact_match,
         }
 
         metric_dict.update(metrics)
-        self.dataloader.inference_df["individual_scores"] = [
-            {"normalized_exact_match": x} for x in normalized_exact_match_scores
-        ]
+        self.dataloader.update_individual_scores(
+            [{"normalized_exact_match": x} for x in normalized_exact_match_scores]
+        )
 
         return metric_dict
