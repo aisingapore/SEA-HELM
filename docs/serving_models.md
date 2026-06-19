@@ -26,7 +26,9 @@ The `VLLMServing` class serves the model using the offline inference method foun
 
 ### Online vLLM
 
-The `OnlineVLLMServing` class serves the model using the vLLM OpenAI-Compatible Server that is started using `vllm serve`. This allows for any model that is supported by vLLM to be served. Additionally, vLLM engine arguments can be configured using the `--model_args` cli argument. For the full list of engine args, please see the vLLM documentation on [Engine Args](https://docs.vllm.ai/en/latest/configuration/engine_args/). Additionally, `--model_args` can be used to pass the correct `base_url`, `api_key` and `timeout` for the OpenAI-Compatible Server. For example:
+The `OnlineVLLMServing` class serves the model using the vLLM OpenAI-Compatible Server that is started using `vllm serve`. This allows for any model that is supported by vLLM to be served. Additionally, vLLM engine arguments can be configured using the `--model_args` cli argument.
+For the full list of engine args, please see the vLLM documentation on [Engine Args](https://docs.vllm.ai/en/latest/configuration/engine_args/).
+Additionally, `--model_args` can be used to pass the correct `base_url`, `api_key` and `timeout` for the OpenAI-Compatible Server. For example:
 
 ```bash
 --model_args tensor_parallel_size=auto,reasoning_parser=qwen3,enable_thinking=True,base_url=http://localhost:8000/v1,api_key=token-abc123,timeout=3600
@@ -34,7 +36,9 @@ The `OnlineVLLMServing` class serves the model using the vLLM OpenAI-Compatible 
 
 ### Online SGLang
 
-The `OnlineSGLangServing` class serves the model using the SGLang OpenAI-Compatible Server that is started using `sglang serve`. This allows for any model that is supported by SGLang to be served. Additionally, SGLang engine arguments can be configured using the `--model_args` cli argument. For the full list of engine args, please see the SGLang documentation on [Engine Args](https://docs.sglang.ai/en/latest/configuration/engine_args/). Additionally, `--model_args` can be used to pass the correct `base_url`, `api_key` and `timeout` for the OpenAI-Compatible Server. For example:
+The `OnlineSGLangServing` class serves the model using the SGLang OpenAI-Compatible Server that is started using `sglang serve`. This allows for any model that is supported by SGLang to be served. Additionally, SGLang engine arguments can be configured using the `--model_args` cli argument.
+For the full list of engine args, please see the SGLang documentation on [Engine Args](https://docs.sglang.ai/en/latest/configuration/engine_args/).
+Additionally, `--model_args` can be used to pass the correct `base_url`, `api_key` and `timeout` for the OpenAI-Compatible Server. For example:
 
 ```bash
 --model_args tp=2,base_url=http://localhost:8000/v1,api_key=token-abc123,timeout=3600
