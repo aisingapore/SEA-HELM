@@ -101,5 +101,5 @@ class PragmaticDataloader(HuggingFaceDataloader):
             # check if label is of type list and convert it to string
             if isinstance(self.example_dataset.features["label"], Sequence):
                 self.example_dataset = self.example_dataset.map(
-                    lambda x: {"label": x["label"][0]}, num_proc=16
+                    lambda x: {"label": x["label"][0]}, num_proc=self.num_workers
                 )
