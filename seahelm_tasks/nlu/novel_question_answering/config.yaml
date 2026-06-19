@@ -1,0 +1,33 @@
+novel-qa:
+  metadata:
+    version: 1
+    changes:
+  name: question_answering
+  competency: nlu
+  metric_file: src/metrics/question_answering.py
+  metric_class: QuestionAnsweringMetric
+  metric: normalized_f1
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    zh:
+      filepath: seahelm_tasks/nlu/novel_question_answering/data/zh_BiPaR_sample.jsonl
+      example_filepath: seahelm_tasks/nlu/novel_question_answering/data/zh_BiPaR_example.jsonl
+      max_tokens: 256
+      prompt_template:
+        preamble: |-
+          您将获得一段文本和一个问题。请从给定的文本中提取答案来回答问题。
+
+          答案格式如下：
+          "{answer_tag} ANSWER"
+          只需将 ANSWER 替换为提取的答案即可。
+        task_template: |-
+          文本：
+          ```
+          {text}
+          ```
+          问题：{question}
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "答案:"

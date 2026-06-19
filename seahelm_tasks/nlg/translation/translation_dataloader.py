@@ -1,13 +1,16 @@
+import os
+
 from datasets import Sequence, load_dataset
 
 from src.base_logger import get_logger
 from src.dataloaders.huggingface_dataloader import HuggingFaceDataloader
+from src.dataloaders.judges.judge_dataloader import JudgeDataloader
 from src.task_config import TaskConfig
 
 logger = get_logger(__name__)
 
 
-class TranslationDataloader(HuggingFaceDataloader):
+class TranslationDataloader(HuggingFaceDataloader, JudgeDataloader):
     """Dataloader for HuggingFace translation datasets."""
 
     def __init__(
@@ -101,5 +104,34 @@ class TranslationDataloader(HuggingFaceDataloader):
             # check if label is of type list and convert it to string
             if isinstance(self.example_dataset.features["label"], Sequence):
                 self.example_dataset = self.example_dataset.map(
-                    lambda x: {"label": x["label"][0]}, num_proc=16
+                    lambda x: {"label": x["label"][0]}, num_proc=self.num_workers
                 )
+
+    def get_judge_prompt_formatter(self, metric):
+        judge_prompt = self.task_config.config.judge["judge_prompts"]
+        basename = os.path.basename(self.model_name)
+
+        def _prompt_formatter(row, idx):
+            raw_response = row["responses"]
+            response = metric.extract_response(raw_response)
+            source = row["prompts"][0]["text"]
+            ref = row["label"]
+
+            conversations = [
+                [
+                    {
+                        "role": "user",
+                        "content": judge_prompt.format(
+                            source=source, pred=response, ref=ref
+                        ),
+                    }
+                ]
+            ]
+            if "id" in row:
+                id = row["id"]
+            else:
+                id = ""
+            custom_ids = [f"{basename}_row{id}_judge"]
+            return {"conversations": conversations, "custom_ids": custom_ids}
+
+        return _prompt_formatter

@@ -21,7 +21,8 @@ translation-en-xx:
     judge_model_type: metricx
     judge_init_args:
       batch_size: 32
-    batch_api_calls: False
+    judge_prompts: |-
+      source: {source} candidate: {pred} reference: {ref}
   fewshot_num_examples:
     instruct: 0
     base: 5
@@ -238,7 +239,8 @@ translation-xx-en:
     judge_model_type: metricx
     judge_init_args:
       batch_size: 32
-    batch_api_calls: False
+    judge_prompts: |-
+      source: {source} candidate: {pred} reference: {ref}
   fewshot_num_examples:
     instruct: 0
     base: 5
@@ -455,7 +457,8 @@ translation-id-xx:
     judge_model_type: metricx
     judge_init_args:
       batch_size: 32
-    batch_api_calls: False
+    judge_prompts: |-
+      source: {source} candidate: {pred} reference: {ref}
   fewshot_num_examples:
     instruct: 0
     base: 5
@@ -521,7 +524,8 @@ translation-xx-id:
     judge_model_type: metricx
     judge_init_args:
       batch_size: 32
-    batch_api_calls: False
+    judge_prompts: |-
+      source: {source} candidate: {pred} reference: {ref}
   fewshot_num_examples:
     instruct: 0
     base: 5

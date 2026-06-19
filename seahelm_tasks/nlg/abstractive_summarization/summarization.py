@@ -58,19 +58,19 @@ class SummarizationMetric(SeaHelmMetric):
                 - rougel_precision, rougel_recall, rougel_f1, normalized_rougel_f1 (if enabled)
                 - chrf_score, normalized_chrf_score (if enabled)
         """
-        predictions = self.dataloader.inference_df[
+        predictions = self.dataloader.dataframe[
             self.postprocessed_response_column
         ].to_list()
-        references = self.dataloader.inference_df[self.label_column].to_list()
+        references = self.dataloader.dataframe[self.label_column].to_list()
         null_count = sum([x == "" for x in predictions])
 
         metric_dict = {"null_count": null_count}
         if self.run_rougeL:
             rougeL_metricx, scores = self.evaluate_with_rougeL(references, predictions)
             metric_dict.update(rougeL_metricx)
-            self.dataloader.inference_df["individual_scores"] = [
-                {"normalized_rougel_f1": x} for x in scores
-            ]
+            self.dataloader.update_individual_scores(
+                [{"normalized_rougel_f1": x} for x in scores]
+            )
 
         # run chrf metrics
         if self.run_chrf:
@@ -111,11 +111,14 @@ class SummarizationMetric(SeaHelmMetric):
 
             logger.info("Rouge-L Scores:")
             logger.info(
-                f"Precision: {100 * mid_scores.precision:.2f} | Recall: {100 * mid_scores.recall:.2f} | F1: {100 * mid_scores.fmeasure:.2f}"
+                "Precision: %.2f | Recall: %.2f | F1: %.2f",
+                100 * mid_scores.precision,
+                100 * mid_scores.recall,
+                100 * mid_scores.fmeasure,
             )
 
             # calculate norm score
-            logger.info(f"Norm F1 Score: {100 * norm_f1_score:.2f}")
+            logger.info("Norm F1 Score: %.2f", 100 * norm_f1_score)
 
             metric_dict = {
                 "rougel_precision": 100 * mid_scores.precision,
@@ -139,7 +142,7 @@ class SummarizationMetric(SeaHelmMetric):
         Returns:
             float: The corpus-level ROUGE-L F1 when reference equals prediction.
         """
-        max_rouge_score = self.dataloader.inference_df.apply(
+        max_rouge_score = self.dataloader.dataframe.apply(
             lambda x: self.scorer.score(x[self.label_column], x[self.label_column]),
             axis=1,
         )
@@ -152,7 +155,10 @@ class SummarizationMetric(SeaHelmMetric):
 
         logger.info("Normalized Rouge-L Scores:")
         logger.info(
-            f"Precision: {100 * mid_scores.precision:.2f} | Recall: {100 * mid_scores.recall:.2f} | F1: {100 * mid_scores.fmeasure:.2f}"
+            "Precision: %.2f | Recall: %.2f | F1: %.2f",
+            100 * mid_scores.precision,
+            100 * mid_scores.recall,
+            100 * mid_scores.fmeasure,
         )
         return mid_scores.fmeasure
 
@@ -171,7 +177,7 @@ class SummarizationMetric(SeaHelmMetric):
         if len(predictions) > 0:
             scores = chrf.corpus_score(predictions, [references])
             score = scores.score
-            logger.info(f"ChrF++ Score: {score}")
+            logger.info("ChrF++ Score: %.2f", score)
         else:
             score = None
 

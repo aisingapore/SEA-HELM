@@ -25,9 +25,7 @@ from seahelm_tasks.instruction_following.ifeval.instruction_checkers import (
     WordFrequencyChecker,
 )
 from src.base_logger import get_logger
-from src.dataloaders.base_dataloader import AbstractDataloader
 from src.metrics.seahelm_metric import SeaHelmMetric
-from src.task_config import TaskConfig
 
 logger = get_logger(__name__)
 
@@ -57,28 +55,27 @@ CATEGORY_MAP = {
 
 
 class IFEvalMetric(SeaHelmMetric):
-    def __init__(self, dataloader: AbstractDataloader, task_config: TaskConfig):
-        super().__init__(dataloader=dataloader, task_config=task_config)
-
     def calculate_metrics(self):
-        self.dataloader.inference_df = self.dataloader.inference_df.apply(
+        self.dataloader.dataframe = self.dataloader.dataframe.apply(
             self.evaluate_response, axis=1
         )
-        self.dataloader.inference_df["individual_scores"] = [
-            {"overall_lang_normalized_acc": x}
-            for x in self.dataloader.inference_df["lang_normalized_result"]
-        ]
+        self.dataloader.update_individual_scores(
+            [
+                {"overall_lang_normalized_acc": x}
+                for x in self.dataloader.dataframe["lang_normalized_result"]
+            ]
+        )
 
-        metric_dict = self.summarize_results(self.dataloader.inference_df)
+        metric_dict = self.summarize_results(self.dataloader.dataframe)
         return metric_dict
 
     def postprocess_responses(self):
-        self.dataloader.inference_df[self.postprocessed_response_column] = (
-            self.dataloader.inference_df[self.response_column].map(lambda x: x[0])
+        self.dataloader.dataframe[self.postprocessed_response_column] = (
+            self.dataloader.dataframe[self.response_column].map(lambda x: x[0])
         )
 
-        self.dataloader.inference_df["subcategory"] = [
-            x["subcategory"] for x in self.dataloader.inference_df["metadata"]
+        self.dataloader.dataframe["subcategory"] = [
+            x["subcategory"] for x in self.dataloader.dataframe["metadata"]
         ]
 
     def check_language(self, text: str, language: str):
@@ -138,17 +135,17 @@ class IFEvalMetric(SeaHelmMetric):
 
         return row
 
-    def summarize_results(self, inference_df: pd.DataFrame):
+    def summarize_results(self, dataframe: pd.DataFrame):
         evaluation_stats = {}
 
         if self.lang in {"th", "lo", "km", "my"}:
-            inference_df = inference_df[
-                inference_df["subcategory"] != "length_constraints:number_words"
+            dataframe = dataframe[
+                dataframe["subcategory"] != "length_constraints:number_words"
             ]
 
         # Overall results
         # int() required to convert numpy.int64 to int for JSON serialization
-        value_counts = inference_df["result"].value_counts()
+        value_counts = dataframe["result"].value_counts()
         overall_pass = int(value_counts[True]) if True in value_counts else 0
         overall_fail = int(value_counts[False]) if False in value_counts else 0
         evaluation_stats["overall_count"] = overall_pass + overall_fail
@@ -164,11 +161,11 @@ class IFEvalMetric(SeaHelmMetric):
         logger.info("Overall accuracy: %f", evaluation_stats["overall_acc"])
 
         # Check language
-        evaluation_stats["correct_language_rate"] = inference_df[
+        evaluation_stats["correct_language_rate"] = dataframe[
             "correct_language"
         ].value_counts(normalize=True)[True]
         overall_lang_normalized_pass = int(
-            inference_df["lang_normalized_result"].value_counts()[True]
+            dataframe["lang_normalized_result"].value_counts()[True]
         )
         evaluation_stats["overall_lang_normalized_acc"] = (
             overall_lang_normalized_pass / (overall_pass + overall_fail)
@@ -182,7 +179,7 @@ class IFEvalMetric(SeaHelmMetric):
         )
 
         # Results by subcategory
-        results_breakdown = inference_df.groupby("subcategory").agg({"result": "mean"})
+        results_breakdown = dataframe.groupby("subcategory").agg({"result": "mean"})
         results_breakdown = results_breakdown.dropna()
         evaluation_stats["subcategories"] = results_breakdown["result"].to_dict()
 

@@ -1,5 +1,3 @@
-import os
-
 import pandas as pd
 from sacrebleu.metrics import CHRF
 
@@ -40,9 +38,6 @@ class TranslationMetric(SeaHelmMetric):
             self.regex_string,
         )
 
-    def get_judgement_file_name(self) -> str:
-        return f"{os.path.basename(self.dataloader.model_name)}_{self.task}_{self.lang}_judgement.jsonl"
-
     def evaluate_with_metricx(
         self,
     ) -> tuple[dict[str, float], list[float]]:
@@ -54,10 +49,7 @@ class TranslationMetric(SeaHelmMetric):
                 - list of normalized scores per example (0-100 scale)
         """
         # reference scores
-        judgements_filepath = os.path.join(
-            self.dataloader.get_parent_folder(),
-            self.get_judgement_file_name(),
-        )
+        judgements_filepath = self.dataloader.get_judge_batch_response_filepath()
         judgement_df = pd.read_json(judgements_filepath, lines=True)
 
         # scores = judgement_df[""]
@@ -92,7 +84,7 @@ class TranslationMetric(SeaHelmMetric):
 
         if len(predictions) > 0:
             scores = chrf.corpus_score(predictions, [references])
-            logger.info(f"ChrF++ Score: {scores.score}")
+            logger.info("ChrF++ Score: %.2f", scores.score)
             score = scores.score
         else:
             score = None
@@ -109,19 +101,19 @@ class TranslationMetric(SeaHelmMetric):
             dict[str, float | None]: Aggregated metrics including MetricX and/or
             ChrF++ depending on configuration, plus a `null_count` of empty outputs.
         """
-        predictions = self.dataloader.inference_df[
+        predictions = self.dataloader.dataframe[
             self.postprocessed_response_column
         ].to_list()
-        references = self.dataloader.inference_df[self.label_column].to_list()
+        references = self.dataloader.dataframe[self.label_column].to_list()
 
         metric_dict: dict[str, float | None] = {}
 
         if self.use_metricx_metric:
             metricx_metricx, scores = self.evaluate_with_metricx()
             metric_dict.update(metricx_metricx)
-            self.dataloader.inference_df["individual_scores"] = [
-                {"normalized_metricx_wmt24_scores": x} for x in scores
-            ]
+            self.dataloader.update_individual_scores(
+                [{"normalized_metricx_wmt24_scores": x} for x in scores]
+            )
 
         if self.use_chrf_metric:
             # run CHRF metrics

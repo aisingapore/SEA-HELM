@@ -2,7 +2,6 @@ from datasets import load_dataset
 
 from src.base_logger import get_logger
 from src.dataloaders.huggingface_dataloader import HuggingFaceDataloader
-from src.task_config import TaskConfig
 
 logger = get_logger(__name__)
 
@@ -13,34 +12,6 @@ class ThaiExamDataloader(HuggingFaceDataloader):
     ThaiExam is a dataset for evaluating language models on Thai language exam questions.
     This dataloader handles loading data and preparing it for language model inference.
     """
-
-    def __init__(
-        self,
-        task_config: TaskConfig,
-        default_num_in_context_examples: int,
-        is_base_model: bool = False,
-        model_name: str = "",
-        run_base_path: str = "",
-        inference_file_type: str = "jsonl",
-    ):
-        """Initialize the ThaiExamDataloader.
-
-        Args:
-            task_config: TaskConfig object containing task-specific settings.
-            default_num_in_context_examples: Default number of few-shot examples to use.
-            is_base_model: Whether this is a base model (vs instruction-tuned).
-            model_name: Name/path of the model being evaluated.
-            run_base_path: Base path for storing inference results.
-            inference_file_type: File format for inference results ('jsonl' or 'csv').
-        """
-        super().__init__(
-            task_config,
-            default_num_in_context_examples,
-            is_base_model=is_base_model,
-            model_name=model_name,
-            run_base_path=run_base_path,
-            inference_file_type=inference_file_type,
-        )
 
     def load_dataset(self, limit: int = None):
         """Load the ThaiExam dataset from HuggingFace datasets.
@@ -84,7 +55,7 @@ class ThaiExamDataloader(HuggingFaceDataloader):
 
             dataset = dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=dataset.column_names,
                 with_indices=True,
             )
@@ -130,7 +101,7 @@ class ThaiExamDataloader(HuggingFaceDataloader):
 
             dataset = dataset.map(
                 map_columns,
-                num_proc=16,
+                num_proc=self.num_workers,
                 remove_columns=dataset.column_names,
                 with_indices=True,
             )
