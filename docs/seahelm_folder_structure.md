@@ -42,25 +42,19 @@
 │   ├── constants.yaml          # Constants for task execution order and judge models
 │   ├── task_config.yaml        # Task configuration mapping
 │   ├── reasoning_generation_config.yaml  # Config for reasoning models
+│   ├── code_generation/        # Code generation tasks
 │   ├── cultural/
 │   │   └── kalahi/
-│   │       ├── data/           # Folder containing the data for Kalahi
-│   │       ├── config.yaml     # YAML containing the task configuration
-│   │       └── kalahi.py       # Python file containing the metrics used in Kalahi
+│   │       └── config.yaml     # YAML containing the task configuration
 │   ├── instruction_following/
 │   │   └── ifeval/
-│   │       ├── data/
 │   │       ├── config.yaml
 │   │       ├── if_eval.py
 │   │       └── instruction_checkers.py    # Python file containing the instruction checkers for each constraint
 │   ├── knowledge/              # Knowledge-based tasks
-│   ├── lindsea/                # LindSEA linguistic tasks
+│   ├── lindsea/                # LINDSEA linguistic tasks
+│   ├── long_context/           # Long-context evaluation tasks
 │   ├── multi_turn/
-│   │   └── mt_bench/
-│   │       ├── data/
-│   │       ├── config.yaml
-│   │       ├── mt_bench_prompts.py      # Python file containing the LLM-as-a-Judge prompts
-│   │       └── mt_bench.py
 │   ├── nlg/                    # Natural Language Generation tasks
 │   ├── nlr/                    # Natural Language Reasoning tasks
 │   ├── nlu/                    # Natural Language Understanding tasks
@@ -77,14 +71,38 @@
     ├── utils.py                # Utility functions for SEA-HELM
     ├── dataloaders/            # Data loading abstractions
     │   ├── base_dataloader.py  # AbstractDataloader base class
-    │   └── ...
-    ├── judges/                 # LLM judge implementations
-    │   └── ...
+    │   ├── huggingface_dataloader.py
+    │   ├── huggingface_image_dataloader.py
+    │   ├── huggingface_audio_dataloader.py
+    │   ├── seahelm_local_dataloader.py
+    │   └── judges/             # Dataloaders for LLM judge inputs
+    │       ├── criteria_dataloader.py
+    │       ├── judge_dataloader.py
+    │       └── pairwise_dataloader.py
+    ├── inference_strategy/     # Model inference strategies
+    │   ├── base_model_inference_strategy.py
+    │   ├── batched_inference_strategy.py
+    │   ├── default_inference_strategy.py
+    │   ├── logprobs_inference_strategy.py
+    │   └── utils.py
     ├── metrics/                # Metric calculation modules
     │   ├── seahelm_metric.py   # SeaHelmMetric base class
-    │   └── ...
+    │   ├── f1_acc_metric.py
+    │   ├── logprob_metric.py
+    │   ├── math_metric.py
+    │   ├── question_answering.py
+    │   └── llm_judges/         # LLM judge metric implementations
+    │       ├── criteria_judge_metric.py
+    │       ├── pairwise_llm_judge_metric.py
+    │       └── pairwise_finegrained_llm_judge_metric.py
     ├── rouge_score/            # ROUGE metric implementation
     │   └── ...
+    ├── sandbox/                # Sandboxed code execution for code-gen tasks
+    │   ├── base_sandbox.py
+    │   ├── docker_sandbox.py
+    │   ├── enroot_sandbox.py
+    │   ├── podman_sandbox.py
+    │   └── singularity_sandbox.py
     └── serving/                # Model serving framework wrappers
         ├── __init__.py
         ├── batch/              # Batch API serving (remote providers)
@@ -93,14 +111,19 @@
         │   ├── anthropic_serving.py   # Anthropic batch API
         │   ├── openai_serving.py      # OpenAI batch API
         │   └── vertexai_serving.py    # VertexAI batch API
-        └── local/              # Local/online serving
+        ├── offline/            # Offline/local batch inference
+        │   ├── __init__.py
+        │   ├── base_offline_serving.py
+        │   ├── vllm_serving.py         # vLLM offline serving
+        │   ├── metricx_serving.py      # MetricX model serving
+        │   ├── metricx_models.py       # MetricX model definitions
+        │   └── openclip_serving.py     # OpenCLIP model serving
+        └── online/             # Online/API-based serving
             ├── __init__.py
-            ├── base_serving.py         # BaseServing abstract class
-            ├── vllm_serving.py         # vLLM local serving
+            ├── base_online_serving.py
             ├── litellm_serving.py      # LiteLLM unified API
             ├── local_openai_serving.py # Local OpenAI-compatible API
-            ├── metricx_serving.py      # MetricX model serving
-            ├── metricx_models.py       # MetricX model definitions
-            └── openclip_serving.py     # OpenCLIP model serving
+            ├── online_sglang_serving.py
+            └── online_vllm_serving.py
 
 ```
