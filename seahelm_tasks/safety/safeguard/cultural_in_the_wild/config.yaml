@@ -47,7 +47,7 @@ safeguard_cultural_in_the_wild:
           {local_prompt}
           ```
         answer_template: |-
-          {answer_tag} {prompt_label}
+          {answer_tag} {label}
         answer_tag: "Jawaban:"
     ms:
       filepath: seahelm_tasks/safety/safeguard/cultural_in_the_wild/data/ms_cultural_in_the_wild.jsonl
@@ -85,7 +85,7 @@ safeguard_cultural_in_the_wild:
           {local_prompt}
           ```
         answer_template: |-
-          {answer_tag} {prompt_label}
+          {answer_tag} {label}
         answer_tag: "Jawapan:"
     my:
       filepath: seahelm_tasks/safety/safeguard/cultural_in_the_wild/data/my_cultural_in_the_wild.jsonl
@@ -123,7 +123,7 @@ safeguard_cultural_in_the_wild:
           {local_prompt}
           ```
         answer_template: |-
-          {answer_tag} {prompt_label}
+          {answer_tag} {label}
         answer_tag: "အဖြေ-"
     ta:
       filepath: seahelm_tasks/safety/safeguard/cultural_in_the_wild/data/ta_cultural_in_the_wild.jsonl
