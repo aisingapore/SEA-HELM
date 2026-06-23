@@ -19,7 +19,7 @@ seahelm:
   vi: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "global_mmlu_lite"]
   th: ["sentiment", "qa", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "thai_exam", "mt-bench-judge"]
   ta: ["sentiment", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "mp-r", "pragmatic-single", "pragmatic-pair"]
-  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "kalahi-mc", "kalahi-criteria", "global_mmlu_lite"]
+  tl: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "mt-bench-judge", "kalahi-mc", "kalahi-judge", "global_mmlu_lite"]
   ms: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench-judge", "global_mmlu_lite"]
   my: ["sentiment", "belebele-qa-mc", "toxicity", "translation-en-xx", "translation-xx-en", "abssum", "causal", "nli", "if-eval", "global_mmlu_lite"] # "mt-bench"
 
@@ -28,7 +28,7 @@ seahelm_logprobs:
   vi: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "global_mmlu_lite-logprobs"]
   th: ["sentiment-logprobs", "qa", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "thai_exam-logprobs", "mt-bench-judge"]
   ta: ["sentiment-logprobs", "qa", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "mp-r-logprobs", "pragmatic-single-logprobs", "pragmatic-pair-logprobs"]
-  tl: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "kalahi-mc-logprobs", "kalahi-criteria", "global_mmlu_lite-logprobs"]
+  tl: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "mt-bench-judge", "kalahi-mc-logprobs", "kalahi-judge", "global_mmlu_lite-logprobs"]
   ms: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "if-eval", "mt-bench-judge", "global_mmlu_lite-logprobs"]
   my: ["sentiment-logprobs", "belebele-qa-mc-logprobs", "toxicity-logprobs", "translation-en-xx", "translation-xx-en", "abssum", "causal-logprobs", "nli-logprobs", "if-eval", "global_mmlu_lite-logprobs"] # "mt-bench"
 
