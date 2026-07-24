@@ -10,7 +10,7 @@ IS_REASONING_MODEL="false"
 RERUN_CACHED_RESULTS="false"
 TASKS="seahelm"
 MODEL_TYPE="vllm"
-MODEL_ARGS="load_format=instanttensor,enable_prefix_caching=True,tensor_parallel_size=auto=" 
+MODEL_ARGS="load_format=instanttensor,enable_prefix_caching=True,tensor_parallel_size=auto" 
 
 # Function to display usage
 usage() {
