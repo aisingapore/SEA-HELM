@@ -1,5 +1,6 @@
 import os
 from abc import ABC, abstractmethod
+from collections.abc import Collection
 
 import pandas as pd
 
@@ -29,6 +30,40 @@ class BaseBatchServing(ABC):
         raise NotImplementedError(
             f"{self.__class__} is an abstract class. Please implement get_run_env method."
         )
+
+    @classmethod
+    @abstractmethod
+    def _get_available_models(cls) -> Collection[str]:
+        """Fetch (and cache) the model ids available to this serving backend.
+
+        Implementations should perform a best-effort listing against the provider
+        API, cache the result on the class (so repeated instantiations do not each
+        trigger a network call), and return an empty collection on failure rather
+        than raising.
+
+        Returns:
+            Collection[str]: The available model ids, or an empty collection if the
+                listing failed or no credentials are configured.
+        """
+        raise NotImplementedError(
+            f"{cls} is an abstract class. Please implement _get_available_models method."
+        )
+
+    @classmethod
+    def is_model_name_supported(cls, model_name: str) -> bool:
+        """Check whether a model name is available in this serving backend.
+
+        The default implementation tests membership against
+        :meth:`_get_available_models`. Backends with additional naming rules
+        (e.g. prefix-based fallbacks) may override this.
+
+        Args:
+            model_name (str): Model identifier.
+
+        Returns:
+            bool: True if the model id is returned by the backend's model listing.
+        """
+        return model_name in cls._get_available_models()
 
     def prepare_batches(
         self,

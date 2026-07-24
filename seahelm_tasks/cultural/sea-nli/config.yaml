@@ -1,0 +1,296 @@
+sea-nli-normal:
+  metadata:
+    version: 1.0
+    changes:
+      v1.0: Initial release of SEA-NLI (normal subset) evaluation.
+  name: sea-nli-normal
+  competency: cultural
+  aggregation_group: sea-nli
+  dataloader_file: seahelm_tasks/cultural/sea-nli/sea_nli_dataloader.py
+  dataloader_class: SEANLIDataloader
+  metric_file: src/metrics/f1_acc_metric.py
+  metric_class: F1AccMetric
+  metric: normalized_accuracy
+  fewshot_num_examples:
+    instruct: 0
+    base: 5
+  languages:
+    id:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          Anda akan diberikan dua kalimat, SENTENCE_1 dan SENTENCE_2. Tentukan mana dari pernyataan berikut ini yang paling sesuai untuk kalimat SENTENCE_1 dan SENTENCE_2.
+          A: Jika SENTENCE_1 benar, maka SENTENCE_2 juga harus benar.
+          B: SENTENCE_1 bertentangan dengan SENTENCE_2.
+          C: Ketika SENTENCE_1 benar, SENTENCE_2 mungkin saja benar atau tidak benar.
+
+          Interpretasikan kedua kalimat ini sebagaimana seorang penutur asli bahasa Indonesia yang memahami budaya, norma sosial, dan kehidupan sehari-hari masyarakat Indonesia dan Asia Tenggara. Gunakan pemahaman budaya ini untuk menginterpretasikan makna yang tersirat, bukan hanya makna harfiah dari kalimat-kalimat tersebut.
+
+          Jawablah hanya dengan menggunakan format berikut ini:
+          "{answer_tag} ANSWER"
+          Ganti ANSWER dengan pilihan yang telah dipilih. Gunakan huruf A, B, atau C saja sebagai jawabannya.
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawaban:"
+    vi:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          Bạn sẽ được cho hai câu, SENTENCE_1 và SENTENCE_2.
+          Xác định mệnh đề nào sau đây là phù hợp nhất cho câu SENTENCE_1 và SENTENCE_2.
+          A: Nếu SENTENCE_1 đúng thì SENTENCE_2 phải đúng.
+          B: SENTENCE_1 mâu thuẫn với SENTENCE_2.
+          C: Khi SENTENCE_1 đúng, SENTENCE_2 có thể đúng hoặc không đúng.
+
+          Hãy diễn giải cả hai câu theo góc nhìn của một người nói tiếng Việt bản xứ, người mà hiểu rõ văn hóa, chuẩn mực xã hội và đời sống hàng ngày của xã hội Việt Nam và Đông Nam Á. Hãy dùng sự hiểu biết văn hóa đó để diễn giải ý nghĩa hàm ẩn, không chỉ dừng lại ở nghĩa đen của các câu.
+
+          Chỉ trả lời bằng cách sử dụng định dạng sau:
+          "{answer_tag} ANSWER"
+          Thay thế ANSWER bằng câu trả lời được chọn. Chỉ sử dụng chữ cái A, B hoặc C làm câu trả lời của bạn.
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Câu trả lời:"
+    th:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          คุณจะได้รับประโยค 2 ประโยค ได้แก่ SENTENCE_1 และ SENTENCE_2 จงพิจารณาว่า ข้อความใดต่อไปนี้เหมาะสมกับ SENTENCE_1 และ SENTENCE_2 มากที่สุด
+          A: ถ้า SENTENCE_1 เป็นจริง งั้น SENTENCE_2 ก็ต้องเป็นจริง
+          B: SENTENCE_1 ขัดแย้งกับ SENTENCE_2
+          C: เมื่อ SENTENCE_1 เป็นจริง งั้น SENTENCE_2 อาจะเป็นจริงหรือไม่เป็นจริงก็ได้
+
+          จงตีความประโยคทั้งสองในฐานะเจ้าของภาษาไทยที่เข้าใจวัฒนธรรม บรรทัดฐานทางสังคม และชีวิตประจำวันของสังคมไทยและเอเชียตะวันออกเฉียงใต้ ใช้ความเข้าใจทางวัฒนธรรมนี้ในการตีความความหมายโดยนัย ไม่ใช่เพียงแค่ความหมายตามตัวอักษรของประโยค
+
+          จงตอบตามรูปแบบดังต่อไปนี้:
+          "{answer_tag} ANSWER"
+          โดยแทนที่ ANSWER ด้วยตัวเลือกของคุณด้วยตัวอักษร A, B, หรือ C เท่านั้น
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "คำตอบ:"
+    ta:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          உங்களுக்கு இரண்டு வாக்கியங்கள், SENTENCE_1 மற்றும் SENTENCE_2 கொடுக்கப்படும்.
+          பின்வரும் கூற்றுகளில் எது SENTENCE_1 மற்றும் SENTENCE_2 வாக்கியங்களுடன் மிகப் பொருந்துகிறது எனக் கண்டறியவும்.
+          A: SENTENCE_1 உண்மை என்றால் SENTENCE_2 உம் உண்மையாக இருக்க வேண்டும்.
+          B: SENTENCE_1 உம் SENTENCE_2 உம் முரண்படுகின்றன.
+          C: SENTENCE_1 உண்மையாக இருக்கும்போது SENTENCE_2 உண்மையாக இருக்கலாம் அல்லது இல்லாமல் இருக்கலாம்.
+
+          இரண்டு வாக்கியங்களையும் தமிழ் சமூகம் மற்றும் தென்கிழக்கு ஆசிய சமூகத்தின் கலாச்சாரம், சமூக விதிமுறைகள் மற்றும் அன்றாட வாழ்க்கையை நன்கு புரிந்துகொண்ட, தமிழை தாய்மொழியாகக் கொண்டவராக விளக்குங்கள். வாக்கியங்களின் நேரடியான பொருளை மட்டும் கண்டறியாமல், உள்ளுறை பொருளை விளக்குவதற்கு இந்த கலாச்சார புரிதலை பயன்படுத்துங்கள்.
+
+          பின்வரும் பதில் வடிவமைப்பை மட்டும் பயன்படுத்தி பதிலளிக்கவும்:
+          "{answer_tag} ANSWER"
+          தேர்ந்தெடுக்கப்பட்ட பதிலுடன் ANSWER ஐ மாற்றவும். A அல்லது B அல்லது C என்ற எழுத்துக்களில் மட்டும் பதிலளிக்கவும்.
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "பதில்:"
+    tl:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          Bibigyan ka ng dalawang pangungusap, SENTENCE_1 at SENTENCE_2. Tukuyin kung alin sa sumusunod na pahayag ang pinaka-angkop para sa SENTENCE_1 at SENTENCE_2.
+          A: Kung totoo ang SENTENCE_1, dapat totoo din ang SENTENCE_2.
+          B: Sumasalungat ang SENTENCE_1 sa SENTENCE_2.
+          C: Kapag totoo ang SENTENCE_1, pwedeng totoo o hindi totoo ang SENTENCE_2.
+
+          Bigyang-kahulugan ang parehong pangungusap bilang isang tao na Filipino ang kanyang kinagisnang wika na nakauunawa sa kultura, kaugalian, at pang-araw-araw na buhay sa lipunan ng Pilipinas at Timog Silangang Asya. Gamitin ang kultural na pag-unawang ito upang bigyang-kahulugan ang implikadong kahulugan at hindi ang literal na kahulugan ng mga pangungusap.
+
+          Sumagot gamit ang sumusunod na format.
+          "{answer_tag} ANSWER"
+          Palitan ang ANSWER ng napiling sagot. Gumamit lang ng titik A, B, o C sa sagot mo.
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Sagot:"
+    my:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          သင့်ကို SENTENCE_1 နှင့် SENTENCE_2 ဟူသော ဝါကျစာကြောင်း နှစ်ခုကို ပေးထားပါမည်။ SENTENCE_1 နှင့် SENTENCE_2 တို့အတွက် အောက်ပါဖော်ပြချက်များထဲမှ မည်သည့်အချက်က အကောင်းဆုံး ကိုက်ညီမှုရှိသည်ကို ဆုံးဖြတ်ပါ။
+          က- SENTENCE_1 မှန်ကန်လျှင် SENTENCE_2 သည် မုချမှန်ကန်ရမည်။
+          ခ- SENTENCE_1 သည် SENTENCE_2 ကို ဆန့်ကျင်သည်။
+          ဂ- SENTENCE_1 မှန်ကန်သောအခါ၊ SENTENCE_2 သည် မှန်ကန်နိုင်သလို မမှန်ကန်ဘဲလည်း ရှိနိုင်ပါသည်။
+
+          မြန်မာနှင့် အရှေ့တောင်အာရှ လူ့အဖွဲ့အစည်း၏ ယဉ်ကျေးမှု၊ လူမှုရေးစံနှုန်းများနှင့် နေ့စဉ်ဘဝကို နားလည်သော မူရင်းမြန်မာဘာသာပြောသူတစ်ဦးအနေဖြင့် ဝါကျနှစ်ကြောင်းလုံးကို အဓိပ္ပာယ်ဖွင့်ဆိုပါ။ ဝါကျများ၏ တိုက်ရိုက်အဓိပ္ပာယ်သာမက သွယ်ဝိုက်သောအဓိပ္ပာယ်ကို ဖွင့်ဆိုရန် ဤယဉ်ကျေးမှုဆိုင်ရာ နားလည်မှုကို အသုံးပြုပါ။
+
+          အောက်ဖော်ပြပါ ပုံစံကိုသာ အသုံးပြု၍ ဖြေဆိုပါ-
+          "{answer_tag} ANSWER"
+          ANSWER နေရာတွင် သင်ရွေးချယ်ထားသော အဖြေကို အစားထိုးထည့်ပါ။ အဖြေအတွက် က၊ ခ သို့မဟုတ် ဂ အက္ခရာကို အသုံးပြုပါ။
+        task_template: |-
+          SENTENCE_1-
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2-
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "အဖြေ:"
+    ms:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          Anda akan diberikan dua ayat, SENTENCE_1 dan SENTENCE_2. Tentukan yang manakah antara kenyataan berikut yang paling sesuai untuk SENTENCE_1 dan SENTENCE_2.          
+          A: Jika SENTENCE_1 benar, SENTENCE_2 mesti benar.
+          B: SENTENCE_1 bercanggah dengan SENTENCE_2.
+          C: Apabila SENTENCE_1 benar, SENTENCE_2 mungkin atau mungkin tidak benar.
+
+          Tafsirkan kedua-dua ayat seperti seorang penutur jati bahasa Melayu yang memahami budaya, norma sosial, dan kehidupan harian masyarakat Malaysia dan Asia Tenggara. Gunakan pemahaman budaya ini untuk mentafsir maksud tersirat, bukan sekadar makna literal ayat.
+
+          Jawab guna format ini sahaja:
+          "{answer_tag} ANSWER"
+          Gantikan ANSWER dengan pilihan yang dipilih. Gunakan huruf A, B, atau C sebagai jawapan.
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "Jawapan:"
+    kh:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: normal
+      max_tokens: 128
+      prompt_template:
+        preamble: |-
+          អ្នកនឹងត្រូវបានផ្តល់ប្រយោគពីរ គឺ SENTENCE_1 និង SENTENCE_2។ សូមកំណត់ថាតើសេចក្តីថ្លែងការណ៍ណាខាងក្រោមដែលសមស្របបំផុតសម្រាប់ SENTENCE_1 និង SENTENCE_2។
+          A: បើ SENTENCE_1 ពិត នោះ SENTENCE_2 ក៏ត្រូវតែពិតដែរ។
+          B: SENTENCE_1 ផ្ទុយនឹង SENTENCE_2។
+          C: នៅពេល SENTENCE_1 ពិត SENTENCE_2 អាចពិត ឬ មិនពិត។
+
+          សូមបកស្រាយប្រយោគទាំងពីរក្នុងនាមជាអ្នកនិយាយភាសាខ្មែរដើមដែលយល់ដឹងអំពីវប្បធម៌ បទដ្ឋានសង្គម និងជីវភាពប្រចាំថ្ងៃរបស់សង្គមកម្ពុជា និងអាស៊ីអាគ្នេយ៍។ សូមប្រើការយល់ដឹងអំពីវប្បធម៌នេះដើម្បីបកស្រាយអត្ថន័យដែលបង្កប់ន័យ មិនមែនត្រឹមតែអត្ថន័យចំៗរបស់ប្រយោគនោះទេ។
+
+          សូមឆ្លើយតែដោយប្រើទម្រង់ដូចខាងក្រោម៖
+          "{answer_tag} ANSWER"
+          ជំនួស ANSWER ដោយជម្រើសដែលបានជ្រើសរើស។ ប្រើអក្សរ A, B, ឬ C តែប៉ុណ្ណោះជាចម្លើយ។
+        task_template: |-
+          SENTENCE_1:
+          ```
+          {sentence1}
+          ```
+          SENTENCE_2:
+          ```
+          {sentence2}
+          ```
+        answer_template: |-
+          {answer_tag} {label}
+        answer_tag: "ចម្លើយ:"
+
+sea-nli-hard:
+  metadata: ${sea-nli-normal.metadata}
+  name: sea-nli-hard
+  competency: ${sea-nli-normal.competency}
+  aggregation_group: sea-nli
+  dataloader_file: ${sea-nli-normal.dataloader_file}
+  dataloader_class: ${sea-nli-normal.dataloader_class}
+  metric_file: ${sea-nli-normal.metric_file}
+  metric_class: ${sea-nli-normal.metric_class}
+  metric: ${sea-nli-normal.metric}
+  fewshot_num_examples: ${sea-nli-normal.fewshot_num_examples}
+  languages:
+    id:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.id.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.id.prompt_template}
+    vi:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.vi.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.vi.prompt_template}
+    th:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.th.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.th.prompt_template}
+    ta:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.ta.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.ta.prompt_template}
+    tl:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.tl.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.tl.prompt_template}
+    my:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.my.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.my.prompt_template}
+    ms:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.ms.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.ms.prompt_template}
+    kh:
+      filepath: aisingapore/SEA-NLI
+      dataset_subset: hard
+      max_tokens: ${sea-nli-normal.languages.kh.max_tokens}
+      prompt_template: ${sea-nli-normal.languages.kh.prompt_template}

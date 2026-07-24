@@ -1,6 +1,7 @@
 --extra-index-url https://flashinfer.ai/whl/cu129
+boto3==1.43.36
 # causal-conv1d==1.5.2
-datasets[audio,vision]==4.7.0
+datasets[audio,vision]==4.8.5
 fast-langdetect==0.3.2
 flashinfer-cubin
 flashinfer-jit-cache
@@ -8,7 +9,7 @@ flashinfer-python
 fsspec==2025.10.0
 gcsfs==2025.10.0
 google-cloud-storage==3.8.0
-google-genai==1.64.0
+google-genai==2.14.0
 immutabledict==4.2.2
 instanttensor==0.1.9
 jieba==0.42.1
@@ -32,6 +33,6 @@ tenacity==9.1.4
 tree-sitter-java==0.21.0
 tree-sitter-javascript==0.21.4
 tree_sitter==0.21.3
-ujson==5.12.1
-vllm[audio]==0.23.0
+ujson==5.13.0
+vllm[audio]==0.25.1
 wonderwords==3.0.1

@@ -22,43 +22,12 @@ special_token_map = {
         "<|im_sep|>": 200266,
         "<|im_end|>": 200265,
     },
+    "gpt-5": {
+        "<|im_start|>": 200264,
+        "<|im_sep|>": 200266,
+        "<|im_end|>": 200265,
+    },
 }
-
-try:
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-    models = client.models.list()
-    OPENAI_GPT_MODELS = {x.id for x in models.data if "gpt" in x.id}
-
-    OPENAI_O1_MODELS = {x.id for x in models.data if "o1" in x.id}
-    OPENAI_MODELS = OPENAI_GPT_MODELS.union(OPENAI_O1_MODELS)
-
-    OPENAI_O3_MODELS = {x.id for x in models.data if "o3" in x.id}
-    OPENAI_MODELS = OPENAI_MODELS.union(OPENAI_O3_MODELS)
-except Exception:
-    OPENAI_MODELS = set()
-    logger.warning(
-        "Unable to get list of OpenAI models. Please check your OpenAI API key."
-    )
-
-
-def is_openai_model_name_supported(model_name: str) -> bool:
-    """Check whether an OpenAI model name is supported.
-
-    This first checks against dynamically fetched model IDs from the OpenAI API.
-    If that list is unavailable, stale, or missing a newly released model, it falls
-    back to validating known OpenAI naming prefixes.
-
-    Args:
-        model_name (str): Model identifier.
-
-    Returns:
-        bool: True if model name appears valid for OpenAI serving.
-    """
-    if model_name in OPENAI_MODELS:
-        return True
-
-    return re.match(r"^(gpt|o1|o3|o4)(-|$)", model_name.lower()) is not None
 
 
 class OpenAIServing(BaseBatchServing):
@@ -66,7 +35,61 @@ class OpenAIServing(BaseBatchServing):
     A serving class that uses OpenAI for language model completions.
 
     This class provides methods for generating responses from language models using the OpenAI API.
+
+    Class Attributes:
+        _available_models (set[str] | None): Cached set of model ids fetched from
+            the OpenAI API, shared across instances so repeated instantiations do
+            not each trigger a network call. ``None`` until first fetched.
     """
+
+    _available_models: set[str] | None = None
+
+    @classmethod
+    def _get_available_models(cls) -> set[str]:
+        """Fetch (and cache) the set of OpenAI model ids available to the API key.
+
+        The listing is best-effort: if the API call fails (e.g. a missing or
+        invalid API key) an empty set is cached and a warning is logged, so
+        callers fall back to prefix-based validation rather than blocking.
+
+        Returns:
+            set[str]: The available ``gpt``/``o1``/``o3`` model ids, or an empty
+                set if the listing failed.
+        """
+        if cls._available_models is None:
+            try:
+                client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+                models = client.models.list()
+                cls._available_models = {
+                    x.id
+                    for x in models.data
+                    if "gpt" in x.id or "o1" in x.id or "o3" in x.id
+                }
+            except Exception:
+                cls._available_models = set()
+                logger.warning(
+                    "Unable to get list of OpenAI models. Please check your OpenAI API key."
+                )
+        return cls._available_models
+
+    @classmethod
+    def is_model_name_supported(cls, model_name: str) -> bool:
+        """Check whether an OpenAI model name is supported.
+
+        This first checks against dynamically fetched model IDs from the OpenAI API.
+        If that list is unavailable, stale, or missing a newly released model, it falls
+        back to validating known OpenAI naming prefixes.
+
+        Args:
+            model_name (str): Model identifier.
+
+        Returns:
+            bool: True if model name appears valid for OpenAI serving.
+        """
+        if super().is_model_name_supported(model_name):
+            return True
+
+        return re.match(r"^(gpt|o1|o3|o4)(-|$)", model_name.lower()) is not None
 
     def __init__(
         self,
@@ -92,14 +115,16 @@ class OpenAIServing(BaseBatchServing):
         else:
             kwargs = {}
         self.is_base_model = is_base_model
+        self.default_reasoning_effort = default_reasoning_effort
 
         self.friendly_name = "OpenAI"
 
-        assert is_openai_model_name_supported(model_name), (
+        assert self.is_model_name_supported(model_name), (
             f"Invalid OpenAI model name: {model_name}"
         )
 
-        self.tokenizer = tiktoken.encoding_for_model(self.model_name)
+        # self.tokenizer = tiktoken.encoding_for_model(self.model_name)
+        self.tokenizer = tiktoken.get_encoding("o200k_base")
 
         self.kwargs_map = {
             "temperature": "temperature",

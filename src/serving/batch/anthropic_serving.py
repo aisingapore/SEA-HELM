@@ -12,29 +12,6 @@ from src.serving.batch.base_batch_serving import BaseBatchServing
 
 logger = get_logger(__name__)
 
-env_vars = {"ANTHROPIC_API_KEY": False}
-
-for key in env_vars:
-    if os.environ.get(key):
-        logger.info("Using %s provided.", key)
-        env_vars[key] = True
-    else:
-        logger.warning(
-            "%s not provided. Please set your %s environment variable.", key, key
-        )
-
-if env_vars["ANTHROPIC_API_KEY"]:
-    ANTHROPIC_MODELS = [model.id for model in anthropic.Anthropic().models.list()]
-    logger.warning(
-        "Available Anthropic models: %s",
-        ", ".join(ANTHROPIC_MODELS) if ANTHROPIC_MODELS else "None",
-    )
-else:
-    ANTHROPIC_MODELS = []
-    logger.warning(
-        "No Anthropic models found. Please check your ANTHROPIC_API_KEY environment variable."
-    )
-
 
 class AnthropicServing(BaseBatchServing):
     """
@@ -48,7 +25,38 @@ class AnthropicServing(BaseBatchServing):
         kwargs_map (List[str]): List of allowed generation parameters.
         processing_states (List[str]): List of valid processing states for batch jobs.
         result_types (List[str]): List of valid result types for batch responses.
+        _available_models (list[str] | None): Cached list of model ids fetched
+            from the Anthropic API, shared across instances so repeated
+            instantiations do not each trigger a network call.
     """
+
+    _available_models: list[str] | None = None
+
+    @classmethod
+    def _get_available_models(cls) -> list[str]:
+        """Fetch (and cache) the list of Anthropic model ids available to the API key.
+
+        Returns:
+            list[str]: The available model ids, or an empty list if no
+                ``ANTHROPIC_API_KEY`` is set.
+        """
+        if cls._available_models is None:
+            if os.environ.get("ANTHROPIC_API_KEY"):
+                cls._available_models = [
+                    model.id for model in anthropic.Anthropic().models.list()
+                ]
+                logger.warning(
+                    "Available Anthropic models: %s",
+                    ", ".join(cls._available_models)
+                    if cls._available_models
+                    else "None",
+                )
+            else:
+                cls._available_models = []
+                logger.warning(
+                    "No Anthropic models found. Please check your ANTHROPIC_API_KEY environment variable."
+                )
+        return cls._available_models
 
     def __init__(
         self,
@@ -86,8 +94,9 @@ class AnthropicServing(BaseBatchServing):
             **kwargs
         )  # API key is loaded from environment variable ANTHROPIC_API_KEY
 
-        assert self.model_name in ANTHROPIC_MODELS, (
-            f"Model {self.model_name} is not available in Anthropic API. Available models: {ANTHROPIC_MODELS}"
+        assert self.is_model_name_supported(self.model_name), (
+            f"Model {self.model_name} is not available in Anthropic API. "
+            f"Available models: {self._get_available_models()}"
         )
 
         self.kwargs_map = {
