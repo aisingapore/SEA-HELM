@@ -11,6 +11,7 @@ The following APIs are supported:
 1. Online vLLM
 1. Online SGLang
 1. Local OpenAI server
+1. Bedrock
 1. LiteLLM
 1. Other models
    - MetricX model
@@ -42,6 +43,22 @@ Additionally, `--model_args` can be used to pass the correct `base_url`, `api_ke
 
 ```bash
 --model_args tp=2,base_url=http://localhost:8000/v1,api_key=token-abc123,timeout=3600
+```
+
+### Bedrock
+
+The `BedrockServing` class serves the model using the Bedrock API. This allows for any model that is supported by Bedrock to be served. Additionally, Bedrock engine arguments can be configured using the `--model_args` cli argument.
+For the full list of engine args, please see the Bedrock documentation on [Engine Args](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_InvokeModel.html).
+
+This class assume that AWS SSO is configured for the user. Please ensure that the following env variables are set:
+
+1. AWS_REGION
+2. AWS_PROFILE
+
+Additionally, `--model_args` can be used to pass the correct `region`, `aws_profile` and `timeout` for the Bedrock API. For example:
+
+```bash
+--model_args region=us-east-1,aws_profile=default,timeout=3600
 ```
 
 ### Local OpenAI Serving
@@ -86,6 +103,7 @@ The Batch APIs provides cost saving at the expense of potentially having to wait
 1. OpenAI
 1. VertexAI
 1. Anthropic
+1. Bedrock Batch
 
 ### OpenAI (Batching API)
 
@@ -122,6 +140,25 @@ To run inference on the Anthropic Batch API:
 ```
 
 Please ensure that the env variable `ANTHROPIC_API_KEY` is set.
+
+### Bedrock Batch (Batching API)
+
+To run inference on the Bedrock Batch API:
+
+```bash
+--model_type bedrock_batch
+```
+
+This class assume that AWS SSO is configured for the user. Please ensure that the following env variables are set:
+
+1. AWS_REGION
+2. AWS_PROFILE
+
+Please also ensure that the following env variables are set to use the Bedrock Batch API:
+
+1. BEDROCK_S3_BUCKET
+2. BEDROCK_BATCH_ROLE_ARN
+3. BEDROCK_S3_BUCKET_OWNER
 
 ## None
 

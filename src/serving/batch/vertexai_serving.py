@@ -30,46 +30,73 @@ env_vars = [
 if os.getenv("GOOGLE_GENAI_USE_VERTEXAI") != "true":
     os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
 
-has_google_credentials = False
-for key in env_vars:
-    if os.environ.get(key):
-        logger.info("Using %s provided.", key)
-        has_google_credentials = True
-    else:
-        logger.warning(
-            "%s not provided. Please set your %s environment variable.", key, key
-        )
 
-if has_google_credentials:
-    try:
-        client = genai.Client(vertexai=True)
-        VERTEXAI_MODELS = [
-            m.name.split("/")[-1] for m in client.models.list() if "gemini" in m.name
-        ]
-        if not VERTEXAI_MODELS:
-            logger.warning("No Gemini models found.")
-        else:
-            logger.warning("Gemini models found from Vertex AI.")
-    except Exception as e:
-        logger.exception(e)
-        logger.warning(
-            "Unable to get list of Gemini models from Vertex AI. Please check your Google credentials."
-        )
-        VERTEXAI_MODELS = []
-else:
-    logger.warning(
-        "Google credentials not found. Please set either one of the environment variables: "
-        + ", ".join(env_vars)
-    )
-    VERTEXAI_MODELS = []
-
-
-class VertexAIServing(BaseBatchServing):
+class VertexAIBatchServing(BaseBatchServing):
     """
     A serving class that uses Vertex AI for language model completions.
 
     This class provides methods for generating responses from language models using the Vertex AI API.
+
+    Class Attributes:
+        _available_models (list[str] | None): Cached list of Gemini model ids
+            fetched from Vertex AI, shared across instances so repeated
+            instantiations do not each trigger a control-plane network call.
     """
+
+    _available_models: list[str] | None = None
+
+    @classmethod
+    def _get_available_models(cls) -> list[str]:
+        """Fetch (and cache) the list of Vertex AI model ids available to the credentials.
+
+        The listing is best-effort: Vertex AI only returns Gemini (Google) models,
+        so non-Google publisher models (e.g. Anthropic Claude) will not appear.
+        Callers should warn rather than block on a miss.
+
+        Returns:
+            list[str]: The available model ids (without the
+                ``publishers/.../models/`` prefix), or an empty list if no Google
+                credentials are set or the listing failed.
+        """
+        if cls._available_models is None:
+            has_google_credentials = False
+            for key in env_vars:
+                if os.environ.get(key):
+                    logger.info("Using %s provided.", key)
+                    has_google_credentials = True
+                else:
+                    logger.warning(
+                        "%s not provided. Please set your %s environment variable.",
+                        key,
+                        key,
+                    )
+
+            if has_google_credentials:
+                try:
+                    client = genai.Client(enterprise=True)
+                    cls._available_models = [
+                        m.name.split("/")[-1] for m in client.models.list()
+                    ]
+                    logger.warning(
+                        "Available Vertex AI models: %s", cls._available_models
+                    )
+                    if not cls._available_models:
+                        logger.warning("No Gemini models found.")
+                    else:
+                        logger.warning("Gemini models found from Vertex AI.")
+                except Exception as e:
+                    logger.exception(e)
+                    logger.warning(
+                        "Unable to get list of Gemini models from Vertex AI. Please check your Google credentials."
+                    )
+                    cls._available_models = []
+            else:
+                logger.warning(
+                    "Google credentials not found. Please set either one of the environment variables: "
+                    + ", ".join(env_vars)
+                )
+                cls._available_models = []
+        return cls._available_models
 
     def __init__(
         self,
@@ -93,14 +120,32 @@ class VertexAIServing(BaseBatchServing):
         self.is_base_model = is_base_model
         self.default_reasoning_effort = default_reasoning_effort
 
-        self.friendly_name = "Vertex AI"
-
-        assert model_name in VERTEXAI_MODELS, f"Invalid Gemini model name: {model_name}"
+        if "claude" in self.model_name:
+            self.friendly_name = "Vertex AI (Anthropic)"
+            self.is_anthropic = True
+            self.kwargs_map = {
+                x: x for x in ["temperature", "max_tokens", "top_p", "top_k"]
+            }
+        else:
+            self.friendly_name = "Vertex AI"
+            self.is_anthropic = False
+            self.kwargs_map = {
+                "max_tokens": "maxOutputTokens",
+                "temperature": "temperature",
+                "seed": "seed",
+                "top_p": "topP",
+                "top_k": "topK",
+            }
+        # Trigger the (cached) Vertex AI model listing so credential and
+        # availability warnings surface at instantiation time. The listing only
+        # returns Gemini models, so validation is intentionally non-blocking.
+        self._get_available_models()
+        # assert self.is_model_name_supported(model_name), f"Invalid Gemini model name: {model_name}"
 
         self.vertex_project = os.environ.get("GOOGLE_CLOUD_PROJECT", "")
         self.vertex_location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
         self.client = genai.Client(
-            vertexai=True,
+            enterprise=True,
             project=self.vertex_project,
             location=self.vertex_location,
         )
@@ -108,14 +153,6 @@ class VertexAIServing(BaseBatchServing):
         self.bucket_name = os.environ.get("GCS_BUCKET_NAME", "")
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.bucket(self.bucket_name)
-
-        self.kwargs_map = {
-            "max_tokens": "maxOutputTokens",
-            "temperature": "temperature",
-            "seed": "seed",
-            "top_p": "topP",
-            "top_k": "topK",
-        }
 
         self.batch_job_states = [
             JobState.JOB_STATE_SUCCEEDED,
@@ -233,35 +270,80 @@ class VertexAIServing(BaseBatchServing):
         """
         messages = []
         system_message = None
-        for message in conversation:
-            if message["role"] == "system":
-                system_message = message["content"]
-                continue
 
-            messages.append(
-                {
-                    "role": message["role"],
-                    "parts": self._convert_content_to_batch_format(message["content"]),
+        if self.is_anthropic:
+            for message in conversation:
+                if message["role"] == "system":
+                    system_message = message["content"]
+                    continue
+
+                messages.append(
+                    {
+                        "role": message["role"],
+                        "content": [{"type": "text", "text": message["content"]}],
+                    }
+                )
+            request = {
+                "custom_id": custom_id,
+                "request": {
+                    "messages": messages,
+                    "anthropic_version": "vertex-2023-10-16",
+                    **generation_kwargs,
+                },
+            }
+            if (
+                self.default_reasoning_effort is not None
+                and self.default_reasoning_effort != ""
+            ):
+                thinking_level_map = {
+                    ThinkingLevel.LOW: "low",
+                    ThinkingLevel.MEDIUM: "medium",
+                    ThinkingLevel.HIGH: "high",
                 }
-            )
+                assert self.default_reasoning_effort in thinking_level_map, (
+                    f"Invalid reasoning effort: {self.default_reasoning_effort}. "
+                    f"Valid values are: {list(thinking_level_map.keys())}"
+                )
 
-        if self.default_reasoning_effort is not None:
-            generation_kwargs["thinkingConfig"] = {
-                "thinkingLevel": self.default_reasoning_effort
+                output_config = {
+                    "effort": thinking_level_map[self.default_reasoning_effort]
+                }
+                request["request"]["output_config"] = output_config
+
+            if system_message:
+                request["request"]["system"] = system_message
+        else:
+            for message in conversation:
+                if message["role"] == "system":
+                    system_message = message["content"]
+                    continue
+
+                messages.append(
+                    {
+                        "role": message["role"],
+                        "parts": self._convert_content_to_batch_format(
+                            message["content"]
+                        ),
+                    }
+                )
+
+            if self.default_reasoning_effort is not None:
+                generation_kwargs["thinkingConfig"] = {
+                    "thinkingLevel": self.default_reasoning_effort
+                }
+
+            request = {
+                "custom_id": custom_id,  # TODO validate this
+                "request": {
+                    "contents": messages,
+                    "generationConfig": generation_kwargs,
+                },
             }
 
-        request = {
-            "request": {
-                "contents": messages,
-                "generationConfig": generation_kwargs,
-                "labels": {"custom_id": custom_id},
-            },
-        }
-
-        if system_message:
-            request["request"]["system_instruction"] = {
-                "parts": [{"text": system_message}]
-            }
+            if system_message:
+                request["request"]["system_instruction"] = {
+                    "parts": [{"text": system_message}]
+                }
         return request
 
     def batch_generate(
@@ -359,12 +441,14 @@ class VertexAIServing(BaseBatchServing):
         Returns:
             BatchJob: The batch job.
         """
+        model_name = self.model_name
+        if "claude" in model_name:
+            model_name = "publishers/anthropic/models/" + model_name
+
         batch_job = self.client.batches.create(
-            model=self.model_name,
+            model=model_name,
             src=batch_file_uri,
-            config=CreateBatchJobConfig(
-                dest=batch_outputs_path,
-            ),
+            config=CreateBatchJobConfig(dest=batch_outputs_path),
         )
         logger.info("Batch file sent via VertexAI batch API")
 
@@ -430,36 +514,43 @@ class VertexAIServing(BaseBatchServing):
         Returns:
             str: The response from the output.
         """
-        custom_id = output["request"]["labels"].get("custom_id", "")
+        custom_id = output.get("custom_id", "")
         try:
-            if output["response"].get("candidates") is not None:
-                if output["response"]["candidates"][0].get("content") is not None:
-                    response = output["response"]["candidates"][0]["content"]["parts"][
-                        0
-                    ]["text"]
+            if "claude" in self.model_name:
+                if output["response"].get("content") is not None:
+                    response = output["response"]["content"][0]["text"]
                 else:
-                    finishReason = output["response"]["candidates"][0].get(
-                        "finishReason", ""
+                    logger.warning("No response for %s", custom_id)
+                    response = ""
+            else:
+                if output["response"].get("candidates") is not None:
+                    if output["response"]["candidates"][0].get("content") is not None:
+                        response = output["response"]["candidates"][0]["content"][
+                            "parts"
+                        ][0]["text"]
+                    else:
+                        finishReason = output["response"]["candidates"][0].get(
+                            "finishReason", ""
+                        )
+                        logger.warning(
+                            "No response for %s because of finishReason: %s",
+                            custom_id,
+                            finishReason,
+                        )
+                        response = ""
+                elif output["response"].get("promptFeedback") is not None:
+                    blockReason = output["response"]["promptFeedback"].get(
+                        "blockReason", ""
                     )
                     logger.warning(
-                        "No response for %s because of finishReason: %s",
+                        "No response for %s because of blockReason: %s",
                         custom_id,
-                        finishReason,
+                        blockReason,
                     )
                     response = ""
-            elif output["response"].get("promptFeedback") is not None:
-                blockReason = output["response"]["promptFeedback"].get(
-                    "blockReason", ""
-                )
-                logger.warning(
-                    "No response for %s because of blockReason: %s",
-                    custom_id,
-                    blockReason,
-                )
-                response = ""
-            else:
-                logger.warning("No response for %s", custom_id)
-                response = ""
+                else:
+                    logger.warning("No response for %s", custom_id)
+                    response = ""
         except Exception:
             logger.warning("No response for %s", custom_id)
             response = ""
@@ -474,7 +565,7 @@ class VertexAIServing(BaseBatchServing):
         Returns:
             string: Comma-separated string of custom IDs.
         """
-        return batch["request"]["labels"]["custom_id"]
+        return batch["custom_id"]
 
     def get_valid_ids_from_batch(self, batch: dict) -> str | None:
         """
@@ -510,7 +601,7 @@ class VertexAIServing(BaseBatchServing):
 
 
 if __name__ == "__main__":
-    vertexai_model = VertexAIServing("gemini-2.0-flash-001")
+    vertexai_model = VertexAIBatchServing("gemini-2.0-flash-001")
     messages = [
         {
             "role": "system",

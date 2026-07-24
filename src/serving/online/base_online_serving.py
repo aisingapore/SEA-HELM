@@ -158,11 +158,11 @@ class BaseOnlineServing(ABC):
             s.bind(("", 0))
             return s.getsockname()[1]
 
-    def empty_output_dict(self, custom_id: str | None = None) -> dict:
+    def empty_output_dict(self, custom_ids: str | None = None) -> dict:
         """Return an empty output dict with the same structure as parse_output.
 
         Args:
-            custom_id (str, optional): The custom ID to include in the output dict. Defaults to None.
+            custom_ids (str, optional): The custom ID to include in the output dict. Defaults to None.
 
         Returns:
             dict: An empty output dict.
@@ -171,7 +171,7 @@ class BaseOnlineServing(ABC):
             "finish_reasons": None,
             "responses": None,
             "reasoning_contents": None,
-            "custom_ids": custom_id,
+            "custom_ids": custom_ids,
             "token_usages": None,
             "function_calls": None,
             "tool_calls": None,

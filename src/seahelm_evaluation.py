@@ -970,8 +970,10 @@ Filepath: %s""",
                     normal_queue.append(task_config)
 
         # proceed with the rest of tasks (local LLM judges and normal tasks)
+        logger.info(
+            "Running inference/evaluation for local LLM judges and normal tasks..."
+        )
         for task_config in normal_queue:
-            logger.info("Running evaluation for local LLM judges and normal tasks...")
             # inference_strategy = task_config.get_inference_strategy()
             dataloader, cache_status = self.run_single_task_inference(
                 model=llm,
