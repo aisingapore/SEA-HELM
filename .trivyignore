@@ -1,7 +1,12 @@
-# Remove this file after bumping versions of litellm, nltk, opencc, vllm after testing
-CVE-2026-54293
-CVE-2026-12491
-CVE-2026-53923
-CVE-2026-54233
-CVE-2026-54235
-CVE-2026-54236
+# Waivers for dependency CVEs reported against uv.lock.
+# Remove each entry once the dependency can be upgraded and tested.
+# Last reviewed: 2026-08-05 with trivy 0.73.0.
+
+# cryptography 49.0.0 (transitive) -> fixed in 50.0.0
+CVE-2026-69247
+
+# setuptools 80.10.2 (transitive) -> fixed in 83.0.0
+CVE-2026-59890
+
+# torch 2.11.0+cu129 -> fixed in 2.13.0, pending a cu129 wheel we can pin to
+CVE-2025-3000
