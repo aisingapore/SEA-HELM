@@ -18,7 +18,7 @@ MODEL_TYPE_SERVING_MAP = {
     "anthropic": "remote_serving",
     "bedrock": "remote_serving",
     "bedrock_batch": "remote_serving",
-    "vertexai": "remote_serving",
+    # "vertexai": "remote_serving",
     "vertexai_batch": "remote_serving",
     "litellm": "remote_serving",
 }

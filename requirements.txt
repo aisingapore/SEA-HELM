@@ -1,3 +1,4 @@
+--extra-index-url https://flashinfer.ai/whl
 --extra-index-url https://flashinfer.ai/whl/cu129
 boto3==1.43.36
 # causal-conv1d==1.5.2
@@ -17,7 +18,7 @@ langdetect==1.0.9
 litellm==1.89.2
 # mamba-ssm==2.2.5
 math-verify[antlr4_13_2]==0.9.0
-nltk==3.9.4
+nltk==3.10.2
 omegaconf==2.4.0.dev3
 open-clip-torch==3.3.0
 opencc==1.2.0
@@ -34,5 +35,5 @@ tree-sitter-java==0.21.0
 tree-sitter-javascript==0.21.4
 tree_sitter==0.21.3
 ujson==5.13.0
-vllm[audio]==0.25.1
+vllm[audio]==0.26.0
 wonderwords==3.0.1
