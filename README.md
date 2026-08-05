@@ -31,6 +31,21 @@
 ## 🎉 Latest Updates
 
 <details open>
+<summary><strong>5 Aug 2026</strong></summary>
+
+1. Updated aggregation method to calculate SEA-HELM scores along with confidence intervals.
+   1. New MultiRunAggregator class
+   2. Aggregation is done by first averaging the scores across 8 runs. Bootstrapping with replacement of the prompts is then done to calculate the confidence intervals.
+2. Rewritten ELO calculation
+   1. New ELO dataloader and Bradley Terry model class
+   2. Added optimizations to speed up calculation of ELO ratings
+3. Added AWS Bedrock support for model serving
+4. Added SEA-NLI tasks
+5. Updated `seahelm` task config
+6. Updated SEA-Safeguard prompts
+</details>
+
+<details>
 <summary><strong>19 Jun 2026</strong></summary>
 
 1. The inference code for SEA-HELM has been refactored.

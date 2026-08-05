@@ -1,7 +1,7 @@
 # Model Serving
 
 Inferencing in SEA-HELM is supported through the use of the vLLM and LiteLLM inference frameworks.
-The following model types are accepted: `vllm`, `online_vllm`, `online_sglang`, `local_openai`, `litellm`, `openai`, `vertexai`, `anthropic`, `metricx`, `openclip`, `none`
+The following model types are accepted: `vllm`, `online_vllm`, `online_sglang`, `local_openai`, `litellm`, `openai`, `vertexai_batch`, `anthropic`, `bedrock`, `bedrock_batch`, `metricx`, `openclip`, `none`
 
 ## Non Batch APIs
 
@@ -120,7 +120,7 @@ Please ensure that the env variable `OPENAI_API_KEY` is set.
 To run inference on the VertexAI Batch API:
 
 ```bash
---model_type vertexai
+--model_type vertexai_batch
 ```
 
 Please ensure that the following env variables are set:
